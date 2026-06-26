@@ -53,9 +53,9 @@
       line-height: 1.6;
       min-height: 100vh;
       background-image:
-        radial-gradient(circle at 18% 0%, rgba(246,226,22,0.055) 0%, transparent 42%),
-        radial-gradient(ellipse at 90% 80%, rgba(246,226,22,0.03) 0%, transparent 50%),
-        radial-gradient(rgba(246,226,22,0.07) 1px, transparent 1px);
+        radial-gradient(circle at 18% 0%, rgba(29,52,72,0.055) 0%, transparent 42%),
+        radial-gradient(ellipse at 90% 80%, rgba(29,52,72,0.03) 0%, transparent 50%),
+        radial-gradient(rgba(29,52,72,0.07) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 28px 28px;
     }
 
@@ -66,7 +66,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       height: 3px;
-      background: linear-gradient(90deg, #F6E216 0%, #fff9a0 50%, #F6E216 100%);
+      background: linear-gradient(90deg, var(--accent) 0%, rgba(29,52,72,0.55) 50%, var(--accent) 100%);
       z-index: 1000;
     }
 
@@ -863,6 +863,8 @@
   .fm-attr.good .attr-value { color:#facc15; }
   .fm-attr.elite .attr-value { color:#22c55e; }
   .fm-attr.weak .attr-value { opacity:.78; }
+  .fm-attr.missing { opacity:.52; }
+  .fm-attr.missing .attr-value { color:var(--muted); }
   .attr-weight { color:var(--muted); font:800 10px var(--font-mono); letter-spacing:.08em; text-transform:uppercase; }
   .fm-attr.role-key { background:rgba(74,222,128,.13); border-color:rgba(134,239,172,.28); }
   .fm-attr.role-key .role-mark { background:#86efac; }
@@ -931,7 +933,7 @@
       const row = attrRows.find(item => item.dataset.attr === name);
       const value = row ? Number(row.querySelector('.attr-value').textContent) : null;
       return { name, value };
-    }).filter(item => item.value !== null);
+    }).filter(item => Number.isFinite(item.value));
   }
   function setRole(roleId) {
     const role = roleById.get(roleId) || roles[0];
@@ -1054,8 +1056,8 @@ window.__initCharts = function() {
 
   /* ─── Design constants (mirrors CSS tokens) ────────────────── */
   const C = {
-    accent:   '#F6E216',
-    accentDim:'rgba(246,226,22,0.18)',
+    accent:   '#1D3448',
+    accentDim:'rgba(29,52,72,0.18)',
     white:    '#ffffff',
     muted:    '#888070',
     muted2:   '#5a5650',
