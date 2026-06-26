@@ -1,0 +1,2652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DEFENSIVE CONTRIBUTION — IL Hødd FM26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════════════════ */
+    :root {
+      --bg:          #070707;
+      --panel:       #111111;
+      --panel-2:     #161616;
+      --panel-3:     #1c1c1c;
+      --text:        #f0ede0;
+      --muted:       #888070;
+      --muted-2:     #5a5650;
+      --accent:      #1d4278;
+      --accent-dim:  rgba(29,66,120,0.14);
+      --accent-glow: rgba(29,66,120,0.06);
+      --white:       #ffffff;
+      --red:         #f87171;
+      --green:       #4ade80;
+      --blue:        #60a5fa;
+      --line:        rgba(29,66,120,0.10);
+      --line-hard:   rgba(29,66,120,0.22);
+      --radius-sm:   10px;
+      --radius-md:   16px;
+      --radius-lg:   22px;
+      --shadow-sm:   0 4px 16px rgba(0,0,0,0.32);
+      --shadow-md:   0 12px 36px rgba(0,0,0,0.42);
+      --shadow-lg:   0 24px 64px rgba(0,0,0,0.56);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'IBM Plex Mono', monospace;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(circle at 18% 0%, rgba(246,226,22,0.055) 0%, transparent 42%),
+        radial-gradient(ellipse at 90% 80%, rgba(246,226,22,0.03) 0%, transparent 50%),
+        radial-gradient(rgba(246,226,22,0.07) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px;
+    }
+
+    /* top accent stripe */
+    body::before {
+      content: '';
+      display: block;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #F6E216 0%, #fff9a0 50%, #F6E216 100%);
+      z-index: 1000;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════════════ */
+    .wrap {
+      max-width: 1560px;
+      margin: 0 auto;
+      padding: 32px 24px 56px;
+    }
+
+    .hero-shot {
+      padding: 12px;
+      margin: -12px -12px 4px;
+      background: transparent;
+      border-radius: calc(var(--radius-lg) + 12px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #0e0e0e 0%, #0a0a0a 100%);
+      border: 1px solid var(--line-hard);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 16px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--accent);
+      border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    }
+
+    .hero-watermark {
+      position: absolute;
+      right: -40px; top: -40px;
+      width: 320px; height: 320px;
+      opacity: 0.045;
+      pointer-events: none;
+      filter: grayscale(1) blur(1px);
+    }
+    .hero-watermark img { width: 100%; height: 100%; object-fit: contain; }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .hero-crest { flex: 0 0 72px; width: 72px; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.7)); margin-top: 2px; }
+    .hero-crest img { display: block; width: 100%; height: auto; }
+
+    .hero-text { flex: 1; min-width: 0; }
+
+    .report-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .report-badge::before {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4.5vw, 68px);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+
+    .hero-subtitle {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-2);
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 5px; }
+    .hero-meta span::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       STAT CARDS
+    ═══════════════════════════════════════════════════════════ */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px 14px;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .card:hover { border-color: var(--line-hard); background: rgba(246,226,22,0.025); }
+    .card:hover::after { opacity: 1; }
+
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .card-value {
+      font-family: var(--font-mono);
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1.1;
+      margin: 6px 0 4px;
+    }
+    .card-value.white  { color: var(--white); }
+    .card-value.red    { color: var(--red); }
+    .card-value.green  { color: var(--green); }
+    .card-sub { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+    /* ═══════════════════════════════════════════════════════════
+       HIGHLIGHT CHIPS
+    ═══════════════════════════════════════════════════════════ */
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .chip {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      transition: border-color 0.2s;
+    }
+    .chip:hover { border-color: var(--line-hard); }
+    .chip-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chip-name { font-size: 16px; font-weight: 600; color: var(--white); margin: 6px 0 3px; }
+    .chip-value { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+
+    /* ═══════════════════════════════════════════════════════════
+       SECTIONS & PANELS
+    ═══════════════════════════════════════════════════════════ */
+    .section { margin-top: 16px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.03em;
+      color: var(--white);
+    }
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .section-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      max-width: 900px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       TABS
+    ═══════════════════════════════════════════════════════════ */
+    .tabs { margin-bottom: 16px; }
+
+    .tab-list {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tab-list::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 9px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ═══════════════════════════════════════════════════════════
+       FILTER BAR
+    ═══════════════════════════════════════════════════════════ */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      margin-bottom: 14px;
+    }
+
+    .filter-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      flex-shrink: 0;
+    }
+
+    .filter-group { display: flex; gap: 4px; flex-wrap: wrap; }
+
+    .filter-btn {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 5px 13px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--line-hard); color: var(--text); }
+    .filter-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--line-hard);
+      color: var(--accent);
+    }
+
+    .search-wrap {
+      position: relative;
+      margin-left: auto;
+    }
+    .search-wrap::before {
+      content: '⌕';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-2);
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .search-input {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 6px 14px 6px 30px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text);
+      width: 200px;
+      outline: none;
+      transition: border-color 0.15s, width 0.2s;
+    }
+    .search-input::placeholder { color: var(--muted-2); }
+    .search-input:focus { border-color: var(--line-hard); width: 240px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       DATA TABLE
+    ═══════════════════════════════════════════════════════════ */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+
+    thead tr { border-bottom: 2px solid rgba(246,226,22,0.25); }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--panel-3);
+      padding: 11px 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      text-align: left;
+      user-select: none;
+    }
+    th.num { text-align: right; }
+
+    /* sortable column headers */
+    th.sortable { cursor: pointer; }
+    th.sortable:hover { color: var(--white); }
+    th.sort-asc::after  { content: ' ↑'; opacity: 0.7; }
+    th.sort-desc::after { content: ' ↓'; opacity: 0.7; }
+
+    td {
+      padding: 9px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      background: var(--panel-2);
+      vertical-align: middle;
+      transition: background 0.12s;
+    }
+
+    tbody tr:hover td { background: rgba(246,226,22,0.04); }
+    tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* Aachen player highlight in league tables */
+    tr.aachen td { background: rgba(246,226,22,0.06); }
+    tr.aachen td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+    tr.aachen:hover td { background: rgba(246,226,22,0.10); }
+
+    /* hidden rows (filtered out) */
+    tr.filtered-out { display: none; }
+
+    /* Cell utility classes */
+    td.player, td.name { font-weight: 600; color: var(--white); white-space: nowrap; }
+    td.pos, td.club, td.muted { color: var(--muted); font-size: 12px; }
+    td.num {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    td.accent { font-family: var(--font-mono); font-weight: 600; color: var(--accent); text-align: right; }
+    td.emph   { font-weight: 700; color: var(--white); }
+    td.rank   { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: right; }
+    td.red    { color: var(--red); font-family: var(--font-mono); }
+    td.green  { color: var(--green); font-family: var(--font-mono); }
+
+    /* group header rows (for position-grouped tables) */
+    tr.group-header td {
+      background: var(--panel-3);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BAR COMPONENT (inline spark bar)
+    ═══════════════════════════════════════════════════════════ */
+    .bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 90px;
+    }
+    .bar-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      white-space: nowrap;
+      min-width: 32px;
+      text-align: right;
+    }
+    .bar {
+      flex: 1;
+      height: 5px;
+      border-radius: 99px;
+      background: rgba(246,226,22,0.10);
+      overflow: hidden;
+      min-width: 40px;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent) 0%, #fffba0 100%);
+    }
+
+    /* percentile pill bar */
+    .pct-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .pct-bar-track {
+      width: 72px;
+      height: 5px;
+      border-radius: 99px;
+      background: rgba(246,226,22,0.10);
+      overflow: hidden;
+    }
+    .pct-bar-track span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), #fffba0);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BADGE / PILL
+    ═══════════════════════════════════════════════════════════ */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .badge-yellow { background: rgba(246,226,22,0.15); color: var(--accent); }
+    .badge-white  { background: rgba(255,255,255,0.08); color: var(--white); }
+    .badge-red    { background: rgba(220,50,50,0.18);   color: var(--red); }
+    .badge-green  { background: rgba(50,200,100,0.15);  color: var(--green); }
+    .badge-blue   { background: rgba(96,165,250,0.15);  color: var(--blue); }
+
+    /* ═══════════════════════════════════════════════════════════
+       CHART CONTAINERS
+    ═══════════════════════════════════════════════════════════ */
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      margin: 14px 0 4px;
+    }
+    .chart-wrap canvas {
+      display: block;
+      width: 100% !important;
+    }
+    .chart-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* chart grid: 2-up and 3-up layouts */
+    .chart-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .chart-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+    /* chart panel (self-contained chart block with label + canvas) */
+    .chart-panel {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    /* radar/spider chart wrapper — square aspect */
+    .radar-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .radar-wrap canvas { display: block; width: 100% !important; }
+
+    /* grouped percentile bar wrapper — grows vertically */
+    .percbar-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .percbar-wrap canvas { display: block; width: 100% !important; height: auto !important; }
+
+    /* scatter plot wrapper */
+    .scatter-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .scatter-wrap canvas { display: block; width: 100% !important; }
+
+    /* tooltip */
+    .chart-tooltip {
+      position: fixed;
+      background: var(--panel-3);
+      border: 1px solid var(--line-hard);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text);
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0;
+      transition: opacity 0.1s;
+      line-height: 1.7;
+      max-width: 200px;
+      box-shadow: var(--shadow-md);
+    }
+    .chart-tooltip.visible { opacity: 1; }
+    .chart-tooltip strong { color: var(--accent); display: block; }
+
+    /* ═══════════════════════════════════════════════════════════
+       LEGEND
+    ═══════════════════════════════════════════════════════════ */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+    }
+    .legend b {
+      color: inherit;
+      font-weight: 600;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+      flex: 0 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       MISC UTILITIES
+    ═══════════════════════════════════════════════════════════ */
+    .divider { height: 1px; background: var(--line); margin: 18px 0; }
+    .text-muted  { color: var(--muted); }
+    .text-accent { color: var(--accent); }
+    .text-white  { color: var(--white); }
+    .text-mono   { font-family: var(--font-mono); }
+    .mt-sm { margin-top: 8px; }
+    .mt-md { margin-top: 16px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    footer {
+      margin-top: 24px;
+      padding: 18px 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    footer img { width: 28px; height: auto; opacity: 0.5; filter: grayscale(1); flex-shrink: 0; }
+    footer p { font-family: var(--font-mono); font-size: 11px; color: var(--muted-2); line-height: 1.7; }
+    footer code {
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .cards { grid-template-columns: repeat(3, 1fr); }
+      .chart-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .wrap { padding: 20px 14px 36px; }
+      .hero-shot { padding: 8px; margin: -8px -8px 4px; border-radius: calc(var(--radius-md) + 8px); }
+      .hero { padding: 22px 20px 20px; border-radius: var(--radius-md); }
+      .hero-watermark { display: none; }
+      .hero h1 { font-size: 36px; }
+      .hero-inner { flex-direction: column; gap: 14px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .chips { grid-template-columns: 1fr; }
+      .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+      .search-wrap { margin-left: 0; }
+      .search-input { width: 100%; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .hero, .panel, .card { border: 1px solid #ccc; box-shadow: none; }
+      body::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- ═══ HERO ═════════════════════════════════════════════════ -->
+    <div class="hero-shot" id="hero-shot">
+    <header class="hero">
+      <div class="hero-watermark" aria-hidden="true">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIGlkPSJzdmc3NSIgaGVpZ2h0PSIzNTYuNDg4OTgiIHZpZXdCb3g9IjAgMCAyMDEuNzUwMDEgMjY3LjM2Njc0IiB3aWR0aD0iMjY5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgPGcgaWQ9InN1cmZhY2U0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI5OS4xMjUgLTE2Ni4zMTY2MykiPg0KICAgICAgPHBhdGggaWQ9InBhdGgyIiBkPSJtMzAwLjYyNSAxNjcuODE2NjNoMTk4Ljc1djE2NC45OTQ2NmMwIDU0LjcwNTkzLTQ0LjY2OTA2IDk5LjM3MjA4LTk5LjM3NSA5OS4zNzIwOC01NC43MDU5NCAwLTk5LjM3NS00NC42NjYxNS05OS4zNzUtOTkuMzcyMDh6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0IiBkPSJtMzA0LjYyNjMxIDE3MS44NTMwMXYxNjAuOTU4MjhjMCA1Mi41MjI2IDQyLjg0ODE2IDk1LjM3MDc3IDk1LjM3MzY5IDk1LjM3MDc3IDUyLjUyNTUzIDAgOTUuMzczNjktNDIuODQ4MTcgOTUuMzczNjktOTUuMzcwNzd2LTE2MC45NTgyOHptMCAwIiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDYiIGQ9Im00MjYuMDA3MDIgMjE0Ljg4NTMxYy0xNi40NzU3OSAwLTMxLjM1MjgxIDYuNjkwMjgtNDIuMTU4MzggMTcuNDk1ODUtMTAuODM3NzIgMTAuODM3NzItMTcuNTMwOTIgMjUuNzUyNzMtMTcuNTMwOTIgNDIuMTkzNDUgMCAzMi44ODQzNiAyNi44MDc4NyA1OS42OTIyMiA1OS42ODkzIDU5LjY5MjIyIDMyLjg4MTQzIDAgNTkuNjg5My0yNi44MDc4NiA1OS42ODkzLTU5LjY5MjIyIDAtMTYuNDQwNzItNi42OTMxOS0zMS4zNTU3My0xNy40OTI5Mi00Mi4xOTM0NS0xMC44NDA2NC0xMC44MDU1Ny0yNS43NTU2Ni0xNy40OTU4NS00Mi4xOTYzOC0xNy40OTU4NSIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMzk2LjYxODMzIDMyMi42NjA0M2MtMi4yOTQ0LTEuNDE3NTctNC41MTI4LTIuOTgxMjYtNi41ODUwNi00LjcyNjE3di0zOC40NDkzNWgtNy4zNDc5MXYzMS4xMzY1MmMtMi41MTA2Ny0zLjAxOTI0LTQuNzI5MDgtNi4yOTI3Ny02LjU4MjEyLTkuODIwNTl2LTUyLjQ1MjQ2YzEuODUzMDQtMy41Mjc4MSA0LjA3MTQ1LTYuODAxMzQgNi41ODIxMi05LjgyMDU5djM0LjMzNjk5aDcuMzQ3OTF2LTQxLjY4NDg5YzIuMDcyMjYtMS43MDk4NCA0LjI5MDY2LTMuMjczNTMgNi41ODUwNi00LjY5MTA4em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTAiIGQ9Im00MTguMTE1NDggMzE5Ljg5ODM4YzAgMS40NTI2My0uMTQ2MTUgMy43NDcwMi0zLjg5MzE3IDMuMjAwNDYtLjExMTA2IDAtLjIxNjI4LS4wMzgtLjMyNzM1LS4wMzgtLjU0MzY0LS4xMDgxNC0xLjA5MzEzLS4zMjczNS0xLjYzNjc2LS40NzA1Ny0xLjkyNjEzLS41MDg1Ni0yLjU0NTc1LTEuOTI5MDQtMi41NDU3NS00LjE0NzQ0di03NS40NDAyM2MwLTIuMjE4NC42MTk2Mi0zLjYzODg4IDIuNTQ1NzUtNC4xODI1Mi41NDM2My0uMTQ2MTQgMS4wOTMxMi0uMzI3MzUgMS42MzY3Ni0uNDM4NDEuMTExMDctLjAzNTEuMjE2MjktLjAzNTEuMzI3MzUtLjA3MzEgMy43NDcwMi0uNTQzNjMgMy44OTMxNyAxLjc0Nzg0IDMuODkzMTcgMy4yMDA0NnptLS4xNDYxNS04OC44NjQ2M2MtMS4zODI0Ny4xODEyMS0yLjcyOTg4LjQzODQyLTQuMDc0MzcuNzI3NzctMS41OTg3Ny4zNjI0My0zLjE2MjQ2Ljc2Mjg1LTQuNzI5MDggMS4yMzYzNC01LjQ5MTkyIDEuNzA5ODQtNi4wMzg0OSA1LjY3NjA3LTYuMDM4NDkgOS40NTgxN3Y3Ni40OTUzNmMwIDMuNzgyMS41NDY1NyA3Ljc0ODMzIDYuMDM4NDkgOS40NTgxNyAxLjU2NjYyLjQ3MzQ5IDMuMTMwMzEuOTA4OTkgNC43MjkwOCAxLjIzNjM0IDEuMzQ0NDkuMzI3MzUgMi42OTE5LjU0NjU2IDQuMDc0MzcuNzYyODUgMi41ODM3Ni4zMjczNSA2LjcyODI4LS44MDA4NSA2LjcyODI4LTYuNjIwMTN2LTg2LjE2OTgxYzAtNS44MTkyOS00LjE0NDUyLTYuOTQ3NDktNi43MjgyOC02LjU4NTA2IiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtNDI0LjY5NzYxIDIyNC42MzI4M2MtMi4yNTYzOS4wMzgtNC40MzY4LjI1NDI4LTYuNTg1MDYuNTgxNjR2LTYuNTExOTljMi4xNDgyNi0uMjg5MzUgNC4zMjg2Ny0uNDcwNTcgNi41ODUwNi0uNTA4NTZ6bTAgMCIgZmlsbD0iI2ZmZiIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgxNCIgZD0ibTQxMC45ODM4NiAyMjYuOTI0M2MtMi41MDc3Ni44MzU5Mi00LjcyNjE2IDEuNzQ0OTEtNi41ODIxMyAyLjQ3MjY4di02LjgwMTM0YzIuMTgwNC0uODM1OTIgNC4xNDQ1Mi0xLjcwOTg0IDYuNTgyMTMtMi4yMTg0em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTYiIGQ9Im00NjkuNDc0ODIgMjk0LjgzNTQzYzAgMi41MTA2Ny0uMjE2MjkgNC45ODMzNS0xLjkyNjEzIDcuMzgyOTctLjQzODQxLjY1NDctLjg3MzkxIDEuMjc0MzQtMS4zMDk0MSAxLjg5MTA1LTEuMDU1MTIgMS4zODI0OC0yLjExMDI1IDIuNzI5ODgtMy4yNzM1MyA0LjAwMTN2LTY3LjExMDI3YzEuMTYzMjggMS4zMDk0MSAyLjI1MzQ4IDIuNjU2ODIgMy4yNzM1MyA0LjAzOTMuNTQzNjUuNzYyODUgMS4wOTAyIDEuNTI1NyAxLjU5ODc3IDIuMjkxNDcgMS40MjA0OCAyLjEwNzMzIDEuNjM2NzcgMy4zMDg2IDEuNjM2NzcgNi4wMzU1N3ptNi41ODUwNS0xLjAxNzE0di00MC41OTQ2OWMwLTMuMjM4NDUtLjQzODQxLTUuNjM4MDctMS45NjQxMi04LjA3NTY3LTIuMjU2MzktMy42MDA4OS00LjkxMzIxLTYuOTgyNTctNy44NTY0Ny0xMC4wMDE4MS0yLjk4NDE3LTMuMDU3MjQtNi4yOTI3Ny01Ljc0OTE0LTkuODU4NTgtOC4wNDA2MXY5NC45MzgyMWMzLjU2NTgxLTIuMjkxNDggNi44NzQ0MS00Ljk4MzM3IDkuODU4NTgtOC4wMDI2MiAyLjM2NDU0LTIuNDM3NjEgNC41MDY5NS01LjA1NjQzIDYuNDM2LTcuODU2NDcgMi41NDg2OC0zLjc0NzAyIDMuMzg0NTktNi45ODU0NyAzLjQxOTY3LTExLjAyMTg1di0uNDczNWMwLS4yODkzNiAwLS41ODE2My0uMDM1MS0uODcwOTkiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTgiIGQ9Im00NDQuNTkzMDcgMzE2LjczM2MwIDMuMjAwNDUtLjY4OTc4IDQuNTQ0OTQtMy4xMjczOSA1LjM0NTc5LS4xNDYxNC4wMzgtLjI1NDI5LjA3MzEtLjQwMDQyLjExMTA2LTEuMTYzMjguMzYyNDMtMi4zMjY1NC42ODk3OC0zLjUyNzgxLjk4MjA2di05Ny4yMjk2N2MxLjIzOTI2LjMyNzM2IDIuMzY0NTMuNjE2NzEgMy41Mjc4MSAxLjAxNzEzLjE4NDE0LjAzOC4zNjUzNC4xMTEwNy41MTE0OS4xODQxNCAxLjk2NDEyLjY1NDcxIDIuOTQ2MTggMi42NTM5IDMuMDE2MzIgNC4yNTU1OXptLjExMTA2LTk1LjM3MzdjLTEuMjAxMjctLjQwMDQyLTIuNDAyNTMtLjgwMDg1LTMuNjM4ODctMS4xMjgyLTMuMjczNTMtLjkwODk5LTYuNjU1MjEtMS41Mjg2Mi0xMC4xMDk5NS0xLjg1MzA1djExMi4zNTgwNWMzLjQ1NDc0LS4yODkzNSA2LjgzNjQyLS45MDg5OSAxMC4xMDk5NS0xLjgxNzk3IDEuMzQ3NC0uMzYyNDMgMi42OTQ4MS0uODAwODUgMy45NjYyMy0xLjI3MTQyIDQuODAyMTUtMS43MDk4NCA2LjE0NjY0LTQuMjU4NTEgNi4xNDY2NC05Ljk2Njczdi04Ni4yMDc4MWMwLTQuODM3MjMtMS44MTc5OC04LjQ3NjEtNi40NzQtMTAuMTEyODciIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im00MjYuMzM0MzcgMzQyLjc0MDAyYy0uOTgyMDYgMS4zMDk0MS0xLjUyNTY5IDIuOTQ2MTctMi4xODA0IDQuNjk0MDFsMS4yNzE0MiAxLjY3MTg0IDkuNDkzMjMtNC4wMzkzMS0zLjg1NTE3LTQuMzI4NjZ6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTM4MS4zMDI4OSAyMDYuMDA4NzhjLjkwODk4IDAgMS42MzY3Ni41MTE1IDEuNjM2NzYgMS4yNzQzNSAwIC43Mjc3Ny0uNzI3NzggMS4yMzYzMy0xLjYzNjc2IDEuMjM2MzMtLjkwOSAwLTEuNjcxODUtLjUwODU2LTEuNjcxODUtMS4yMzYzMyAwLS43NjI4NS43NjI4NS0xLjI3NDM1IDEuNjcxODUtMS4yNzQzNW0tNDEuMTAzMjYgMTA5Ljk2MTM3YzIuMjIxMzItLjY5MjcgNC40NzQ4LTEuNDkzNTUgNi42NTgxMi0yLjMyOTQ3LjkwOS0uMzI3MzUgMS44NTU5OC0uNjg5NzggMi43NjQ5Ny0xLjA1NTEzIDEuNDE3NTYtLjU4MTYzIDIuODAwMDMtMS4xNjMyNyA0LjE4MjUyLTEuNzgyOSAxLjEyODItLjU0NjU3IDIuMjUzNDctMS4wNTIyMSAzLjM4MTY3LTEuNTk4NzcgMS4xNjYxOS0uNTgxNjQgMi4zMjk0Ny0xLjE2NjE5IDMuNDE5NjctMS43ODI5IDEuODE3OTgtLjk4MjA2IDMuNTI3ODItMi4wMDIxMiA1LjEyOTUtMy4wNTcyNSAxLjE5ODM1LS43OTc5MiAyLjMyNjU1LTEuNTk4NzcgMy4zODE2OC0yLjQzNzYxLTEuMzA5NDItMi43NjIwNC0yLjQ3MjY5LTUuNjM1MTQtMy4zODE2OC04LjU4MTMyLS4xODEyMS0uNTg0NTYtLjM2NTM1LTEuMjAxMjctLjUxMTQ4LTEuNzgyOWwtMjQuOTg2OTcgOS44OTM2NS0uMDM4LS4wMzUxLTE0LjE0OTI0LTE0LjM2ODQ2di0yOC45OTExOWwxNC40NzY1OS0xMC43Mjk1OSAyMy41MzQzNSAxNS4wMjMxN2MuNDM4NDItMi4yMTg0IDEuMDIwMDUtNC40MDE3MyAxLjY3NDc2LTYuNTQ5OTkgMy4wNTQzMS05LjgyMDU4IDguNDczMTgtMTguNTg2MDQgMTUuNTY2OC0yNS43MTQ3My4wMzgtLjAzNTEuMDczLS4wNzMxLjExMTA3LS4xMTEwNyAyLjMyNjU0LTIuMzYxNjIgNC44NzIyOS00LjUwOTg4IDcuNTI5MTItNi40NzM5OWw1LjUyNjk5LTguODM4NTMuMjE5MjEtMTEuMjc2MTQtMTcuNDk1ODQtMjIuODA2NTctMTEuNzQ5NjMtLjE0NjEzLTEyLjgwMTg0IDEyLjAzODk4djI4LjczNjkxbDE1LjE2NjM4LjY1NDcxLjQwMDQyLTIxLjc1MTQzIDE4LjMzMTc3LjgwMDg0IDMuNzg1MDEgMTEuNjc2NTdjLjI4OTM2Ljc5NzkyLjU0MzY0IDEuNjM2NzYtMS4wOTMxMiAyLjE0NTMzLTEuNjM2NzcuNTQ2NTYtMS44OTEwNS0uMjkyMjgtMi4xNDUzMy0xLjA5MDJsLTMuMDkyMzItOS4zODUxLTEyLjQwNDM0LS41ODE2My0uMzk3NSAyMS43ODY1LTI3Ljk3NDA2LTEuMDU1MTIuMDM4IDYuMDc2NDkgMTUuNDU4NjYgOC45MTE2Yy43NjI4NS4zOTc1IDEuNDkwNjMuODM1OTIuNjU0NzEgMi4zMjY1NC0uODAwODUgMS4zODI0OC0xLjQ5MDYzIDEuMTI4Mi0yLjE4MzMzLjcyNzc4LS4wNzMxLS4wMzgtLjEwODE0LS4wNzMxLS4xODEyMi0uMDczMWwtMTUuMzEyNTEtOC44MDA1My0yNC4zMDAxMSAyMC4zNjg5NSAzLjg5MzE2IDQ4LjA4NTgyIDExLjQyMjI4IDE2LjExMzM2YzEuOTk5MTktLjUwODU3IDQuMDAxMy0xLjA5MDIgNi4wNzM1Ni0xLjcwOTgzLjQ3MzUtLjE4MTIyLjk0NDA2LS4zMjczNiAxLjQxNzU2LS40NzA1OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyNCIgZD0ibTMzNy43MjY5NSAzNzAuODIyMjJoNS43NDYyMWwtNy40MTgwNS0xMi45ODU5N2MuMTQzMjIgMy42NzM5NS41NDM2NCA3LjYzNzI2IDEuMzA5NDEgMTEuMzExMjEuMTA4MTQuNTgxNjQuMjU0MjkgMS4xMjgyLjM2MjQzIDEuNjc0NzYiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjYiIGQ9Im0zMzQuMDE3OTIgMzY5Ljg0MDE2Yy0xLjEyODItNS41Mjk5Mi0xLjUyODYyLTExLjU2ODQxLTEuNDIwNDctMTYuNTg2ODVsLTguOTg0NjctNS4wNTY0NGMtMS4xMjUyOC0uNjE5NjItMi4xNDUzNC0uOTQ0MDYtMi45ODEyNi0uOTQ0MDYtLjYxOTYyLS4wMzgtMS4xMjgxOS4xMDgxNC0xLjUyODYyLjM2MjQzLS40MzU0OS4yNTQyOC0uODM1OTIuNjg5NzgtMS4xNjMyNyAxLjIzNjM0LS41ODE2NCAxLjAxNzE0LS45MDg5OSAyLjQ3MjY5LS45NDY5OCA0LjI5MzU4LS4xMDgxNSA0LjA3MTQ2IDIuMTEwMjUgMTEuMjM4MTUgNC4zNjY2NSAxOC42MjExMy41MDg1NiAxLjcwOTgzIDEuMDE3MTMgMy4zODQ1OSAxLjEyODIgMy42Mzg4Ny40MzU0OSAxLjQ5MDYzIDEuMDkwMiAzLjc0NDExIDIuMjkxNDcgNS44MTkyOSAxLjE2MzI3IDEuOTY0MTIgMi44NzMxIDMuODU1MTYgNS41NjUgNC44MzcyMi40NzM0OS4xODQxNCAxLjIzNjM0LjE4NDE0IDIuMTgzMzMuMDM1MSAxLjQ5MDYyLS4yMTYzIDMuMjM1NTMtLjc2Mjg2IDQuNjkxMDgtMS40OTA2M2gtLjAzOGMuODAwODUtLjQwMDQzIDEuNDU1NTUtLjgzNTkyIDEuODkzOTctMS4yMzYzNS4xNDMyMS0uMTA4MTQuMjU0MjgtLjI1NDI4LjM2MjQyLS4zNjI0Mi0uMTA4MTQtLjE4NDEzLS4yNTQyOC0uMzI3MzUtLjM2MjQyLS40NzM0OS0yLjQzNzYxLTMuMTY1MzktNC4wNzQzNy03Ljc0ODMzLTUuMDU2NDMtMTIuNjkzNyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyOCIgZD0ibTM2Ni44MjYyOCAzNTcuMzI0NzZjLTIuNjE4ODIgMS43NDc4My01LjA1NjQzIDMuNDkyNzQtNy4zNDc5IDUuMjc1NjQtMS40MTc1NSAxLjEyODItMi43NjQ5NiAyLjIxODQxLTQuMDAxMzEgMy4zNDY2MSAxLjM4MjQ5IDIuMjkxNDcgMi43Mjk5IDQuNzY0MTUgNC4wMDEzMSA3LjIzNjgzLjQzODQyLjg3MzkyLjgzNTkyIDEuNzA5ODQgMS4yMzYzNCAyLjU4Mzc1IDEuODU1OTggMy45MjgyNCAzLjQxOTY4IDcuODIxNCA0LjU0Nzg3IDExLjI3NjE0IDEuMDU1MTMgMy4zMTE1MyAxLjU2MzY5IDYuMDAwNSAxLjYzNjc3IDguNjk1MzEuMDczIDEuNzA2OTEtLjAzNTEgMy4zODE2OC0uMjE5MjEgNS4yMzc2NSAyLjAzNzE5LjkwODk5IDQuNjU2MDEgMS40NTI2MyA3LjI3NDgzIDEuNzA2OTEgNC4yOTM1OS40Mzg0MiA4LjQ0MTAzLS4wMzUxIDEwLjE0Nzk1LTEuNDE3NTVsNy45MzI0Ni02LjQzODkyLjA3MDEtNTIuMDE0MDRjLTkuMzQ3MSA0LjgzNzIyLTE3LjkzMTM1IDkuNjA0My0yNS4yNzkyNSAxNC41MTE2NyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTM1Mi44OTYyNSAzNjguMzExNTRjLS44Mzg4NC44MDA4NS0xLjYzOTY5IDEuNjM2NzctMi40Mzc2MSAyLjUxMDY4bDMuODU1MTctLjAzOGMtLjQ3MzUtLjgzNTkyLS45NDY5OS0xLjY3MTgzLTEuNDE3NTYtMi40NzI2OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMiIgZD0ibTM2MS45ODkwNiAzODguMDk4ODZjLS4xNDYxMy0uNDM1NDktLjI1NDI4LS44MzU5Mi0uNDAwNDItMS4yNzE0MWwtOS4xMzA4MS43OTc5MS41NDY1NyAyLjQzNzYyIDEwLjQwMjIyIDguODM4NTNjLjA3MzEtMS4wNTUxMy4xMTEwNy0yLjAzNzE5LjA3MzEtMy4wMTkyNS0uMTA4MTUtMi40Mzc2MS0uNTQ2NTYtNC44MDIxNS0xLjQ5MDYzLTcuNzgzNCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTMzOC43MDkwMSAzNzQuMjc2OTdjLjEwODE0LjMyNzM1LjIxOTIxLjY5MjcuMzY1MzUgMS4wMTcxMy44NzA5OSAyLjM2NDU0IDEuOTY0MTEgNC40MDE3MyAzLjMwODYgNS44NTcyOGwuMDM1MS0uMDM1MSA0LjIyMDUxIDMuNTYyODggMS41NjM3LS4xNDYxNC0yLjA3MjI2LTEwLjI1NjA5em0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMzYiIGQ9Im0zNjAuMzUyMyAzODMuNDgwODRjLS4yOTIyOC0uNjkyNy0uNTgxNjQtMS4zODI0Ny0uODczOTItMi4xMTAyNS0uNTgxNjMtMS4zNDc0MS0xLjIwMTI3LTIuNzY0OTYtMS44NTU5Ny00LjE0NzQ1LS40MzU1LS45NDY5OC0uOTA4OTktMS44OTEwNC0xLjQxNzU2LTIuODczMWgtNi41NDcwNmwxLjk5OTE5IDkuODkzNjUgNy44MjE0LS42ODk3N3ptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDM4IiBkPSJtMzUzLjgwNTI0IDMyMy42MDc0MWMuMTgxMjEtLjEwODE1LjM2MjQyLS4xODEyMi41NDM2NC0uMjU0MjhsLS41NDM2NC0uOTA5LTMuNzExOTUtNi4zNjU4NGMtMS4wOTAyLjQzNTUtMi4xNDUzMy44MzU5Mi0zLjIzNTU0IDEuMjM2MzQtLjIxOTIxLjA3MzEtLjQzODQyLjE0NjE0LS42NTQ3LjI1NDI5bC42NTQ3IDEuMTYzMjcgMy41NjI4OSA2LjMzMDc3YzEuMTY2MTktLjQ3MzQ5IDIuMjkxNDctLjk4MjA2IDMuMzg0Ni0xLjQ1NTU1IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtNDQ3LjQ2OTEgMzYxLjc2NDQ4Yy4xNDMyMS0uNTgxNjMuMjkyMjgtMS4xNjYxOS40MzU1LTEuNjcxODNsLS40MzU1LS41MTE0OS0xLjM4MjQ4LTEuNzA5ODQtMS43NDc4My43Mjc3OC0yLjM2NDU0Ljk0Njk4LTQuOTgzMzcgMi4wNzIyNi0uMzYyNDMuMTQ2MTQuMzYyNDMuNDAwNDMgNC45ODMzNyA1LjYzODA3IDEuNjc0NzYgMS44OTEwNS42ODk3OC0uNDAwNDMgMS42MDE2OS0uODczOTFjLjM2MjQyLTEuOTk5MTkuOTgyMDYtNC40NzE4OCAxLjUyODYyLTYuNjU1MjEiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDIiIGQ9Im00MjYuMDQyMSAzNjYuMjM5MjhsNy42NzgxOCA4LjgwMDU0IDYuODM2NDEtMy42NzM5NS03LjIzNjg0LTguMTgzODN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NCIgZD0ibTQzNy44NjQ4IDM0My43NTcxNWw5LjYwNDMtNC4xNDQ1MiA5Ljc0NzUyLTQuMTg1NDQuMDM1MS4wNzYgNy42MDIxOS00LjIyMDUyLTMuOTI4MjMtNC4xNDc0NGMtNC4xODI1MiAyLjc2NDk3LTguNjU3MzIgNS4wNTY0NC0xMy40NTY1NCA2LjgwMTM0LTEuMDIwMDcuMzY1MzUtMi4wNzUxOS43MzA3LTMuMTMwMzIgMS4wNTUxMy0uNzYyODUuMjE5MjEtMS41NjM2OS40MzU1LTIuMzY0NTQuNjU0Ny0uMTA4MTUuMDM4LS4yMTYyOS4wNzMxLS4zMjQ0My4wNzMxbC03LjY3NTI2IDMuNTMwNzN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NiIgZD0ibTQ0My43MjIwNyAzNTUuMTQ0MzZsLTYuMzMwNzYtNy4yMzk3Ni05LjU2MzM4IDMuODkzMTYgNi40MDA5MSA3LjIzNjg0LjIxOTIxLS4wNzMxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDgiIGQ9Im00NDAuNTIxNjIgMzgyLjUzMzg2Yy40NzM0OS0uMjkyMjggMy4wNTQzMi0xLjg1NTk3IDMuODIwMDktMi4zNjQ1NC4xNDYxNC0uMTA4MTQuMzI0NDMtLjIxOTIxLjQ3MDU3LS4yOTIyOCAwLS4xMDgxNS4wMzUxLS4yMTYyOS4wMzUxLS4yODkzNS4xMTEwNy0xLjAyMDA2LjIxOTIxLTIuMDM3MTkuMzMwMjgtMy4wMTkyNWwtMi4yOTE0Ny0yLjU4Mzc1LTYuNzY2MjcgMy42Mzg4OHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUwIiBkPSJtMzQyLjg5MTUyIDMxOC42OTcxMWMtLjg3MDk5LjI5MjI5LTEuNzgyOS41ODE2NC0yLjY5MTg5Ljg3MzkyLS4xODEyMS4wNzMxLS4zNjI0Mi4xMDgxNC0uNTQzNjQuMTgxMjFsLjU0MzY0Ljk0NDA3IDMuODU4MDkgNi44MDQyNmMuOTQ0MDYtLjMyNzM1IDEuODkxMDUtLjY5MjcxIDIuODAwMDMtMS4wNTUxMy4xMDgxNS0uMDM4LjI1NDI5LS4wNzMxLjM2MjQ0LS4xMDgxNGwtLjM2MjQ0LS42MTk2NHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNDU0LjcwNTk0IDM0MC4yMzIyNmwtMTQuNDc2NjEgNi4yNTQ3OCA2LjMyNzg2IDcuMjM2ODQgMy44OTMxNi0xLjY3MTg0YzEuMjM5MjYtMy45MjgyMyAyLjY1NjgyLTcuODU2NDcgNC4yNTU1OS0xMS44MTk3OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg1NCIgZD0ibTQzMC45OTAzOSAzNzYuNDk1MzZsLTcuODkxNTUtOC44NzM1OS0uMjkyMjguMTA4MTRjLjI1NDI4IDEuMzQ0NDkuNTgxNjQgMi42OTE4OS45ODIwNiA0LjA3NDM3LjY1NDcxIDIuMjkxNDcgMS41Mjg2MiA0LjY5MTA4IDIuNjE4ODMgNy4xNjM3N2wuMjkyMjctLjE4MTIxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNTYiIGQ9Im00MzAuOTIwMjQgMzYwLjQ5MDE1bC02LjQwMzg1LTcuMjM2ODQtMi4xNDgyNS44MDA4NWMtLjM5NzUgMy4zMDg2LS41NDM2NCA2Ljg3NDQxLS4xNDMyMiAxMC4xODMwMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDU4IiBkPSJtNDM2LjU1NTM5IDM4NC43NTIyNmMuMTQ2MTQtLjA3MzEuMjkyMjctLjE0NjE0LjQzODQyLS4yNTQyOC4yODkzNS0uMTQ2MTQuNTgxNjMtLjI5MjI4Ljg3MDk5LS40NzM1bC00LjQwMTczLTQuOTgzMzYtNS41NjIwOCAyLjk4NDE4Yy4xODEyMi40MzU0OS40MzU1LjgzNTkyLjY1MTc5IDEuMjcxNDEuNjE5NjMgMS4xNjMyOCAxLjMwOTQxIDIuMzI5NDcgMi4wNzUxOCAzLjQ5Mjc0LjEwODE0LjIxOTIxLjIxNjI5LjQzODQxLjI5MjI4LjY1NDcxIDEuMDkwMi0uNDM1NSAyLjI4ODU1LS45ODIwNiAzLjUyNzgxLTEuNjAxNy42ODk3OC0uMzYyNDIgMS4zNzk1Ni0uNzI3NzcgMi4xMDczNC0xLjA5MDIiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNjAiIGQ9Im00NDEuOTc0MjUgMzg5LjI2MjEzYy0uNDcwNTctLjk4MjA2LS45NDQwNi0xLjg5MTA1LTEuNDE3NTYtMi44MDAwMy0uODAwODUuNDczNDktMS41OTg3Ni45MDg5OC0yLjM5OTYyIDEuMzA5NDEtLjQwMDQxLjIxOTIxLS43NjU3Ni40Mzg0MS0xLjE2MzI2LjYxOTYzLS44NzM5Mi40MzU0OS0xLjcwOTg0Ljg3MDk5LTIuNTQ4NjggMS4yMzYzNS0xLjEyNTI4LjU0MzYzLTIuMTgwNDEuOTgyMDUtMy4xMjczOSAxLjM3OTU1LS4wMzUxLjUxMTQ5LS4wMzUxIDEuMDU1MTMtLjA3MzEgMS42MDE2OS0uMDczIDEuNDU1NTUtLjE0MzIxIDMuMDU3MjUtLjAzNTEgNC4zMjg2Ni4xODEyIDEuNzA5ODMuNjU0NyAyLjQ3NTYxIDEuMzgyNDcgMi42NTY4Mi41MDg1Ny4xMDgxNCAxLjEyODIxLjA3MyAxLjg1MzA2LS4wMzguNzY1NzctLjEwODE0IDEuNjAxNjktLjMyNzM1IDIuNTQ4NjgtLjYxNjcxLjE4MTItLjAzOC4zNjI0Mi0uMTExMDcuNTQzNjMtLjE0NjE0IDEuMzQ3NDEtLjQwMDQyIDIuODM4MDQtLjk0NDA2IDQuNDM2ODEtMS41Mjg2Mi43NjU3Ni0uMjg5MzYgMS41NjY2MS0uNjE5NjQgMi4zNjQ1My0uOTQ0MDYuMTExMDctLjAzOC4yMTkyMS0uMTExMDcuMzMwMjgtLjE0NjE0LS4xMTEwNy0uMzI3MzUtLjIxOTIxLS42NTQ3MS0uMzMwMjgtMS4wMjAwNi0uNjg5NzctMi4wMzcxOS0xLjQ5MDYyLTQuMDM2MzgtMi4zNjQ1My01Ljg5MjM2IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDYyIiBkPSJtNDYzLjQ3NDMyIDM4MS4wNzgzMWMtLjUxMTQ5LS4yMTYyOS0xLjIzNjM0LS4yODkzNS0yLjI5NDQtLjI1NDI4LTEuODE1MDUuMDczMS00LjIxNzU4LjYxNjcxLTYuNDczOTggMS4xMjgxOS0yLjgwMDA0LjY1NDcxLTUuNDkxOTMgMS4yNzE0Mi03LjIzNjg0IDEuMDU1MTMtLjEwODE1LS4wMzgtLjIxOTIxLS4wMzgtLjMyNzM1LS4wNzMxLS4xODEyMi0uMDM4LS4zNjI0My0uMDczLS41NDY1Ni0uMTQ2MTQtLjcyNzc4LjQ3MzQ5LTEuNDkzNTYuOTgyMDYtMi4yNTM0OCAxLjQ1NTU1LS4yNTQyOS4xNDYxNS0uNTQ2NTYuMzI3MzYtLjgzODg1LjUwODU3LjI5MjI5LjQ3MzQ5LjU4NDU2IDEuMDE3MTQuODM4ODUgMS41NjM2OSAxLjE2MzI3IDIuMjU2NCAyLjI1MzQ4IDQuODAyMTUgMy4xMjczOSA3LjQyMDk4LjE0NjE0LjM2MjQzLjI1NDI4LjcyNzc4LjM2MjQzIDEuMDkzMTMgMS4zMDk0MS0uNTg0NTYgMi41ODM3NS0xLjE2NjIgMy44NTgwOC0xLjc0Nzg0IDUuMzEwNzItMi41NDU3NSA5LjcwOTUyLTQuOTQ1MzYgMTAuMjU2MDktNS42NzMxNC45ODIwNi0xLjMwOTQxIDEuODE3OTgtMi44MDI5NiAyLjE0NTMzLTQuMTEyMzcuMTQ2MTQtLjYxNjcxLjIxOTIxLTEuMTk4MzQuMDczMS0xLjU5ODc3LS4wNzMxLS4yNTcyLS4yOTIyOC0uNDczNDktLjY4OTc4LS42MTk2MyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg2NCIgZD0ibTQyNi42OTY4IDMzOC43NzY3MWwxLjg1NTk4LS44MzU5Mi42OTI3LS4zMzAyOGMtLjIxOTIxLjAzOC0uNDczNS4wMzgtLjY5MjcuMDM4LS42MTY3MS4wMzUxLTEuMjM2MzUuMDM1MS0xLjg1NTk4LjA3M2gtLjY4OTc4Yy0xNy40NjA3NyAwLTMzLjI4MTg2LTcuMTY2NjktNDQuNzA0MTMtMTguNjYyMDQtMS42MzY3Ny0xLjYzNjc2LTMuMjAwNDctMy4zODE2OC00LjYxODAyLTUuMTk5NjUtMi41ODM3NSAyLjM2NDU0LTYuNzMxMTkgNC45ODMzNi0xMC45NDg3OSA3LjQxODA1LTEuMDkzMTIuNjE5NjMtMi4xODMzMiAxLjIzOTI3LTMuMjczNTMgMS44NTU5OC0uNjE5NjIuMzI3MzUtMS4yMzYzNC42NTQ3LTEuODU1OTcuOTgyMDYtMS4xMjgyLjU4MTYzLTIuMjU2MzkgMS4xNjYxOS0zLjQxOTY3IDEuNzA5ODMtMS4xMjgyLjUxMTQ5LTIuMjUzNDcgMS4wMjAwNi0zLjM4MTY3IDEuNTI4NjItLjk0Njk5LjQwMDQyLTEuOTI5MDUuODM1OTItMi45MTExMSAxLjIwMTI3LTEuMzQ0NDguNTQzNjMtMi42OTE4OSAxLjA1NTEzLTQuMDM2MzggMS41NjM3LTIuMjE4MzkuODAwODQtNC40Mzk3MiAxLjU2MzY5LTYuNjU4MTIgMi4yNTM0Ni0uNDAwNDIuMTExMDctLjc2Mjg1LjI1NDI5LTEuMTYzMjcuMzY1MzZsLTIuMjU2NCAxOS40OTUwMyAxMC4wMzk4IDE3LjUzMzg1LjAzOC0uMDM4YzIuMDM3MTktMi4zNjQ1NSA0LjM2MzczLTQuNjU2MDIgNi45NDc0OC02LjkwOTQ5IDEuMDkwMjEtLjkwODk5IDIuMjE4NC0xLjg1NTk4IDMuMzgxNjgtMi43NjQ5NiAxLjA5MzEyLS44NzM5MiAyLjI1NjM5LTEuNzA5ODQgMy40MTk2Ni0yLjU4Mzc2IDEuNDE3NTYtMS4wMTcxMiAyLjgzODA0LTEuOTk5MTggNC4zMjg2Ni0yLjk4MTI0LjI1NDI4LS4xODEyMi41NDY1Ny0uMzY1MzUuODAwODUtLjU0NjU3IDQuNzY0MTUtMy4xMjczOSAxMC4wMDE4LTYuMjE5NyAxNS41NjY4LTkuMjc0MDIgMy43NDcwMi0yLjA3NTE5IDcuNjc1MjYtNC4xMDk0NSAxMS43NDk2My02LjE4NDY0bDIuNDcyNjktMS4yNzQzM3Y1LjYwMjk5YzUuMjc1NjQtMS4zNDQ0OSA5Ljg1ODU4LTIuMzI5NDYgMTQuMzMwNDUtMi45MTExIDQuOTEzMjItLjYxNjcxIDkuNjM5MzgtLjcyNzc3IDE0Ljg0MTk1LS4xODEyMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY2IiBkPSJtMzY1LjczNjA4IDMxNy4yMDY0OWMzLjM0NjYxLTEuOTY3MDQgNi4zNjU4NS0zLjYzODg4IDguNzY1NDYtNS45NjU0Mi0xLjIwMTI2LTEuNjc0NzYtMi43NjQ5Ni00LjQzOTczLTMuNzgyMDktNi4yMTk3MS0xLjUyODYyIDEuMTYzMjctMy4yMDA0NiAyLjI4ODU1LTQuOTgzMzcgMy4zODE2Ny0xLjYzNjc2IDEuMDE3MTMtMy4zNDY2IDEuOTY0MTItNS4xMjk1IDIuOTA4MTktLjE0NjE0LjA3Ni0uMjg5MzYuMTQ2MTMtLjQzNTUuMjE5MjFsLjQzNTUuNzY1NzYgMy40MTk2NyA1Ljk2MjVjLjU4MTY0LS4zNjI0MiAxLjEyODItLjcyNDg1IDEuNzA5ODMtMS4wNTIyIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY4IiBkPSJtMzU3LjQ0MTE5IDMyMS44NjI1YzEuMDkzMTMtLjUxMTQ5IDIuMTQ1MzMtMS4wOTMxMyAzLjE2NTM5LTEuNjM2NzYuMTQ2MTQtLjA3MzEuMjkyMjgtLjE4NDE0LjQzNTQ5LS4yNTQyOGwtLjQzNTQ5LS43NjU3OC0zLjQxOTY3LTYuMDM4NDktLjA3MzEtLjEwODE1Yy0xLjA5MDIuNTA4NTctMi4xODA0Ljk4MjA2LTMuMzA4NiAxLjQ5MDYzLS4xODEyMi4wNzMxLS4zNjUzNS4xNDYxNC0uNTA4NTcuMjE5MjFsLjUwODU3LjkwODk4IDMuMzgxNjcgNS43NDYyMnptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDcwIiBkPSJtMzUyLjE2ODQ3IDI4MC43MjEyNWwxMi4wNzY5OSA2Ljk4NTQ4Yy0uOTExOTItNC4yMjA1Mi0xLjM4NTQxLTguNjIyMjUtMS4zODU0MS0xMy4xMzIxMiAwLTIuODczMS4yMTkyMS01Ljc0NjIxLjU4NDU2LTguNTExMTdsLTIyLjgwNjU2LTE0LjU0OTY3LTExLjE2OCA4LjI1Njg5djI1LjcxNzY3bDExLjYwMzQ5IDExLjkyNzkyIDE5LjUzMzA0LTcuNzQ1NDEuMTQ2MTQtLjAzOC0uMTQ2MTQtLjA3MzEtMTAuMTQ3OTQtNS44OTIzNWMtMi44MDAwNC0xLjU5ODc2LTEuMDkwMi00LjU4Mjk0IDEuNzA5ODMtMi45NDYxOCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg3MiIgZD0ibTMzOC43ODIwNyAzMjkuMjQ1NDhjLjQ3MzUtLjE0NjE1Ljk0Njk5LS4zMjczNSAxLjQxNzU2LS40NzM1LjE4NDE0LS4wMzUxLjM2NTM1LS4xMDgxNC41NDY1Ni0uMTgxMjFsLS41NDY1Ni0uOTQ2OTgtMS40MTc1Ni0yLjUwNzc2LTIuNTEwNjgtNC40MDE3M2MtLjUwODU2LjE0NjE0LTEuMDE3MTMuMjkyMjgtMS40OTA2Mi40MDA0MnYuMDM1MWwzLjQxOTY3IDguMjIxODJjLjIxOTIxLS4wMzguNDAwNDMtLjEwODE0LjU4MTYzLS4xNDYxMyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgPC9nPg0KPC9zdmc+" alt="" />
+      </div>
+      <div class="hero-inner">
+        <div class="hero-crest">
+          <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIGlkPSJzdmc3NSIgaGVpZ2h0PSIzNTYuNDg4OTgiIHZpZXdCb3g9IjAgMCAyMDEuNzUwMDEgMjY3LjM2Njc0IiB3aWR0aD0iMjY5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgPGcgaWQ9InN1cmZhY2U0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI5OS4xMjUgLTE2Ni4zMTY2MykiPg0KICAgICAgPHBhdGggaWQ9InBhdGgyIiBkPSJtMzAwLjYyNSAxNjcuODE2NjNoMTk4Ljc1djE2NC45OTQ2NmMwIDU0LjcwNTkzLTQ0LjY2OTA2IDk5LjM3MjA4LTk5LjM3NSA5OS4zNzIwOC01NC43MDU5NCAwLTk5LjM3NS00NC42NjYxNS05OS4zNzUtOTkuMzcyMDh6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0IiBkPSJtMzA0LjYyNjMxIDE3MS44NTMwMXYxNjAuOTU4MjhjMCA1Mi41MjI2IDQyLjg0ODE2IDk1LjM3MDc3IDk1LjM3MzY5IDk1LjM3MDc3IDUyLjUyNTUzIDAgOTUuMzczNjktNDIuODQ4MTcgOTUuMzczNjktOTUuMzcwNzd2LTE2MC45NTgyOHptMCAwIiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDYiIGQ9Im00MjYuMDA3MDIgMjE0Ljg4NTMxYy0xNi40NzU3OSAwLTMxLjM1MjgxIDYuNjkwMjgtNDIuMTU4MzggMTcuNDk1ODUtMTAuODM3NzIgMTAuODM3NzItMTcuNTMwOTIgMjUuNzUyNzMtMTcuNTMwOTIgNDIuMTkzNDUgMCAzMi44ODQzNiAyNi44MDc4NyA1OS42OTIyMiA1OS42ODkzIDU5LjY5MjIyIDMyLjg4MTQzIDAgNTkuNjg5My0yNi44MDc4NiA1OS42ODkzLTU5LjY5MjIyIDAtMTYuNDQwNzItNi42OTMxOS0zMS4zNTU3My0xNy40OTI5Mi00Mi4xOTM0NS0xMC44NDA2NC0xMC44MDU1Ny0yNS43NTU2Ni0xNy40OTU4NS00Mi4xOTYzOC0xNy40OTU4NSIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMzk2LjYxODMzIDMyMi42NjA0M2MtMi4yOTQ0LTEuNDE3NTctNC41MTI4LTIuOTgxMjYtNi41ODUwNi00LjcyNjE3di0zOC40NDkzNWgtNy4zNDc5MXYzMS4xMzY1MmMtMi41MTA2Ny0zLjAxOTI0LTQuNzI5MDgtNi4yOTI3Ny02LjU4MjEyLTkuODIwNTl2LTUyLjQ1MjQ2YzEuODUzMDQtMy41Mjc4MSA0LjA3MTQ1LTYuODAxMzQgNi41ODIxMi05LjgyMDU5djM0LjMzNjk5aDcuMzQ3OTF2LTQxLjY4NDg5YzIuMDcyMjYtMS43MDk4NCA0LjI5MDY2LTMuMjczNTMgNi41ODUwNi00LjY5MTA4em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTAiIGQ9Im00MTguMTE1NDggMzE5Ljg5ODM4YzAgMS40NTI2My0uMTQ2MTUgMy43NDcwMi0zLjg5MzE3IDMuMjAwNDYtLjExMTA2IDAtLjIxNjI4LS4wMzgtLjMyNzM1LS4wMzgtLjU0MzY0LS4xMDgxNC0xLjA5MzEzLS4zMjczNS0xLjYzNjc2LS40NzA1Ny0xLjkyNjEzLS41MDg1Ni0yLjU0NTc1LTEuOTI5MDQtMi41NDU3NS00LjE0NzQ0di03NS40NDAyM2MwLTIuMjE4NC42MTk2Mi0zLjYzODg4IDIuNTQ1NzUtNC4xODI1Mi41NDM2My0uMTQ2MTQgMS4wOTMxMi0uMzI3MzUgMS42MzY3Ni0uNDM4NDEuMTExMDctLjAzNTEuMjE2MjktLjAzNTEuMzI3MzUtLjA3MzEgMy43NDcwMi0uNTQzNjMgMy44OTMxNyAxLjc0Nzg0IDMuODkzMTcgMy4yMDA0NnptLS4xNDYxNS04OC44NjQ2M2MtMS4zODI0Ny4xODEyMS0yLjcyOTg4LjQzODQyLTQuMDc0MzcuNzI3NzctMS41OTg3Ny4zNjI0My0zLjE2MjQ2Ljc2Mjg1LTQuNzI5MDggMS4yMzYzNC01LjQ5MTkyIDEuNzA5ODQtNi4wMzg0OSA1LjY3NjA3LTYuMDM4NDkgOS40NTgxN3Y3Ni40OTUzNmMwIDMuNzgyMS41NDY1NyA3Ljc0ODMzIDYuMDM4NDkgOS40NTgxNyAxLjU2NjYyLjQ3MzQ5IDMuMTMwMzEuOTA4OTkgNC43MjkwOCAxLjIzNjM0IDEuMzQ0NDkuMzI3MzUgMi42OTE5LjU0NjU2IDQuMDc0MzcuNzYyODUgMi41ODM3Ni4zMjczNSA2LjcyODI4LS44MDA4NSA2LjcyODI4LTYuNjIwMTN2LTg2LjE2OTgxYzAtNS44MTkyOS00LjE0NDUyLTYuOTQ3NDktNi43MjgyOC02LjU4NTA2IiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtNDI0LjY5NzYxIDIyNC42MzI4M2MtMi4yNTYzOS4wMzgtNC40MzY4LjI1NDI4LTYuNTg1MDYuNTgxNjR2LTYuNTExOTljMi4xNDgyNi0uMjg5MzUgNC4zMjg2Ny0uNDcwNTcgNi41ODUwNi0uNTA4NTZ6bTAgMCIgZmlsbD0iI2ZmZiIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgxNCIgZD0ibTQxMC45ODM4NiAyMjYuOTI0M2MtMi41MDc3Ni44MzU5Mi00LjcyNjE2IDEuNzQ0OTEtNi41ODIxMyAyLjQ3MjY4di02LjgwMTM0YzIuMTgwNC0uODM1OTIgNC4xNDQ1Mi0xLjcwOTg0IDYuNTgyMTMtMi4yMTg0em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTYiIGQ9Im00NjkuNDc0ODIgMjk0LjgzNTQzYzAgMi41MTA2Ny0uMjE2MjkgNC45ODMzNS0xLjkyNjEzIDcuMzgyOTctLjQzODQxLjY1NDctLjg3MzkxIDEuMjc0MzQtMS4zMDk0MSAxLjg5MTA1LTEuMDU1MTIgMS4zODI0OC0yLjExMDI1IDIuNzI5ODgtMy4yNzM1MyA0LjAwMTN2LTY3LjExMDI3YzEuMTYzMjggMS4zMDk0MSAyLjI1MzQ4IDIuNjU2ODIgMy4yNzM1MyA0LjAzOTMuNTQzNjUuNzYyODUgMS4wOTAyIDEuNTI1NyAxLjU5ODc3IDIuMjkxNDcgMS40MjA0OCAyLjEwNzMzIDEuNjM2NzcgMy4zMDg2IDEuNjM2NzcgNi4wMzU1N3ptNi41ODUwNS0xLjAxNzE0di00MC41OTQ2OWMwLTMuMjM4NDUtLjQzODQxLTUuNjM4MDctMS45NjQxMi04LjA3NTY3LTIuMjU2MzktMy42MDA4OS00LjkxMzIxLTYuOTgyNTctNy44NTY0Ny0xMC4wMDE4MS0yLjk4NDE3LTMuMDU3MjQtNi4yOTI3Ny01Ljc0OTE0LTkuODU4NTgtOC4wNDA2MXY5NC45MzgyMWMzLjU2NTgxLTIuMjkxNDggNi44NzQ0MS00Ljk4MzM3IDkuODU4NTgtOC4wMDI2MiAyLjM2NDU0LTIuNDM3NjEgNC41MDY5NS01LjA1NjQzIDYuNDM2LTcuODU2NDcgMi41NDg2OC0zLjc0NzAyIDMuMzg0NTktNi45ODU0NyAzLjQxOTY3LTExLjAyMTg1di0uNDczNWMwLS4yODkzNiAwLS41ODE2My0uMDM1MS0uODcwOTkiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTgiIGQ9Im00NDQuNTkzMDcgMzE2LjczM2MwIDMuMjAwNDUtLjY4OTc4IDQuNTQ0OTQtMy4xMjczOSA1LjM0NTc5LS4xNDYxNC4wMzgtLjI1NDI5LjA3MzEtLjQwMDQyLjExMTA2LTEuMTYzMjguMzYyNDMtMi4zMjY1NC42ODk3OC0zLjUyNzgxLjk4MjA2di05Ny4yMjk2N2MxLjIzOTI2LjMyNzM2IDIuMzY0NTMuNjE2NzEgMy41Mjc4MSAxLjAxNzEzLjE4NDE0LjAzOC4zNjUzNC4xMTEwNy41MTE0OS4xODQxNCAxLjk2NDEyLjY1NDcxIDIuOTQ2MTggMi42NTM5IDMuMDE2MzIgNC4yNTU1OXptLjExMTA2LTk1LjM3MzdjLTEuMjAxMjctLjQwMDQyLTIuNDAyNTMtLjgwMDg1LTMuNjM4ODctMS4xMjgyLTMuMjczNTMtLjkwODk5LTYuNjU1MjEtMS41Mjg2Mi0xMC4xMDk5NS0xLjg1MzA1djExMi4zNTgwNWMzLjQ1NDc0LS4yODkzNSA2LjgzNjQyLS45MDg5OSAxMC4xMDk5NS0xLjgxNzk3IDEuMzQ3NC0uMzYyNDMgMi42OTQ4MS0uODAwODUgMy45NjYyMy0xLjI3MTQyIDQuODAyMTUtMS43MDk4NCA2LjE0NjY0LTQuMjU4NTEgNi4xNDY2NC05Ljk2Njczdi04Ni4yMDc4MWMwLTQuODM3MjMtMS44MTc5OC04LjQ3NjEtNi40NzQtMTAuMTEyODciIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im00MjYuMzM0MzcgMzQyLjc0MDAyYy0uOTgyMDYgMS4zMDk0MS0xLjUyNTY5IDIuOTQ2MTctMi4xODA0IDQuNjk0MDFsMS4yNzE0MiAxLjY3MTg0IDkuNDkzMjMtNC4wMzkzMS0zLjg1NTE3LTQuMzI4NjZ6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTM4MS4zMDI4OSAyMDYuMDA4NzhjLjkwODk4IDAgMS42MzY3Ni41MTE1IDEuNjM2NzYgMS4yNzQzNSAwIC43Mjc3Ny0uNzI3NzggMS4yMzYzMy0xLjYzNjc2IDEuMjM2MzMtLjkwOSAwLTEuNjcxODUtLjUwODU2LTEuNjcxODUtMS4yMzYzMyAwLS43NjI4NS43NjI4NS0xLjI3NDM1IDEuNjcxODUtMS4yNzQzNW0tNDEuMTAzMjYgMTA5Ljk2MTM3YzIuMjIxMzItLjY5MjcgNC40NzQ4LTEuNDkzNTUgNi42NTgxMi0yLjMyOTQ3LjkwOS0uMzI3MzUgMS44NTU5OC0uNjg5NzggMi43NjQ5Ny0xLjA1NTEzIDEuNDE3NTYtLjU4MTYzIDIuODAwMDMtMS4xNjMyNyA0LjE4MjUyLTEuNzgyOSAxLjEyODItLjU0NjU3IDIuMjUzNDctMS4wNTIyMSAzLjM4MTY3LTEuNTk4NzcgMS4xNjYxOS0uNTgxNjQgMi4zMjk0Ny0xLjE2NjE5IDMuNDE5NjctMS43ODI5IDEuODE3OTgtLjk4MjA2IDMuNTI3ODItMi4wMDIxMiA1LjEyOTUtMy4wNTcyNSAxLjE5ODM1LS43OTc5MiAyLjMyNjU1LTEuNTk4NzcgMy4zODE2OC0yLjQzNzYxLTEuMzA5NDItMi43NjIwNC0yLjQ3MjY5LTUuNjM1MTQtMy4zODE2OC04LjU4MTMyLS4xODEyMS0uNTg0NTYtLjM2NTM1LTEuMjAxMjctLjUxMTQ4LTEuNzgyOWwtMjQuOTg2OTcgOS44OTM2NS0uMDM4LS4wMzUxLTE0LjE0OTI0LTE0LjM2ODQ2di0yOC45OTExOWwxNC40NzY1OS0xMC43Mjk1OSAyMy41MzQzNSAxNS4wMjMxN2MuNDM4NDItMi4yMTg0IDEuMDIwMDUtNC40MDE3MyAxLjY3NDc2LTYuNTQ5OTkgMy4wNTQzMS05LjgyMDU4IDguNDczMTgtMTguNTg2MDQgMTUuNTY2OC0yNS43MTQ3My4wMzgtLjAzNTEuMDczLS4wNzMxLjExMTA3LS4xMTEwNyAyLjMyNjU0LTIuMzYxNjIgNC44NzIyOS00LjUwOTg4IDcuNTI5MTItNi40NzM5OWw1LjUyNjk5LTguODM4NTMuMjE5MjEtMTEuMjc2MTQtMTcuNDk1ODQtMjIuODA2NTctMTEuNzQ5NjMtLjE0NjEzLTEyLjgwMTg0IDEyLjAzODk4djI4LjczNjkxbDE1LjE2NjM4LjY1NDcxLjQwMDQyLTIxLjc1MTQzIDE4LjMzMTc3LjgwMDg0IDMuNzg1MDEgMTEuNjc2NTdjLjI4OTM2Ljc5NzkyLjU0MzY0IDEuNjM2NzYtMS4wOTMxMiAyLjE0NTMzLTEuNjM2NzcuNTQ2NTYtMS44OTEwNS0uMjkyMjgtMi4xNDUzMy0xLjA5MDJsLTMuMDkyMzItOS4zODUxLTEyLjQwNDM0LS41ODE2My0uMzk3NSAyMS43ODY1LTI3Ljk3NDA2LTEuMDU1MTIuMDM4IDYuMDc2NDkgMTUuNDU4NjYgOC45MTE2Yy43NjI4NS4zOTc1IDEuNDkwNjMuODM1OTIuNjU0NzEgMi4zMjY1NC0uODAwODUgMS4zODI0OC0xLjQ5MDYzIDEuMTI4Mi0yLjE4MzMzLjcyNzc4LS4wNzMxLS4wMzgtLjEwODE0LS4wNzMxLS4xODEyMi0uMDczMWwtMTUuMzEyNTEtOC44MDA1My0yNC4zMDAxMSAyMC4zNjg5NSAzLjg5MzE2IDQ4LjA4NTgyIDExLjQyMjI4IDE2LjExMzM2YzEuOTk5MTktLjUwODU3IDQuMDAxMy0xLjA5MDIgNi4wNzM1Ni0xLjcwOTgzLjQ3MzUtLjE4MTIyLjk0NDA2LS4zMjczNiAxLjQxNzU2LS40NzA1OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyNCIgZD0ibTMzNy43MjY5NSAzNzAuODIyMjJoNS43NDYyMWwtNy40MTgwNS0xMi45ODU5N2MuMTQzMjIgMy42NzM5NS41NDM2NCA3LjYzNzI2IDEuMzA5NDEgMTEuMzExMjEuMTA4MTQuNTgxNjQuMjU0MjkgMS4xMjgyLjM2MjQzIDEuNjc0NzYiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjYiIGQ9Im0zMzQuMDE3OTIgMzY5Ljg0MDE2Yy0xLjEyODItNS41Mjk5Mi0xLjUyODYyLTExLjU2ODQxLTEuNDIwNDctMTYuNTg2ODVsLTguOTg0NjctNS4wNTY0NGMtMS4xMjUyOC0uNjE5NjItMi4xNDUzNC0uOTQ0MDYtMi45ODEyNi0uOTQ0MDYtLjYxOTYyLS4wMzgtMS4xMjgxOS4xMDgxNC0xLjUyODYyLjM2MjQzLS40MzU0OS4yNTQyOC0uODM1OTIuNjg5NzgtMS4xNjMyNyAxLjIzNjM0LS41ODE2NCAxLjAxNzE0LS45MDg5OSAyLjQ3MjY5LS45NDY5OCA0LjI5MzU4LS4xMDgxNSA0LjA3MTQ2IDIuMTEwMjUgMTEuMjM4MTUgNC4zNjY2NSAxOC42MjExMy41MDg1NiAxLjcwOTgzIDEuMDE3MTMgMy4zODQ1OSAxLjEyODIgMy42Mzg4Ny40MzU0OSAxLjQ5MDYzIDEuMDkwMiAzLjc0NDExIDIuMjkxNDcgNS44MTkyOSAxLjE2MzI3IDEuOTY0MTIgMi44NzMxIDMuODU1MTYgNS41NjUgNC44MzcyMi40NzM0OS4xODQxNCAxLjIzNjM0LjE4NDE0IDIuMTgzMzMuMDM1MSAxLjQ5MDYyLS4yMTYzIDMuMjM1NTMtLjc2Mjg2IDQuNjkxMDgtMS40OTA2M2gtLjAzOGMuODAwODUtLjQwMDQzIDEuNDU1NTUtLjgzNTkyIDEuODkzOTctMS4yMzYzNS4xNDMyMS0uMTA4MTQuMjU0MjgtLjI1NDI4LjM2MjQyLS4zNjI0Mi0uMTA4MTQtLjE4NDEzLS4yNTQyOC0uMzI3MzUtLjM2MjQyLS40NzM0OS0yLjQzNzYxLTMuMTY1MzktNC4wNzQzNy03Ljc0ODMzLTUuMDU2NDMtMTIuNjkzNyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyOCIgZD0ibTM2Ni44MjYyOCAzNTcuMzI0NzZjLTIuNjE4ODIgMS43NDc4My01LjA1NjQzIDMuNDkyNzQtNy4zNDc5IDUuMjc1NjQtMS40MTc1NSAxLjEyODItMi43NjQ5NiAyLjIxODQxLTQuMDAxMzEgMy4zNDY2MSAxLjM4MjQ5IDIuMjkxNDcgMi43Mjk5IDQuNzY0MTUgNC4wMDEzMSA3LjIzNjgzLjQzODQyLjg3MzkyLjgzNTkyIDEuNzA5ODQgMS4yMzYzNCAyLjU4Mzc1IDEuODU1OTggMy45MjgyNCAzLjQxOTY4IDcuODIxNCA0LjU0Nzg3IDExLjI3NjE0IDEuMDU1MTMgMy4zMTE1MyAxLjU2MzY5IDYuMDAwNSAxLjYzNjc3IDguNjk1MzEuMDczIDEuNzA2OTEtLjAzNTEgMy4zODE2OC0uMjE5MjEgNS4yMzc2NSAyLjAzNzE5LjkwODk5IDQuNjU2MDEgMS40NTI2MyA3LjI3NDgzIDEuNzA2OTEgNC4yOTM1OS40Mzg0MiA4LjQ0MTAzLS4wMzUxIDEwLjE0Nzk1LTEuNDE3NTVsNy45MzI0Ni02LjQzODkyLjA3MDEtNTIuMDE0MDRjLTkuMzQ3MSA0LjgzNzIyLTE3LjkzMTM1IDkuNjA0My0yNS4yNzkyNSAxNC41MTE2NyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTM1Mi44OTYyNSAzNjguMzExNTRjLS44Mzg4NC44MDA4NS0xLjYzOTY5IDEuNjM2NzctMi40Mzc2MSAyLjUxMDY4bDMuODU1MTctLjAzOGMtLjQ3MzUtLjgzNTkyLS45NDY5OS0xLjY3MTgzLTEuNDE3NTYtMi40NzI2OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMiIgZD0ibTM2MS45ODkwNiAzODguMDk4ODZjLS4xNDYxMy0uNDM1NDktLjI1NDI4LS44MzU5Mi0uNDAwNDItMS4yNzE0MWwtOS4xMzA4MS43OTc5MS41NDY1NyAyLjQzNzYyIDEwLjQwMjIyIDguODM4NTNjLjA3MzEtMS4wNTUxMy4xMTEwNy0yLjAzNzE5LjA3MzEtMy4wMTkyNS0uMTA4MTUtMi40Mzc2MS0uNTQ2NTYtNC44MDIxNS0xLjQ5MDYzLTcuNzgzNCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTMzOC43MDkwMSAzNzQuMjc2OTdjLjEwODE0LjMyNzM1LjIxOTIxLjY5MjcuMzY1MzUgMS4wMTcxMy44NzA5OSAyLjM2NDU0IDEuOTY0MTEgNC40MDE3MyAzLjMwODYgNS44NTcyOGwuMDM1MS0uMDM1MSA0LjIyMDUxIDMuNTYyODggMS41NjM3LS4xNDYxNC0yLjA3MjI2LTEwLjI1NjA5em0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMzYiIGQ9Im0zNjAuMzUyMyAzODMuNDgwODRjLS4yOTIyOC0uNjkyNy0uNTgxNjQtMS4zODI0Ny0uODczOTItMi4xMTAyNS0uNTgxNjMtMS4zNDc0MS0xLjIwMTI3LTIuNzY0OTYtMS44NTU5Ny00LjE0NzQ1LS40MzU1LS45NDY5OC0uOTA4OTktMS44OTEwNC0xLjQxNzU2LTIuODczMWgtNi41NDcwNmwxLjk5OTE5IDkuODkzNjUgNy44MjE0LS42ODk3N3ptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDM4IiBkPSJtMzUzLjgwNTI0IDMyMy42MDc0MWMuMTgxMjEtLjEwODE1LjM2MjQyLS4xODEyMi41NDM2NC0uMjU0MjhsLS41NDM2NC0uOTA5LTMuNzExOTUtNi4zNjU4NGMtMS4wOTAyLjQzNTUtMi4xNDUzMy44MzU5Mi0zLjIzNTU0IDEuMjM2MzQtLjIxOTIxLjA3MzEtLjQzODQyLjE0NjE0LS42NTQ3LjI1NDI5bC42NTQ3IDEuMTYzMjcgMy41NjI4OSA2LjMzMDc3YzEuMTY2MTktLjQ3MzQ5IDIuMjkxNDctLjk4MjA2IDMuMzg0Ni0xLjQ1NTU1IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtNDQ3LjQ2OTEgMzYxLjc2NDQ4Yy4xNDMyMS0uNTgxNjMuMjkyMjgtMS4xNjYxOS40MzU1LTEuNjcxODNsLS40MzU1LS41MTE0OS0xLjM4MjQ4LTEuNzA5ODQtMS43NDc4My43Mjc3OC0yLjM2NDU0Ljk0Njk4LTQuOTgzMzcgMi4wNzIyNi0uMzYyNDMuMTQ2MTQuMzYyNDMuNDAwNDMgNC45ODMzNyA1LjYzODA3IDEuNjc0NzYgMS44OTEwNS42ODk3OC0uNDAwNDMgMS42MDE2OS0uODczOTFjLjM2MjQyLTEuOTk5MTkuOTgyMDYtNC40NzE4OCAxLjUyODYyLTYuNjU1MjEiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDIiIGQ9Im00MjYuMDQyMSAzNjYuMjM5MjhsNy42NzgxOCA4LjgwMDU0IDYuODM2NDEtMy42NzM5NS03LjIzNjg0LTguMTgzODN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NCIgZD0ibTQzNy44NjQ4IDM0My43NTcxNWw5LjYwNDMtNC4xNDQ1MiA5Ljc0NzUyLTQuMTg1NDQuMDM1MS4wNzYgNy42MDIxOS00LjIyMDUyLTMuOTI4MjMtNC4xNDc0NGMtNC4xODI1MiAyLjc2NDk3LTguNjU3MzIgNS4wNTY0NC0xMy40NTY1NCA2LjgwMTM0LTEuMDIwMDcuMzY1MzUtMi4wNzUxOS43MzA3LTMuMTMwMzIgMS4wNTUxMy0uNzYyODUuMjE5MjEtMS41NjM2OS40MzU1LTIuMzY0NTQuNjU0Ny0uMTA4MTUuMDM4LS4yMTYyOS4wNzMxLS4zMjQ0My4wNzMxbC03LjY3NTI2IDMuNTMwNzN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NiIgZD0ibTQ0My43MjIwNyAzNTUuMTQ0MzZsLTYuMzMwNzYtNy4yMzk3Ni05LjU2MzM4IDMuODkzMTYgNi40MDA5MSA3LjIzNjg0LjIxOTIxLS4wNzMxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDgiIGQ9Im00NDAuNTIxNjIgMzgyLjUzMzg2Yy40NzM0OS0uMjkyMjggMy4wNTQzMi0xLjg1NTk3IDMuODIwMDktMi4zNjQ1NC4xNDYxNC0uMTA4MTQuMzI0NDMtLjIxOTIxLjQ3MDU3LS4yOTIyOCAwLS4xMDgxNS4wMzUxLS4yMTYyOS4wMzUxLS4yODkzNS4xMTEwNy0xLjAyMDA2LjIxOTIxLTIuMDM3MTkuMzMwMjgtMy4wMTkyNWwtMi4yOTE0Ny0yLjU4Mzc1LTYuNzY2MjcgMy42Mzg4OHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUwIiBkPSJtMzQyLjg5MTUyIDMxOC42OTcxMWMtLjg3MDk5LjI5MjI5LTEuNzgyOS41ODE2NC0yLjY5MTg5Ljg3MzkyLS4xODEyMS4wNzMxLS4zNjI0Mi4xMDgxNC0uNTQzNjQuMTgxMjFsLjU0MzY0Ljk0NDA3IDMuODU4MDkgNi44MDQyNmMuOTQ0MDYtLjMyNzM1IDEuODkxMDUtLjY5MjcxIDIuODAwMDMtMS4wNTUxMy4xMDgxNS0uMDM4LjI1NDI5LS4wNzMxLjM2MjQ0LS4xMDgxNGwtLjM2MjQ0LS42MTk2NHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNDU0LjcwNTk0IDM0MC4yMzIyNmwtMTQuNDc2NjEgNi4yNTQ3OCA2LjMyNzg2IDcuMjM2ODQgMy44OTMxNi0xLjY3MTg0YzEuMjM5MjYtMy45MjgyMyAyLjY1NjgyLTcuODU2NDcgNC4yNTU1OS0xMS44MTk3OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg1NCIgZD0ibTQzMC45OTAzOSAzNzYuNDk1MzZsLTcuODkxNTUtOC44NzM1OS0uMjkyMjguMTA4MTRjLjI1NDI4IDEuMzQ0NDkuNTgxNjQgMi42OTE4OS45ODIwNiA0LjA3NDM3LjY1NDcxIDIuMjkxNDcgMS41Mjg2MiA0LjY5MTA4IDIuNjE4ODMgNy4xNjM3N2wuMjkyMjctLjE4MTIxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNTYiIGQ9Im00MzAuOTIwMjQgMzYwLjQ5MDE1bC02LjQwMzg1LTcuMjM2ODQtMi4xNDgyNS44MDA4NWMtLjM5NzUgMy4zMDg2LS41NDM2NCA2Ljg3NDQxLS4xNDMyMiAxMC4xODMwMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDU4IiBkPSJtNDM2LjU1NTM5IDM4NC43NTIyNmMuMTQ2MTQtLjA3MzEuMjkyMjctLjE0NjE0LjQzODQyLS4yNTQyOC4yODkzNS0uMTQ2MTQuNTgxNjMtLjI5MjI4Ljg3MDk5LS40NzM1bC00LjQwMTczLTQuOTgzMzYtNS41NjIwOCAyLjk4NDE4Yy4xODEyMi40MzU0OS40MzU1LjgzNTkyLjY1MTc5IDEuMjcxNDEuNjE5NjMgMS4xNjMyOCAxLjMwOTQxIDIuMzI5NDcgMi4wNzUxOCAzLjQ5Mjc0LjEwODE0LjIxOTIxLjIxNjI5LjQzODQxLjI5MjI4LjY1NDcxIDEuMDkwMi0uNDM1NSAyLjI4ODU1LS45ODIwNiAzLjUyNzgxLTEuNjAxNy42ODk3OC0uMzYyNDIgMS4zNzk1Ni0uNzI3NzcgMi4xMDczNC0xLjA5MDIiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNjAiIGQ9Im00NDEuOTc0MjUgMzg5LjI2MjEzYy0uNDcwNTctLjk4MjA2LS45NDQwNi0xLjg5MTA1LTEuNDE3NTYtMi44MDAwMy0uODAwODUuNDczNDktMS41OTg3Ni45MDg5OC0yLjM5OTYyIDEuMzA5NDEtLjQwMDQxLjIxOTIxLS43NjU3Ni40Mzg0MS0xLjE2MzI2LjYxOTYzLS44NzM5Mi40MzU0OS0xLjcwOTg0Ljg3MDk5LTIuNTQ4NjggMS4yMzYzNS0xLjEyNTI4LjU0MzYzLTIuMTgwNDEuOTgyMDUtMy4xMjczOSAxLjM3OTU1LS4wMzUxLjUxMTQ5LS4wMzUxIDEuMDU1MTMtLjA3MzEgMS42MDE2OS0uMDczIDEuNDU1NTUtLjE0MzIxIDMuMDU3MjUtLjAzNTEgNC4zMjg2Ni4xODEyIDEuNzA5ODMuNjU0NyAyLjQ3NTYxIDEuMzgyNDcgMi42NTY4Mi41MDg1Ny4xMDgxNCAxLjEyODIxLjA3MyAxLjg1MzA2LS4wMzguNzY1NzctLjEwODE0IDEuNjAxNjktLjMyNzM1IDIuNTQ4NjgtLjYxNjcxLjE4MTItLjAzOC4zNjI0Mi0uMTExMDcuNTQzNjMtLjE0NjE0IDEuMzQ3NDEtLjQwMDQyIDIuODM4MDQtLjk0NDA2IDQuNDM2ODEtMS41Mjg2Mi43NjU3Ni0uMjg5MzYgMS41NjY2MS0uNjE5NjQgMi4zNjQ1My0uOTQ0MDYuMTExMDctLjAzOC4yMTkyMS0uMTExMDcuMzMwMjgtLjE0NjE0LS4xMTEwNy0uMzI3MzUtLjIxOTIxLS42NTQ3MS0uMzMwMjgtMS4wMjAwNi0uNjg5NzctMi4wMzcxOS0xLjQ5MDYyLTQuMDM2MzgtMi4zNjQ1My01Ljg5MjM2IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDYyIiBkPSJtNDYzLjQ3NDMyIDM4MS4wNzgzMWMtLjUxMTQ5LS4yMTYyOS0xLjIzNjM0LS4yODkzNS0yLjI5NDQtLjI1NDI4LTEuODE1MDUuMDczMS00LjIxNzU4LjYxNjcxLTYuNDczOTggMS4xMjgxOS0yLjgwMDA0LjY1NDcxLTUuNDkxOTMgMS4yNzE0Mi03LjIzNjg0IDEuMDU1MTMtLjEwODE1LS4wMzgtLjIxOTIxLS4wMzgtLjMyNzM1LS4wNzMxLS4xODEyMi0uMDM4LS4zNjI0My0uMDczLS41NDY1Ni0uMTQ2MTQtLjcyNzc4LjQ3MzQ5LTEuNDkzNTYuOTgyMDYtMi4yNTM0OCAxLjQ1NTU1LS4yNTQyOS4xNDYxNS0uNTQ2NTYuMzI3MzYtLjgzODg1LjUwODU3LjI5MjI5LjQ3MzQ5LjU4NDU2IDEuMDE3MTQuODM4ODUgMS41NjM2OSAxLjE2MzI3IDIuMjU2NCAyLjI1MzQ4IDQuODAyMTUgMy4xMjczOSA3LjQyMDk4LjE0NjE0LjM2MjQzLjI1NDI4LjcyNzc4LjM2MjQzIDEuMDkzMTMgMS4zMDk0MS0uNTg0NTYgMi41ODM3NS0xLjE2NjIgMy44NTgwOC0xLjc0Nzg0IDUuMzEwNzItMi41NDU3NSA5LjcwOTUyLTQuOTQ1MzYgMTAuMjU2MDktNS42NzMxNC45ODIwNi0xLjMwOTQxIDEuODE3OTgtMi44MDI5NiAyLjE0NTMzLTQuMTEyMzcuMTQ2MTQtLjYxNjcxLjIxOTIxLTEuMTk4MzQuMDczMS0xLjU5ODc3LS4wNzMxLS4yNTcyLS4yOTIyOC0uNDczNDktLjY4OTc4LS42MTk2MyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg2NCIgZD0ibTQyNi42OTY4IDMzOC43NzY3MWwxLjg1NTk4LS44MzU5Mi42OTI3LS4zMzAyOGMtLjIxOTIxLjAzOC0uNDczNS4wMzgtLjY5MjcuMDM4LS42MTY3MS4wMzUxLTEuMjM2MzUuMDM1MS0xLjg1NTk4LjA3M2gtLjY4OTc4Yy0xNy40NjA3NyAwLTMzLjI4MTg2LTcuMTY2NjktNDQuNzA0MTMtMTguNjYyMDQtMS42MzY3Ny0xLjYzNjc2LTMuMjAwNDctMy4zODE2OC00LjYxODAyLTUuMTk5NjUtMi41ODM3NSAyLjM2NDU0LTYuNzMxMTkgNC45ODMzNi0xMC45NDg3OSA3LjQxODA1LTEuMDkzMTIuNjE5NjMtMi4xODMzMiAxLjIzOTI3LTMuMjczNTMgMS44NTU5OC0uNjE5NjIuMzI3MzUtMS4yMzYzNC42NTQ3LTEuODU1OTcuOTgyMDYtMS4xMjgyLjU4MTYzLTIuMjU2MzkgMS4xNjYxOS0zLjQxOTY3IDEuNzA5ODMtMS4xMjgyLjUxMTQ5LTIuMjUzNDcgMS4wMjAwNi0zLjM4MTY3IDEuNTI4NjItLjk0Njk5LjQwMDQyLTEuOTI5MDUuODM1OTItMi45MTExMSAxLjIwMTI3LTEuMzQ0NDguNTQzNjMtMi42OTE4OSAxLjA1NTEzLTQuMDM2MzggMS41NjM3LTIuMjE4MzkuODAwODQtNC40Mzk3MiAxLjU2MzY5LTYuNjU4MTIgMi4yNTM0Ni0uNDAwNDIuMTExMDctLjc2Mjg1LjI1NDI5LTEuMTYzMjcuMzY1MzZsLTIuMjU2NCAxOS40OTUwMyAxMC4wMzk4IDE3LjUzMzg1LjAzOC0uMDM4YzIuMDM3MTktMi4zNjQ1NSA0LjM2MzczLTQuNjU2MDIgNi45NDc0OC02LjkwOTQ5IDEuMDkwMjEtLjkwODk5IDIuMjE4NC0xLjg1NTk4IDMuMzgxNjgtMi43NjQ5NiAxLjA5MzEyLS44NzM5MiAyLjI1NjM5LTEuNzA5ODQgMy40MTk2Ni0yLjU4Mzc2IDEuNDE3NTYtMS4wMTcxMiAyLjgzODA0LTEuOTk5MTggNC4zMjg2Ni0yLjk4MTI0LjI1NDI4LS4xODEyMi41NDY1Ny0uMzY1MzUuODAwODUtLjU0NjU3IDQuNzY0MTUtMy4xMjczOSAxMC4wMDE4LTYuMjE5NyAxNS41NjY4LTkuMjc0MDIgMy43NDcwMi0yLjA3NTE5IDcuNjc1MjYtNC4xMDk0NSAxMS43NDk2My02LjE4NDY0bDIuNDcyNjktMS4yNzQzM3Y1LjYwMjk5YzUuMjc1NjQtMS4zNDQ0OSA5Ljg1ODU4LTIuMzI5NDYgMTQuMzMwNDUtMi45MTExIDQuOTEzMjItLjYxNjcxIDkuNjM5MzgtLjcyNzc3IDE0Ljg0MTk1LS4xODEyMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY2IiBkPSJtMzY1LjczNjA4IDMxNy4yMDY0OWMzLjM0NjYxLTEuOTY3MDQgNi4zNjU4NS0zLjYzODg4IDguNzY1NDYtNS45NjU0Mi0xLjIwMTI2LTEuNjc0NzYtMi43NjQ5Ni00LjQzOTczLTMuNzgyMDktNi4yMTk3MS0xLjUyODYyIDEuMTYzMjctMy4yMDA0NiAyLjI4ODU1LTQuOTgzMzcgMy4zODE2Ny0xLjYzNjc2IDEuMDE3MTMtMy4zNDY2IDEuOTY0MTItNS4xMjk1IDIuOTA4MTktLjE0NjE0LjA3Ni0uMjg5MzYuMTQ2MTMtLjQzNTUuMjE5MjFsLjQzNTUuNzY1NzYgMy40MTk2NyA1Ljk2MjVjLjU4MTY0LS4zNjI0MiAxLjEyODItLjcyNDg1IDEuNzA5ODMtMS4wNTIyIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY4IiBkPSJtMzU3LjQ0MTE5IDMyMS44NjI1YzEuMDkzMTMtLjUxMTQ5IDIuMTQ1MzMtMS4wOTMxMyAzLjE2NTM5LTEuNjM2NzYuMTQ2MTQtLjA3MzEuMjkyMjgtLjE4NDE0LjQzNTQ5LS4yNTQyOGwtLjQzNTQ5LS43NjU3OC0zLjQxOTY3LTYuMDM4NDktLjA3MzEtLjEwODE1Yy0xLjA5MDIuNTA4NTctMi4xODA0Ljk4MjA2LTMuMzA4NiAxLjQ5MDYzLS4xODEyMi4wNzMxLS4zNjUzNS4xNDYxNC0uNTA4NTcuMjE5MjFsLjUwODU3LjkwODk4IDMuMzgxNjcgNS43NDYyMnptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDcwIiBkPSJtMzUyLjE2ODQ3IDI4MC43MjEyNWwxMi4wNzY5OSA2Ljk4NTQ4Yy0uOTExOTItNC4yMjA1Mi0xLjM4NTQxLTguNjIyMjUtMS4zODU0MS0xMy4xMzIxMiAwLTIuODczMS4yMTkyMS01Ljc0NjIxLjU4NDU2LTguNTExMTdsLTIyLjgwNjU2LTE0LjU0OTY3LTExLjE2OCA4LjI1Njg5djI1LjcxNzY3bDExLjYwMzQ5IDExLjkyNzkyIDE5LjUzMzA0LTcuNzQ1NDEuMTQ2MTQtLjAzOC0uMTQ2MTQtLjA3MzEtMTAuMTQ3OTQtNS44OTIzNWMtMi44MDAwNC0xLjU5ODc2LTEuMDkwMi00LjU4Mjk0IDEuNzA5ODMtMi45NDYxOCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg3MiIgZD0ibTMzOC43ODIwNyAzMjkuMjQ1NDhjLjQ3MzUtLjE0NjE1Ljk0Njk5LS4zMjczNSAxLjQxNzU2LS40NzM1LjE4NDE0LS4wMzUxLjM2NTM1LS4xMDgxNC41NDY1Ni0uMTgxMjFsLS41NDY1Ni0uOTQ2OTgtMS40MTc1Ni0yLjUwNzc2LTIuNTEwNjgtNC40MDE3M2MtLjUwODU2LjE0NjE0LTEuMDE3MTMuMjkyMjgtMS40OTA2Mi40MDA0MnYuMDM1MWwzLjQxOTY3IDguMjIxODJjLjIxOTIxLS4wMzguNDAwNDMtLjEwODE0LjU4MTYzLS4xNDYxMyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgPC9nPg0KPC9zdmc+" alt="Alemannia Aachen" />
+        </div>
+        <div class="hero-text">
+          <div class="report-badge">Squad Report . FM26</div>
+          <h1>DEFENSIVE CONTRIBUTION</h1>
+          <p class="hero-subtitle">Tackles, interceptions, aerial duels, blocks, and pressing for every Alemannia Aachen outfield player.</p>
+          <div class="hero-meta">
+            <span>Generated 2026-06-21 22:00</span>
+            <span>data/processed/hodd/2026-04-20/stats</span>
+            <span>27 players . Season 2026-09-12</span>
+          </div>
+        </div>
+      </div>
+      <div class="cards">
+<div class="card"><div class="card-label">Tackles Won</div><div class="card-value">22</div><div class="card-sub">season total - outfield</div></div>
+<div class="card"><div class="card-label">Interceptions</div><div class="card-value">35</div><div class="card-sub">season total - outfield</div></div>
+<div class="card"><div class="card-label">Aerial Duels Won</div><div class="card-value">93</div><div class="card-sub">season total - outfield</div></div>
+<div class="card"><div class="card-label">Pressures Applied</div><div class="card-value">98</div><div class="card-sub">season total - outfield</div></div>
+<div class="card"><div class="card-label">Pressure Success</div><div class="card-value">27.0%</div><div class="card-sub">Aachen vs League avg: 26.2%</div></div>
+</div>
+      <div class="chips">
+<div class="chip"><div class="chip-label">Most Tackles per 90</div><div class="chip-name">Quinten Dekkers</div><div class="chip-value">3.1/90</div></div>
+<div class="chip"><div class="chip-label">Most Key Tackles per 90</div><div class="chip-name">Matthew Scarcella</div><div class="chip-value">0.1/90</div></div>
+<div class="chip"><div class="chip-label">Most Interceptions per 90</div><div class="chip-name">Mirza Mulac</div><div class="chip-value">6.3/90</div></div>
+<div class="chip"><div class="chip-label">Most Aerial Wins per 90</div><div class="chip-name">Mirza Mulac</div><div class="chip-value">3.9/90</div></div>
+<div class="chip"><div class="chip-label">Press Success per 90</div><div class="chip-name">Quinten Dekkers</div><div class="chip-value">2.7/90</div></div>
+</div>
+    </header>
+    </div>
+
+    <!-- ═══ MAIN CONTENT ══════════════════════════════════════════ -->
+    <div class="chart-grid chart-grid-2">
+  <div class="section panel">
+    <div class="section-header"><h2>Top 12  -  Tackles per 90</h2></div>
+    <p class="section-note">Outfield players with 270+ minutes.</p>
+    <div class="chart-wrap"><canvas id="chart-tck"></canvas></div>
+  </div>
+  <div class="section panel">
+    <div class="section-header"><h2>Top 12  -  Aerial Wins per 90</h2></div>
+    <p class="section-note">Outfield players with 270+ minutes.</p>
+    <div class="chart-wrap"><canvas id="chart-hdr"></canvas></div>
+  </div>
+</div>
+
+<div class="chart-grid chart-grid-3 mt-md">
+  <div class="section panel">
+    <div class="section-header"><h2>Tackle Volume vs Quality</h2></div>
+    <p class="section-note">Top-right = relentless ball-winner: high volume and high conversion.</p>
+    <div class="scatter-wrap"><canvas id="chart-scatter-tck"></canvas></div>
+  </div>
+  <div class="section panel">
+    <div class="section-header"><h2>Interceptions vs Aerial Wins</h2></div>
+    <p class="section-note">Top-right = complete defender: reads play and dominates aerially.</p>
+    <div class="scatter-wrap"><canvas id="chart-scatter-inthdr"></canvas></div>
+  </div>
+  <div class="section panel">
+    <div class="section-header"><h2>Decisive Interventions vs Ball Recovery</h2></div>
+    <p class="section-note">Top-right = all-action defender: decisive in the tackle and constantly winning possession back.</p>
+    <div class="scatter-wrap"><canvas id="chart-scatter-ktck"></canvas></div>
+  </div>
+  <div class="section panel">
+    <div class="section-header"><h2>Pressing Volume vs Quality</h2></div>
+    <p class="section-note">Top-right = elite presser: hunts the ball constantly and wins it back.</p>
+    <div class="scatter-wrap"><canvas id="chart-scatter-pres"></canvas></div>
+  </div>
+</div>
+
+<div class="chart-grid chart-grid-3 mt-md">
+  <div class="section panel">
+    <div class="section-header"><h2>Defensive Profile  -  CBs</h2></div>
+    <p class="section-note"><span style="color:#F6E216">Hanraths</span> vs <span style="color:#60a5fa">Kiala</span> vs <span style="color:#4ade80">Wegmann</span>. Bars show each metric as a % of league max (270+ min); 50 = league median.</p>
+    <div class="percbar-wrap"><canvas id="chart-radar-cb"></canvas></div>
+  </div>
+  <div class="section panel">
+    <div class="section-header"><h2>Defensive Profile  -  Central Midfield</h2></div>
+    <p class="section-note"><span style="color:#F6E216">Torbjørn Kallevåg</span> vs <span style="color:#60a5fa">Halvard Urnes</span> vs <span style="color:#4ade80">Quinten Dekkers</span>. Bars show each metric as a % of league max (270+ min); 50 = league median.</p>
+    <div class="percbar-wrap"><canvas id="chart-radar-mid"></canvas></div>
+  </div>
+  <div class="section panel">
+    <div class="section-header"><h2>Defensive Profile  -  Wide / WB</h2></div>
+    <p class="section-note"><span style="color:#F6E216">Quinten Dekkers</span> vs <span style="color:#60a5fa">Ola Visted</span>. Bars show each metric as a % of league max (270+ min); 50 = league median.</p>
+    <div class="percbar-wrap"><canvas id="chart-radar-wb"></canvas></div>
+  </div>
+</div>
+
+
+<div class="section panel mt-md" data-filterable>
+  <div class="section-header"><h2>Defensive Actions</h2></div>
+  <p class="section-note">Per-90 defensive actions. Key Tackles = highest-leverage ball-winning tackles. Sorted by Tackles/90 by default.</p>
+  <div class="filter-bar">
+    <span class="filter-label">Position</span>
+    <div class="filter-group">
+      <button class="filter-btn" data-filter="all"    data-col="1">All</button>
+      <button class="filter-btn" data-filter="CB"     data-col="1">CB</button>
+      <button class="filter-btn" data-filter="FB/WB"  data-col="1">FB/WB</button>
+      <button class="filter-btn" data-filter="DM"     data-col="1">DM</button>
+      <button class="filter-btn" data-filter="CM"     data-col="1">CM</button>
+      <button class="filter-btn" data-filter="Winger" data-col="1">Winger</button>
+      <button class="filter-btn" data-filter="AM"     data-col="1">AM</button>
+      <button class="filter-btn" data-filter="ST"     data-col="1">ST</button>
+    </div>
+    <div class="search-wrap">
+      <input class="search-input" type="search" placeholder="Search player..." />
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table data-sortable>
+      <thead>
+        <tr>
+          <th class="sortable">Player</th>
+          <th class="sortable">Pos</th>
+          <th class="sortable num">Appearances</th>
+          <th class="sortable num">Tackles/90</th>
+          <th class="sortable num">Key Tackles/90</th>
+          <th class="sortable num">Tackle %</th>
+          <th class="sortable num">Interceptions/90</th>
+          <th class="sortable num">Aerial Wins/90</th>
+          <th class="sortable num">Aerial %</th>
+          <th class="sortable num">Blocks/90</th>
+          <th class="sortable num">Possession Won/90</th>
+          <th class="sortable num">Clearances/90</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr>
+  <td class="player">Marcus Mikhail</td>
+  <td class="pos" data-sort="FB/WB">D (L)</td>
+  <td class="num">1</td>
+  <td class="num accent" data-sort="4.5"><div class="bar-wrap"><span class="bar-val">4.5</span><div class="bar"><span style="width:100.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="0.9">0.9</td>
+  <td class="num" data-sort="2.7"><div class="bar-wrap"><span class="bar-val">2.7</span><div class="bar"><span style="width:69.2%"></span></div></div></td>
+  <td class="num" data-sort="60.0">60.0%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="7.2">7.2</td>
+  <td class="num" data-sort="2.7">2.7</td>
+</tr>
+
+<tr>
+  <td class="player">Quinten Dekkers</td>
+  <td class="pos" data-sort="FB/WB">D/WB (RL)</td>
+  <td class="num">5</td>
+  <td class="num accent" data-sort="3.1"><div class="bar-wrap"><span class="bar-val">3.1</span><div class="bar"><span style="width:68.9%"></span></div></div></td>
+  <td class="num" data-sort="0.0383">0.04</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="4.2">4.2</td>
+  <td class="num" data-sort="1.1"><div class="bar-wrap"><span class="bar-val">1.1</span><div class="bar"><span style="width:28.2%"></span></div></div></td>
+  <td class="num" data-sort="50.0">50.0%</td>
+  <td class="num" data-sort="0.8">0.8</td>
+  <td class="num" data-sort="13.6">13.6</td>
+  <td class="num" data-sort="1.7">1.7</td>
+</tr>
+
+<tr>
+  <td class="player">Jesper Robertsen</td>
+  <td class="pos" data-sort="FB/WB">D/WB (R), M (C)</td>
+  <td class="num">1</td>
+  <td class="num accent" data-sort="2.8"><div class="bar-wrap"><span class="bar-val">2.8</span><div class="bar"><span style="width:62.2%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.7">0.7</td>
+  <td class="num" data-sort="7.6">7.6</td>
+  <td class="num" data-sort="1.4">1.4</td>
+</tr>
+
+<tr>
+  <td class="player">Ola Visted</td>
+  <td class="pos" data-sort="FB/WB">D (R), DM, M (C)</td>
+  <td class="num">5</td>
+  <td class="num accent" data-sort="2.7"><div class="bar-wrap"><span class="bar-val">2.7</span><div class="bar"><span style="width:60.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="3.5">3.5</td>
+  <td class="num" data-sort="3.1"><div class="bar-wrap"><span class="bar-val">3.1</span><div class="bar"><span style="width:79.5%"></span></div></div></td>
+  <td class="num" data-sort="57.1">57.1%</td>
+  <td class="num" data-sort="0.2">0.2</td>
+  <td class="num" data-sort="12.4">12.4</td>
+  <td class="num" data-sort="2.1">2.1</td>
+</tr>
+
+<tr>
+  <td class="player">Halvard Urnes</td>
+  <td class="pos" data-sort="DM">DM, M (C)</td>
+  <td class="num">6</td>
+  <td class="num accent" data-sort="2.1"><div class="bar-wrap"><span class="bar-val">2.1</span><div class="bar"><span style="width:46.7%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="1.9">1.9</td>
+  <td class="num" data-sort="0.5"><div class="bar-wrap"><span class="bar-val">0.5</span><div class="bar"><span style="width:12.8%"></span></div></div></td>
+  <td class="num" data-sort="42.9">42.9%</td>
+  <td class="num" data-sort="1.0">1.0</td>
+  <td class="num" data-sort="5.2">5.2</td>
+  <td class="num" data-sort="1.2">1.2</td>
+</tr>
+
+<tr>
+  <td class="player">Torbjørn Kallevåg</td>
+  <td class="pos" data-sort="DM">DM, M/AM (C)</td>
+  <td class="num">6</td>
+  <td class="num accent" data-sort="1.5"><div class="bar-wrap"><span class="bar-val">1.5</span><div class="bar"><span style="width:33.3%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="1.6">1.6</td>
+  <td class="num" data-sort="1.0"><div class="bar-wrap"><span class="bar-val">1.0</span><div class="bar"><span style="width:25.6%"></span></div></div></td>
+  <td class="num" data-sort="54.5">54.5%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="5.6">5.6</td>
+  <td class="num" data-sort="1.6">1.6</td>
+</tr>
+
+<tr>
+  <td class="player">Sondre Fosnæss Hanssen</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">5</td>
+  <td class="num accent" data-sort="1.3"><div class="bar-wrap"><span class="bar-val">1.3</span><div class="bar"><span style="width:28.9%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="5.1">5.1</td>
+  <td class="num" data-sort="3.2"><div class="bar-wrap"><span class="bar-val">3.2</span><div class="bar"><span style="width:82.1%"></span></div></div></td>
+  <td class="num" data-sort="81.0">81.0%</td>
+  <td class="num" data-sort="1.1">1.1</td>
+  <td class="num" data-sort="12.0">12.0</td>
+  <td class="num" data-sort="2.1">2.1</td>
+</tr>
+
+<tr>
+  <td class="player">Tage Johansen</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">1</td>
+  <td class="num accent" data-sort="1.0"><div class="bar-wrap"><span class="bar-val">1.0</span><div class="bar"><span style="width:22.2%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="5.0">5.0</td>
+  <td class="num" data-sort="3.0"><div class="bar-wrap"><span class="bar-val">3.0</span><div class="bar"><span style="width:76.9%"></span></div></div></td>
+  <td class="num" data-sort="100.0">100.0%</td>
+  <td class="num" data-sort="1.0">1.0</td>
+  <td class="num" data-sort="10.0">10.0</td>
+  <td class="num" data-sort="5.0">5.0</td>
+</tr>
+
+<tr>
+  <td class="player">Teodor Håland</td>
+  <td class="pos" data-sort="AM">M/AM (C)</td>
+  <td class="num">4</td>
+  <td class="num accent" data-sort="0.9"><div class="bar-wrap"><span class="bar-val">0.9</span><div class="bar"><span style="width:20.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="1.1">1.1</td>
+  <td class="num" data-sort="0.3"><div class="bar-wrap"><span class="bar-val">0.3</span><div class="bar"><span style="width:7.7%"></span></div></div></td>
+  <td class="num" data-sort="10.0">10.0%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="3.2">3.2</td>
+  <td class="num" data-sort="0.6">0.6</td>
+</tr>
+
+<tr>
+  <td class="player">Isak Skotheim</td>
+  <td class="pos" data-sort="Winger">M (C), AM (RC)</td>
+  <td class="num">6</td>
+  <td class="num accent" data-sort="0.8"><div class="bar-wrap"><span class="bar-val">0.8</span><div class="bar"><span style="width:17.8%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="1.9">1.9</td>
+  <td class="num" data-sort="0.2"><div class="bar-wrap"><span class="bar-val">0.2</span><div class="bar"><span style="width:5.1%"></span></div></div></td>
+  <td class="num" data-sort="4.2">4.2%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="3.9">3.9</td>
+  <td class="num" data-sort="0.3">0.3</td>
+</tr>
+
+<tr>
+  <td class="player">Mirza Mulac</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">6</td>
+  <td class="num accent" data-sort="0.8"><div class="bar-wrap"><span class="bar-val">0.8</span><div class="bar"><span style="width:17.8%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="6.3">6.3</td>
+  <td class="num" data-sort="3.9"><div class="bar-wrap"><span class="bar-val">3.9</span><div class="bar"><span style="width:100.0%"></span></div></div></td>
+  <td class="num" data-sort="69.4">69.4%</td>
+  <td class="num" data-sort="0.5">0.5</td>
+  <td class="num" data-sort="15.6">15.6</td>
+  <td class="num" data-sort="1.7">1.7</td>
+</tr>
+
+<tr>
+  <td class="player">Emmanuel Danso</td>
+  <td class="pos" data-sort="DM">DM, M (C)</td>
+  <td class="num">3</td>
+  <td class="num accent" data-sort="0.3"><div class="bar-wrap"><span class="bar-val">0.3</span><div class="bar"><span style="width:6.7%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="1.9">1.9</td>
+  <td class="num" data-sort="0.3"><div class="bar-wrap"><span class="bar-val">0.3</span><div class="bar"><span style="width:7.7%"></span></div></div></td>
+  <td class="num" data-sort="20.0">20.0%</td>
+  <td class="num" data-sort="0.6">0.6</td>
+  <td class="num" data-sort="5.1">5.1</td>
+  <td class="num" data-sort="1.0">1.0</td>
+</tr>
+
+<tr>
+  <td class="player">Matthew Scarcella</td>
+  <td class="pos" data-sort="DM">DM, M/AM (C)</td>
+  <td class="num">3</td>
+  <td class="num accent" data-sort="0.3"><div class="bar-wrap"><span class="bar-val">0.3</span><div class="bar"><span style="width:6.7%"></span></div></div></td>
+  <td class="num" data-sort="0.1">0.1</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="1.7">1.7</td>
+  <td class="num" data-sort="1.0"><div class="bar-wrap"><span class="bar-val">1.0</span><div class="bar"><span style="width:25.6%"></span></div></div></td>
+  <td class="num" data-sort="42.9">42.9%</td>
+  <td class="num" data-sort="0.3">0.3</td>
+  <td class="num" data-sort="5.0">5.0</td>
+  <td class="num" data-sort="0.7">0.7</td>
+</tr>
+
+<tr>
+  <td class="player">Sebastian Haugland</td>
+  <td class="pos" data-sort="Winger">AM (RL), ST (C)</td>
+  <td class="num">6</td>
+  <td class="num accent" data-sort="0.2"><div class="bar-wrap"><span class="bar-val">0.2</span><div class="bar"><span style="width:4.4%"></span></div></div></td>
+  <td class="num" data-sort="0.0321">0.03</td>
+  <td class="num" data-sort="100.0">100%</td>
+  <td class="num" data-sort="0.6">0.6</td>
+  <td class="num" data-sort="0.6"><div class="bar-wrap"><span class="bar-val">0.6</span><div class="bar"><span style="width:15.4%"></span></div></div></td>
+  <td class="num" data-sort="15.4">15.4%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="2.4">2.4</td>
+  <td class="num" data-sort="0.3">0.3</td>
+</tr>
+
+<tr>
+  <td class="player">Karsten Vasstrand Hodge</td>
+  <td class="pos" data-sort="Winger">AM (RLC)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Salah Oulad M&#x27;Hand</td>
+  <td class="pos" data-sort="AM">M/AM (C)</td>
+  <td class="num">1</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="33.3">33.3%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Alexander Dahl</td>
+  <td class="pos" data-sort="Winger">AM (R), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Henrik Bøe</td>
+  <td class="pos" data-sort="FB/WB">D (RC), DM, M (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="50.0">50.0%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Petter Frøseth</td>
+  <td class="pos" data-sort="FB/WB">D (RLC)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Ahmad Saidi</td>
+  <td class="pos" data-sort="Winger">M (C), AM (RC)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Rolf Hauknes</td>
+  <td class="pos" data-sort="Winger">AM (RC), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Mateusz Nawrocki</td>
+  <td class="pos" data-sort="Winger">M/AM (L)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Eivind Erstad von Løwensprung</td>
+  <td class="pos" data-sort="FB/WB">D (L)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Oliver Eliassen Aske</td>
+  <td class="pos" data-sort="Winger">AM (R), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Hans-Peter Tjervaag</td>
+  <td class="pos" data-sort="FB/WB">D (RL), WB (R)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Magnus Hansen</td>
+  <td class="pos" data-sort="Winger">M (C), AM (R), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Mathias Kofoed</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Lukas Haugsdal</td>
+  <td class="pos" data-sort="FB/WB">D (R)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Markus Næverlid</td>
+  <td class="pos" data-sort="AM">AM (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Markus Moltubakk</td>
+  <td class="pos" data-sort="DM">DM, M (C), AM (RC)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Daniel Horgen</td>
+  <td class="pos" data-sort="Winger">AM (RL), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Sondre Søfteland</td>
+  <td class="pos" data-sort="DM">DM</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Vegard Håheim-Elveseter</td>
+  <td class="pos" data-sort="Winger">M (C), AM (LC), ST (C)</td>
+  <td class="num">1</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="2.3"><div class="bar-wrap"><span class="bar-val">2.3</span><div class="bar"><span style="width:59.0%"></span></div></div></td>
+  <td class="num" data-sort="50.0">50.0%</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="2.3">2.3</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Martin Aarsand Vik</td>
+  <td class="pos" data-sort="DM">DM, M (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Evan Aarsand Vik</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+<tr>
+  <td class="player">Romeo Hareide</td>
+  <td class="pos" data-sort="FB/WB">D (RC)</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">-</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0</td>
+</tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="section panel mt-md">
+  <div class="section-header"><h2>Pressing Activity</h2></div>
+  <p class="section-note">Pressures attempted and completed per 90. Success % = Pres C / Pres A.</p>
+  <div class="table-wrap">
+    <table data-sortable>
+      <thead>
+        <tr>
+          <th class="sortable">Player</th>
+          <th class="sortable">Pos</th>
+          <th class="sortable num">Apps</th>
+          <th class="sortable num">Minutes</th>
+          <th class="sortable num">Pressures Applied/90</th>
+          <th class="sortable num">Pressures Completed/90</th>
+          <th class="sortable num">Press Success %</th>
+        </tr>
+      </thead>
+      <tbody>
+<tr>
+  <td class="player">Marcus Mikhail</td>
+  <td class="pos" data-sort="FB/WB">D (L)</td>
+  <td class="num">1</td>
+  <td class="num">100</td>
+  <td class="num accent" data-sort="11.7"><div class="bar-wrap"><span class="bar-val">11.7</span><div class="bar"><span style="width:100.0%"></span></div></div></td>
+  <td class="num" data-sort="6.3">6.3</td>
+  <td class="num" data-sort="53.8">53.8%</td>
+</tr>
+
+<tr>
+  <td class="player">Ola Visted</td>
+  <td class="pos" data-sort="FB/WB">D (R), DM, M (C)</td>
+  <td class="num">5</td>
+  <td class="num">466</td>
+  <td class="num accent" data-sort="11.2"><div class="bar-wrap"><span class="bar-val">11.2</span><div class="bar"><span style="width:95.7%"></span></div></div></td>
+  <td class="num" data-sort="2.5">2.5</td>
+  <td class="num" data-sort="22.3">22.3%</td>
+</tr>
+
+<tr>
+  <td class="player">Quinten Dekkers</td>
+  <td class="pos" data-sort="FB/WB">D/WB (RL)</td>
+  <td class="num">5</td>
+  <td class="num">470</td>
+  <td class="num accent" data-sort="11.1"><div class="bar-wrap"><span class="bar-val">11.1</span><div class="bar"><span style="width:94.9%"></span></div></div></td>
+  <td class="num" data-sort="2.7">2.7</td>
+  <td class="num" data-sort="24.3">24.3%</td>
+</tr>
+
+<tr>
+  <td class="player">Halvard Urnes</td>
+  <td class="pos" data-sort="DM">DM, M (C)</td>
+  <td class="num">6</td>
+  <td class="num">515</td>
+  <td class="num accent" data-sort="10.0"><div class="bar-wrap"><span class="bar-val">10.0</span><div class="bar"><span style="width:85.5%"></span></div></div></td>
+  <td class="num" data-sort="2.1">2.1</td>
+  <td class="num" data-sort="21.0">21.0%</td>
+</tr>
+
+<tr>
+  <td class="player">Torbjørn Kallevåg</td>
+  <td class="pos" data-sort="DM">DM, M/AM (C)</td>
+  <td class="num">6</td>
+  <td class="num">551</td>
+  <td class="num accent" data-sort="8.3"><div class="bar-wrap"><span class="bar-val">8.3</span><div class="bar"><span style="width:70.9%"></span></div></div></td>
+  <td class="num" data-sort="1.5">1.5</td>
+  <td class="num" data-sort="18.1">18.1%</td>
+</tr>
+
+<tr>
+  <td class="player">Vegard Håheim-Elveseter</td>
+  <td class="pos" data-sort="Winger">M (C), AM (LC), ST (C)</td>
+  <td class="num">1</td>
+  <td class="num">77</td>
+  <td class="num accent" data-sort="8.2"><div class="bar-wrap"><span class="bar-val">8.2</span><div class="bar"><span style="width:70.1%"></span></div></div></td>
+  <td class="num" data-sort="2.3">2.3</td>
+  <td class="num" data-sort="28.0">28.0%</td>
+</tr>
+
+<tr>
+  <td class="player">Jesper Robertsen</td>
+  <td class="pos" data-sort="FB/WB">D/WB (R), M (C)</td>
+  <td class="num">1</td>
+  <td class="num">130</td>
+  <td class="num accent" data-sort="7.6"><div class="bar-wrap"><span class="bar-val">7.6</span><div class="bar"><span style="width:65.0%"></span></div></div></td>
+  <td class="num" data-sort="0.7">0.7</td>
+  <td class="num" data-sort="9.2">9.2%</td>
+</tr>
+
+<tr>
+  <td class="player">Teodor Håland</td>
+  <td class="pos" data-sort="AM">M/AM (C)</td>
+  <td class="num">4</td>
+  <td class="num">314</td>
+  <td class="num accent" data-sort="6.0"><div class="bar-wrap"><span class="bar-val">6.0</span><div class="bar"><span style="width:51.3%"></span></div></div></td>
+  <td class="num" data-sort="1.1">1.1</td>
+  <td class="num" data-sort="18.3">18.3%</td>
+</tr>
+
+<tr>
+  <td class="player">Isak Skotheim</td>
+  <td class="pos" data-sort="Winger">M (C), AM (RC)</td>
+  <td class="num">6</td>
+  <td class="num">561</td>
+  <td class="num accent" data-sort="5.1"><div class="bar-wrap"><span class="bar-val">5.1</span><div class="bar"><span style="width:43.6%"></span></div></div></td>
+  <td class="num" data-sort="1.4">1.4</td>
+  <td class="num" data-sort="27.5">27.5%</td>
+</tr>
+
+<tr>
+  <td class="player">Sondre Fosnæss Hanssen</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">5</td>
+  <td class="num">480</td>
+  <td class="num accent" data-sort="5.1"><div class="bar-wrap"><span class="bar-val">5.1</span><div class="bar"><span style="width:43.6%"></span></div></div></td>
+  <td class="num" data-sort="1.1">1.1</td>
+  <td class="num" data-sort="21.6">21.6%</td>
+</tr>
+
+<tr>
+  <td class="player">Mirza Mulac</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">6</td>
+  <td class="num">570</td>
+  <td class="num accent" data-sort="4.1"><div class="bar-wrap"><span class="bar-val">4.1</span><div class="bar"><span style="width:35.0%"></span></div></div></td>
+  <td class="num" data-sort="1.3">1.3</td>
+  <td class="num" data-sort="31.7">31.7%</td>
+</tr>
+
+<tr>
+  <td class="player">Tage Johansen</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">1</td>
+  <td class="num">90</td>
+  <td class="num accent" data-sort="4.0"><div class="bar-wrap"><span class="bar-val">4.0</span><div class="bar"><span style="width:34.2%"></span></div></div></td>
+  <td class="num" data-sort="2.0">2.0</td>
+  <td class="num" data-sort="50.0">50.0%</td>
+</tr>
+
+<tr>
+  <td class="player">Sebastian Haugland</td>
+  <td class="pos" data-sort="Winger">AM (RL), ST (C)</td>
+  <td class="num">6</td>
+  <td class="num">561</td>
+  <td class="num accent" data-sort="2.6"><div class="bar-wrap"><span class="bar-val">2.6</span><div class="bar"><span style="width:22.2%"></span></div></div></td>
+  <td class="num" data-sort="0.5">0.5</td>
+  <td class="num" data-sort="19.2">19.2%</td>
+</tr>
+
+<tr>
+  <td class="player">Emmanuel Danso</td>
+  <td class="pos" data-sort="DM">DM, M (C)</td>
+  <td class="num">3</td>
+  <td class="num">284</td>
+  <td class="num accent" data-sort="2.5"><div class="bar-wrap"><span class="bar-val">2.5</span><div class="bar"><span style="width:21.4%"></span></div></div></td>
+  <td class="num" data-sort="1.0">1.0</td>
+  <td class="num" data-sort="40.0">40.0%</td>
+</tr>
+
+<tr>
+  <td class="player">Matthew Scarcella</td>
+  <td class="pos" data-sort="DM">DM, M/AM (C)</td>
+  <td class="num">3</td>
+  <td class="num">270</td>
+  <td class="num accent" data-sort="1.0"><div class="bar-wrap"><span class="bar-val">1.0</span><div class="bar"><span style="width:8.5%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">0.0%</td>
+</tr>
+
+<tr>
+  <td class="player">Karsten Vasstrand Hodge</td>
+  <td class="pos" data-sort="Winger">AM (RLC)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Salah Oulad M&#x27;Hand</td>
+  <td class="pos" data-sort="AM">M/AM (C)</td>
+  <td class="num">1</td>
+  <td class="num">45</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Alexander Dahl</td>
+  <td class="pos" data-sort="Winger">AM (R), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Henrik Bøe</td>
+  <td class="pos" data-sort="FB/WB">D (RC), DM, M (C)</td>
+  <td class="num">0</td>
+  <td class="num">55</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Petter Frøseth</td>
+  <td class="pos" data-sort="FB/WB">D (RLC)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Ahmad Saidi</td>
+  <td class="pos" data-sort="Winger">M (C), AM (RC)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Rolf Hauknes</td>
+  <td class="pos" data-sort="Winger">AM (RC), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num">41</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Mateusz Nawrocki</td>
+  <td class="pos" data-sort="Winger">M/AM (L)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Eivind Erstad von Løwensprung</td>
+  <td class="pos" data-sort="FB/WB">D (L)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Oliver Eliassen Aske</td>
+  <td class="pos" data-sort="Winger">AM (R), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num">9</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Hans-Peter Tjervaag</td>
+  <td class="pos" data-sort="FB/WB">D (RL), WB (R)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Magnus Hansen</td>
+  <td class="pos" data-sort="Winger">M (C), AM (R), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Mathias Kofoed</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Lukas Haugsdal</td>
+  <td class="pos" data-sort="FB/WB">D (R)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Markus Næverlid</td>
+  <td class="pos" data-sort="AM">AM (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Markus Moltubakk</td>
+  <td class="pos" data-sort="DM">DM, M (C), AM (RC)</td>
+  <td class="num">0</td>
+  <td class="num">44</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Daniel Horgen</td>
+  <td class="pos" data-sort="Winger">AM (RL), ST (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Sondre Søfteland</td>
+  <td class="pos" data-sort="DM">DM</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Martin Aarsand Vik</td>
+  <td class="pos" data-sort="DM">DM, M (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Evan Aarsand Vik</td>
+  <td class="pos" data-sort="CB">D (C)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+<tr>
+  <td class="player">Romeo Hareide</td>
+  <td class="pos" data-sort="FB/WB">D (RC)</td>
+  <td class="num">0</td>
+  <td class="num">0</td>
+  <td class="num accent" data-sort="0.0"><div class="bar-wrap"><span class="bar-val">0.0</span><div class="bar"><span style="width:0.0%"></span></div></div></td>
+  <td class="num" data-sort="0.0">0.0</td>
+  <td class="num" data-sort="0.0">-</td>
+</tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+window.__initCharts = function() {
+  Charts.hbar('chart-tck', [{label:"Quinten Dekkers",value:3.1},{label:"Ola Visted",value:2.7},{label:"Halvard Urnes",value:2.1},{label:"Torbjørn Kallevåg",value:1.5},{label:"Sondre Fosnæss Hanssen",value:1.3},{label:"Teodor Håland",value:0.9},{label:"Isak Skotheim",value:0.8},{label:"Mirza Mulac",value:0.8},{label:"Emmanuel Danso",value:0.3},{label:"Matthew Scarcella",value:0.3},{label:"Sebastian Haugland",value:0.2}], {labelW:180});
+  Charts.hbar('chart-hdr', [{label:"Mirza Mulac",value:3.9},{label:"Sondre Fosnæss Hanssen",value:3.2},{label:"Ola Visted",value:3.1},{label:"Quinten Dekkers",value:1.1},{label:"Torbjørn Kallevåg",value:1.0},{label:"Matthew Scarcella",value:1.0},{label:"Sebastian Haugland",value:0.6},{label:"Halvard Urnes",value:0.5},{label:"Teodor Håland",value:0.3},{label:"Emmanuel Danso",value:0.3},{label:"Isak Skotheim",value:0.2}], {labelW:180});
+
+  function drawP50(id, xMed, yMed) {
+    var c = document.getElementById(id);
+    if (!c || !c._scatterMap) return;
+    var m = c._scatterMap, ctx = c.getContext('2d');
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,255,255,0.28)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    var vx = m.toX(xMed);
+    ctx.beginPath(); ctx.moveTo(vx, m.padT); ctx.lineTo(vx, m.padT + m.plotH); ctx.stroke();
+    var hy = m.toY(yMed);
+    ctx.beginPath(); ctx.moveTo(m.padL, hy); ctx.lineTo(m.padL + m.plotW, hy); ctx.stroke();
+    ctx.restore();
+  }
+
+  Charts.scatter('chart-scatter-tck',    [{x:0.2,y:100.0,label:"Bodø/Glimt",aachen:false},{x:0.7,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.8,y:100.0,label:"Bodø/Glimt",aachen:false},{x:0.6,y:100.0,label:"Bodø/Glimt",aachen:false},{x:3.0,y:100.0,label:"Bodø/Glimt",aachen:false},{x:0.3,y:100.0,label:"Bodø/Glimt",aachen:false},{x:0.9,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.7,y:100.0,label:"Bodø/Glimt",aachen:false},{x:0.4,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.5,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.6,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.5,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.3,y:100.0,label:"Bodø/Glimt",aachen:false},{x:1.1,y:100.0,label:"Brann",aachen:false},{x:0.7,y:100.0,label:"Brann",aachen:false},{x:0.4,y:100.0,label:"Brann",aachen:false},{x:0.9,y:100.0,label:"Brann",aachen:false},{x:0.5,y:100.0,label:"Brann",aachen:false},{x:1.8,y:100.0,label:"Brann",aachen:false},{x:2.2,y:100.0,label:"Brann",aachen:false},{x:2.5,y:100.0,label:"Brann",aachen:false},{x:0.6,y:100.0,label:"Brann",aachen:false},{x:1.7,y:100.0,label:"Brann",aachen:false},{x:2.6,y:100.0,label:"Brann",aachen:false},{x:3.5,y:100.0,label:"Brann",aachen:false},{x:1.0,y:100.0,label:"Brann",aachen:false},{x:0.2,y:100.0,label:"Bryne",aachen:false},{x:0.6,y:100.0,label:"Bryne",aachen:false},{x:0.4,y:100.0,label:"Bryne",aachen:false},{x:1.2,y:100.0,label:"Bryne",aachen:false},{x:1.1,y:100.0,label:"Bryne",aachen:false},{x:0.2,y:100.0,label:"Bryne",aachen:false},{x:3.4,y:100.0,label:"Bryne",aachen:false},{x:2.2,y:100.0,label:"Bryne",aachen:false},{x:0.8,y:100.0,label:"Bryne",aachen:false},{x:2.5,y:100.0,label:"Bryne",aachen:false},{x:1.8,y:100.0,label:"Fredrikstad",aachen:false},{x:0.6,y:100.0,label:"Fredrikstad",aachen:false},{x:0.3,y:100.0,label:"Fredrikstad",aachen:false},{x:1.8,y:100.0,label:"Fredrikstad",aachen:false},{x:0.8,y:100.0,label:"Fredrikstad",aachen:false},{x:0.3,y:100.0,label:"Fredrikstad",aachen:false},{x:1.0,y:100.0,label:"Fredrikstad",aachen:false},{x:2.6,y:100.0,label:"Fredrikstad",aachen:false},{x:1.0,y:100.0,label:"Fredrikstad",aachen:false},{x:0.9,y:100.0,label:"Teodor Håland",aachen:true},{x:0.2,y:100.0,label:"Sebastian Haugland",aachen:true},{x:3.1,y:100.0,label:"Quinten Dekkers",aachen:true},{x:0.8,y:100.0,label:"Isak Skotheim",aachen:true},{x:2.1,y:100.0,label:"Halvard Urnes",aachen:true},{x:2.7,y:100.0,label:"Ola Visted",aachen:true},{x:0.3,y:100.0,label:"Emmanuel Danso",aachen:true},{x:1.5,y:100.0,label:"Torbjørn Kallevåg",aachen:true},{x:0.8,y:100.0,label:"Mirza Mulac",aachen:true},{x:0.3,y:100.0,label:"Matthew Scarcella",aachen:true},{x:1.3,y:100.0,label:"Sondre Fosnæss Hanssen",aachen:true},{x:0.4,y:100.0,label:"Kongsvinger",aachen:false},{x:3.7,y:100.0,label:"Kongsvinger",aachen:false},{x:0.2,y:100.0,label:"Kongsvinger",aachen:false},{x:0.8,y:100.0,label:"Kongsvinger",aachen:false},{x:2.2,y:100.0,label:"Kongsvinger",aachen:false},{x:1.9,y:100.0,label:"Kongsvinger",aachen:false},{x:0.6,y:100.0,label:"Kongsvinger",aachen:false},{x:2.6,y:100.0,label:"Kongsvinger",aachen:false},{x:2.0,y:100.0,label:"Kongsvinger",aachen:false},{x:0.3,y:100.0,label:"Kristiansund",aachen:false},{x:4.3,y:100.0,label:"Kristiansund",aachen:false},{x:1.0,y:100.0,label:"Kristiansund",aachen:false},{x:1.0,y:100.0,label:"Kristiansund",aachen:false},{x:2.3,y:100.0,label:"Kristiansund",aachen:false},{x:3.1,y:100.0,label:"Kristiansund",aachen:false},{x:1.7,y:100.0,label:"Kristiansund",aachen:false},{x:3.7,y:100.0,label:"Lillestrøm",aachen:false},{x:1.0,y:100.0,label:"Lillestrøm",aachen:false},{x:0.6,y:100.0,label:"Lillestrøm",aachen:false},{x:1.7,y:100.0,label:"Lillestrøm",aachen:false},{x:0.6,y:100.0,label:"Lillestrøm",aachen:false},{x:2.5,y:100.0,label:"Lillestrøm",aachen:false},{x:0.5,y:100.0,label:"Lillestrøm",aachen:false},{x:0.4,y:100.0,label:"Lillestrøm",aachen:false},{x:1.7,y:100.0,label:"Lillestrøm",aachen:false},{x:1.2,y:100.0,label:"Molde",aachen:false},{x:0.6,y:100.0,label:"Molde",aachen:false},{x:1.2,y:100.0,label:"Molde",aachen:false},{x:1.1,y:100.0,label:"Molde",aachen:false},{x:1.0,y:100.0,label:"Molde",aachen:false},{x:1.6,y:100.0,label:"Molde",aachen:false},{x:0.5,y:100.0,label:"Molde",aachen:false},{x:0.2,y:100.0,label:"Rosenborg",aachen:false},{x:1.2,y:100.0,label:"Rosenborg",aachen:false},{x:1.6,y:100.0,label:"Rosenborg",aachen:false},{x:1.0,y:100.0,label:"Rosenborg",aachen:false},{x:1.6,y:100.0,label:"Rosenborg",aachen:false},{x:0.6,y:100.0,label:"Rosenborg",aachen:false},{x:1.3,y:100.0,label:"Rosenborg",aachen:false},{x:0.5,y:100.0,label:"Rosenborg",aachen:false},{x:1.7,y:100.0,label:"Rosenborg",aachen:false},{x:1.6,y:100.0,label:"Rosenborg",aachen:false},{x:0.2,y:100.0,label:"Rosenborg",aachen:false},{x:0.7,y:100.0,label:"Sandefjord",aachen:false},{x:0.9,y:100.0,label:"Sandefjord",aachen:false},{x:0.2,y:100.0,label:"Sandefjord",aachen:false},{x:1.0,y:100.0,label:"Sandefjord",aachen:false},{x:0.3,y:100.0,label:"Sandefjord",aachen:false},{x:1.0,y:100.0,label:"Sandefjord",aachen:false},{x:1.2,y:100.0,label:"Sandefjord",aachen:false},{x:0.1,y:100.0,label:"Sandefjord",aachen:false},{x:0.8,y:100.0,label:"Sandefjord",aachen:false},{x:0.5,y:100.0,label:"Sandefjord",aachen:false},{x:2.8,y:100.0,label:"Sandefjord",aachen:false},{x:0.5,y:100.0,label:"Sandefjord",aachen:false},{x:1.2,y:100.0,label:"Sarpsborg",aachen:false},{x:0.5,y:100.0,label:"Sarpsborg",aachen:false},{x:1.7,y:100.0,label:"Sarpsborg",aachen:false},{x:3.5,y:100.0,label:"Sarpsborg",aachen:false},{x:2.9,y:100.0,label:"Sarpsborg",aachen:false},{x:1.9,y:100.0,label:"Sarpsborg",aachen:false},{x:0.6,y:100.0,label:"Sarpsborg",aachen:false},{x:1.0,y:100.0,label:"Sarpsborg",aachen:false},{x:0.5,y:100.0,label:"Strømsgodset",aachen:false},{x:2.0,y:100.0,label:"Strømsgodset",aachen:false},{x:0.6,y:100.0,label:"Strømsgodset",aachen:false},{x:3.0,y:100.0,label:"Strømsgodset",aachen:false},{x:1.3,y:100.0,label:"Strømsgodset",aachen:false},{x:1.7,y:100.0,label:"Strømsgodset",aachen:false},{x:0.5,y:100.0,label:"Strømsgodset",aachen:false},{x:1.3,y:100.0,label:"Strømsgodset",aachen:false},{x:1.9,y:100.0,label:"Tromsø",aachen:false},{x:0.9,y:100.0,label:"Tromsø",aachen:false},{x:0.8,y:100.0,label:"Tromsø",aachen:false},{x:0.4,y:100.0,label:"Tromsø",aachen:false},{x:0.7,y:100.0,label:"Tromsø",aachen:false},{x:0.2,y:100.0,label:"Tromsø",aachen:false},{x:1.0,y:100.0,label:"Tromsø",aachen:false},{x:2.7,y:100.0,label:"Tromsø",aachen:false},{x:0.8,y:100.0,label:"Tromsø",aachen:false},{x:1.9,y:100.0,label:"Tromsø",aachen:false},{x:2.1,y:100.0,label:"Vålerenga",aachen:false},{x:2.8,y:100.0,label:"Vålerenga",aachen:false},{x:1.2,y:100.0,label:"Vålerenga",aachen:false},{x:0.8,y:100.0,label:"Vålerenga",aachen:false},{x:4.2,y:100.0,label:"Vålerenga",aachen:false},{x:2.2,y:100.0,label:"Vålerenga",aachen:false},{x:0.5,y:100.0,label:"Viking",aachen:false},{x:2.6,y:100.0,label:"Viking",aachen:false},{x:0.6,y:100.0,label:"Viking",aachen:false},{x:0.7,y:100.0,label:"Viking",aachen:false},{x:0.8,y:100.0,label:"Viking",aachen:false},{x:0.5,y:100.0,label:"Viking",aachen:false},{x:0.6,y:100.0,label:"Viking",aachen:false}],    {xLabel:'Tackles / 90', yLabel:'Tackle Success %', height:320});
+  drawP50('chart-scatter-tck', 1.0, 100.0);
+  Charts.scatter('chart-scatter-inthdr', [{x:3.5,y:5.0,label:"Bodø/Glimt",aachen:false},{x:1.0,y:0.0,label:"Bodø/Glimt",aachen:false},{x:5.3,y:2.8,label:"Bodø/Glimt",aachen:false},{x:0.3,y:0.0,label:"Bodø/Glimt",aachen:false},{x:2.8,y:2.0,label:"Bodø/Glimt",aachen:false},{x:0.9,y:2.4,label:"Bodø/Glimt",aachen:false},{x:2.4,y:0.8,label:"Bodø/Glimt",aachen:false},{x:3.3,y:5.2,label:"Bodø/Glimt",aachen:false},{x:3.4,y:5.1,label:"Bodø/Glimt",aachen:false},{x:1.2,y:0.5,label:"Bodø/Glimt",aachen:false},{x:1.1,y:0.5,label:"Bodø/Glimt",aachen:false},{x:1.5,y:0.4,label:"Bodø/Glimt",aachen:false},{x:3.4,y:2.4,label:"Bodø/Glimt",aachen:false},{x:1.9,y:1.7,label:"Brann",aachen:false},{x:3.1,y:1.6,label:"Brann",aachen:false},{x:1.8,y:1.6,label:"Brann",aachen:false},{x:1.5,y:2.7,label:"Brann",aachen:false},{x:0.8,y:0.5,label:"Brann",aachen:false},{x:2.2,y:3.1,label:"Brann",aachen:false},{x:3.5,y:3.6,label:"Brann",aachen:false},{x:3.4,y:0.9,label:"Brann",aachen:false},{x:3.5,y:4.1,label:"Brann",aachen:false},{x:2.6,y:3.1,label:"Brann",aachen:false},{x:3.2,y:4.4,label:"Brann",aachen:false},{x:3.5,y:2.7,label:"Brann",aachen:false},{x:2.7,y:0.9,label:"Brann",aachen:false},{x:1.7,y:1.7,label:"Bryne",aachen:false},{x:1.9,y:1.2,label:"Bryne",aachen:false},{x:2.4,y:1.9,label:"Bryne",aachen:false},{x:3.0,y:3.3,label:"Bryne",aachen:false},{x:3.6,y:4.9,label:"Bryne",aachen:false},{x:2.3,y:1.2,label:"Bryne",aachen:false},{x:3.9,y:0.4,label:"Bryne",aachen:false},{x:2.5,y:0.6,label:"Bryne",aachen:false},{x:2.3,y:4.3,label:"Bryne",aachen:false},{x:4.9,y:4.3,label:"Bryne",aachen:false},{x:2.5,y:0.0,label:"Fredrikstad",aachen:false},{x:1.7,y:1.1,label:"Fredrikstad",aachen:false},{x:2.7,y:7.2,label:"Fredrikstad",aachen:false},{x:1.8,y:2.1,label:"Fredrikstad",aachen:false},{x:2.5,y:2.0,label:"Fredrikstad",aachen:false},{x:3.4,y:0.9,label:"Fredrikstad",aachen:false},{x:2.6,y:0.7,label:"Fredrikstad",aachen:false},{x:3.6,y:0.8,label:"Fredrikstad",aachen:false},{x:2.0,y:3.8,label:"Fredrikstad",aachen:false},{x:1.1,y:0.3,label:"Teodor Håland",aachen:true},{x:0.6,y:0.6,label:"Sebastian Haugland",aachen:true},{x:4.2,y:1.1,label:"Quinten Dekkers",aachen:true},{x:1.9,y:0.2,label:"Isak Skotheim",aachen:true},{x:1.9,y:0.5,label:"Halvard Urnes",aachen:true},{x:3.5,y:3.1,label:"Ola Visted",aachen:true},{x:1.9,y:0.3,label:"Emmanuel Danso",aachen:true},{x:1.6,y:1.0,label:"Torbjørn Kallevåg",aachen:true},{x:6.3,y:3.9,label:"Mirza Mulac",aachen:true},{x:1.7,y:1.0,label:"Matthew Scarcella",aachen:true},{x:5.1,y:3.2,label:"Sondre Fosnæss Hanssen",aachen:true},{x:0.2,y:1.5,label:"Kongsvinger",aachen:false},{x:3.9,y:2.8,label:"Kongsvinger",aachen:false},{x:3.4,y:3.4,label:"Kongsvinger",aachen:false},{x:3.0,y:4.6,label:"Kongsvinger",aachen:false},{x:3.0,y:0.0,label:"Kongsvinger",aachen:false},{x:2.5,y:1.3,label:"Kongsvinger",aachen:false},{x:2.4,y:2.2,label:"Kongsvinger",aachen:false},{x:2.8,y:1.5,label:"Kongsvinger",aachen:false},{x:3.2,y:2.0,label:"Kongsvinger",aachen:false},{x:2.8,y:0.9,label:"Kristiansund",aachen:false},{x:5.3,y:2.8,label:"Kristiansund",aachen:false},{x:3.3,y:2.7,label:"Kristiansund",aachen:false},{x:3.2,y:4.5,label:"Kristiansund",aachen:false},{x:1.8,y:0.3,label:"Kristiansund",aachen:false},{x:2.1,y:5.2,label:"Kristiansund",aachen:false},{x:2.3,y:1.3,label:"Kristiansund",aachen:false},{x:1.7,y:0.0,label:"Kristiansund",aachen:false},{x:4.6,y:3.7,label:"Lillestrøm",aachen:false},{x:5.0,y:1.3,label:"Lillestrøm",aachen:false},{x:5.0,y:4.0,label:"Lillestrøm",aachen:false},{x:3.7,y:1.0,label:"Lillestrøm",aachen:false},{x:2.6,y:1.0,label:"Lillestrøm",aachen:false},{x:2.5,y:1.3,label:"Lillestrøm",aachen:false},{x:0.9,y:5.1,label:"Lillestrøm",aachen:false},{x:1.8,y:0.5,label:"Lillestrøm",aachen:false},{x:3.0,y:1.0,label:"Lillestrøm",aachen:false},{x:4.7,y:1.1,label:"Lillestrøm",aachen:false},{x:3.0,y:1.5,label:"Molde",aachen:false},{x:4.8,y:1.5,label:"Molde",aachen:false},{x:5.8,y:5.0,label:"Molde",aachen:false},{x:2.2,y:1.6,label:"Molde",aachen:false},{x:0.8,y:1.3,label:"Molde",aachen:false},{x:3.3,y:3.0,label:"Molde",aachen:false},{x:3.2,y:3.8,label:"Molde",aachen:false},{x:2.0,y:2.0,label:"Rosenborg",aachen:false},{x:1.0,y:0.2,label:"Rosenborg",aachen:false},{x:4.8,y:4.2,label:"Rosenborg",aachen:false},{x:6.9,y:6.3,label:"Rosenborg",aachen:false},{x:2.3,y:0.4,label:"Rosenborg",aachen:false},{x:3.0,y:3.8,label:"Rosenborg",aachen:false},{x:2.6,y:4.5,label:"Rosenborg",aachen:false},{x:1.9,y:0.3,label:"Rosenborg",aachen:false},{x:1.7,y:1.7,label:"Rosenborg",aachen:false},{x:3.7,y:2.1,label:"Rosenborg",aachen:false},{x:1.0,y:1.4,label:"Rosenborg",aachen:false},{x:2.6,y:0.6,label:"Sandefjord",aachen:false},{x:2.2,y:0.5,label:"Sandefjord",aachen:false},{x:0.6,y:5.4,label:"Sandefjord",aachen:false},{x:2.8,y:0.8,label:"Sandefjord",aachen:false},{x:5.3,y:4.3,label:"Sandefjord",aachen:false},{x:2.0,y:0.1,label:"Sandefjord",aachen:false},{x:2.1,y:0.7,label:"Sandefjord",aachen:false},{x:2.7,y:2.9,label:"Sandefjord",aachen:false},{x:2.6,y:2.4,label:"Sandefjord",aachen:false},{x:1.7,y:1.7,label:"Sandefjord",aachen:false},{x:3.4,y:1.3,label:"Sandefjord",aachen:false},{x:1.3,y:0.3,label:"Sandefjord",aachen:false},{x:0.8,y:7.8,label:"Sarpsborg",aachen:false},{x:4.8,y:4.4,label:"Sarpsborg",aachen:false},{x:2.0,y:0.8,label:"Sarpsborg",aachen:false},{x:2.6,y:1.7,label:"Sarpsborg",aachen:false},{x:2.5,y:2.3,label:"Sarpsborg",aachen:false},{x:2.9,y:1.2,label:"Sarpsborg",aachen:false},{x:5.8,y:1.1,label:"Sarpsborg",aachen:false},{x:3.0,y:2.8,label:"Sarpsborg",aachen:false},{x:4.0,y:2.6,label:"Sarpsborg",aachen:false},{x:2.8,y:5.5,label:"Strømsgodset",aachen:false},{x:2.8,y:5.5,label:"Strømsgodset",aachen:false},{x:3.3,y:1.3,label:"Strømsgodset",aachen:false},{x:1.4,y:0.0,label:"Strømsgodset",aachen:false},{x:2.3,y:0.7,label:"Strømsgodset",aachen:false},{x:6.5,y:1.6,label:"Strømsgodset",aachen:false},{x:0.3,y:0.9,label:"Strømsgodset",aachen:false},{x:0.8,y:2.5,label:"Strømsgodset",aachen:false},{x:2.8,y:2.0,label:"Strømsgodset",aachen:false},{x:1.9,y:3.1,label:"Tromsø",aachen:false},{x:2.6,y:0.4,label:"Tromsø",aachen:false},{x:4.3,y:2.2,label:"Tromsø",aachen:false},{x:0.6,y:2.9,label:"Tromsø",aachen:false},{x:3.7,y:3.5,label:"Tromsø",aachen:false},{x:1.0,y:0.0,label:"Tromsø",aachen:false},{x:3.3,y:4.0,label:"Tromsø",aachen:false},{x:2.7,y:0.4,label:"Tromsø",aachen:false},{x:3.2,y:1.2,label:"Tromsø",aachen:false},{x:3.3,y:0.4,label:"Tromsø",aachen:false},{x:2.6,y:1.1,label:"Vålerenga",aachen:false},{x:2.8,y:0.6,label:"Vålerenga",aachen:false},{x:3.5,y:3.8,label:"Vålerenga",aachen:false},{x:0.8,y:1.3,label:"Vålerenga",aachen:false},{x:2.0,y:2.8,label:"Vålerenga",aachen:false},{x:3.6,y:0.6,label:"Vålerenga",aachen:false},{x:3.2,y:1.2,label:"Vålerenga",aachen:false},{x:0.6,y:0.6,label:"Viking",aachen:false},{x:3.4,y:0.0,label:"Viking",aachen:false},{x:3.3,y:4.3,label:"Viking",aachen:false},{x:4.7,y:3.8,label:"Viking",aachen:false},{x:3.0,y:0.7,label:"Viking",aachen:false},{x:3.2,y:1.4,label:"Viking",aachen:false},{x:4.8,y:4.8,label:"Viking",aachen:false},{x:3.0,y:0.0,label:"Viking",aachen:false},{x:2.0,y:4.0,label:"Viking",aachen:false}], {xLabel:'Interceptions / 90', yLabel:'Aerial Wins / 90', height:320});
+  drawP50('chart-scatter-inthdr', 2.7, 1.6);
+  Charts.scatter('chart-scatter-ktck',   [{x:0.0,y:10.9,label:"Bodø/Glimt",aachen:false},{x:0.0,y:5.6,label:"Bodø/Glimt",aachen:false},{x:0.0,y:14.6,label:"Bodø/Glimt",aachen:false},{x:0.0,y:4.7,label:"Bodø/Glimt",aachen:false},{x:0.01,y:8.9,label:"Bodø/Glimt",aachen:false},{x:0.0,y:1.5,label:"Bodø/Glimt",aachen:false},{x:0.013,y:8.0,label:"Bodø/Glimt",aachen:false},{x:0.0,y:13.4,label:"Bodø/Glimt",aachen:false},{x:0.014,y:11.8,label:"Bodø/Glimt",aachen:false},{x:0.0,y:4.8,label:"Bodø/Glimt",aachen:false},{x:0.0,y:4.3,label:"Bodø/Glimt",aachen:false},{x:0.0,y:3.7,label:"Bodø/Glimt",aachen:false},{x:0.21,y:8.9,label:"Bodø/Glimt",aachen:false},{x:0.011,y:5.7,label:"Brann",aachen:false},{x:0.023,y:9.8,label:"Brann",aachen:false},{x:0.0,y:7.3,label:"Brann",aachen:false},{x:0.0,y:2.0,label:"Brann",aachen:false},{x:0.0,y:2.3,label:"Brann",aachen:false},{x:0.0,y:7.0,label:"Brann",aachen:false},{x:0.011,y:15.2,label:"Brann",aachen:false},{x:0.013,y:7.5,label:"Brann",aachen:false},{x:0.0,y:10.2,label:"Brann",aachen:false},{x:0.0,y:9.5,label:"Brann",aachen:false},{x:0.085,y:10.6,label:"Brann",aachen:false},{x:0.0,y:9.9,label:"Brann",aachen:false},{x:0.0,y:8.8,label:"Brann",aachen:false},{x:0.0,y:5.3,label:"Bryne",aachen:false},{x:0.0,y:7.4,label:"Bryne",aachen:false},{x:0.0,y:6.0,label:"Bryne",aachen:false},{x:0.0,y:9.7,label:"Bryne",aachen:false},{x:0.085,y:12.7,label:"Bryne",aachen:false},{x:0.0,y:6.3,label:"Bryne",aachen:false},{x:0.037,y:11.6,label:"Bryne",aachen:false},{x:0.0,y:7.0,label:"Bryne",aachen:false},{x:0.0,y:9.5,label:"Bryne",aachen:false},{x:0.0,y:11.2,label:"Bryne",aachen:false},{x:0.0,y:8.8,label:"Fredrikstad",aachen:false},{x:0.0,y:4.7,label:"Fredrikstad",aachen:false},{x:0.0,y:12.8,label:"Fredrikstad",aachen:false},{x:0.0,y:5.7,label:"Fredrikstad",aachen:false},{x:0.0,y:9.0,label:"Fredrikstad",aachen:false},{x:0.0,y:5.3,label:"Fredrikstad",aachen:false},{x:0.0,y:6.2,label:"Fredrikstad",aachen:false},{x:0.0,y:8.5,label:"Fredrikstad",aachen:false},{x:0.076,y:7.6,label:"Fredrikstad",aachen:false},{x:0.0,y:3.2,label:"Teodor Håland",aachen:true},{x:0.032,y:2.4,label:"Sebastian Haugland",aachen:true},{x:0.038,y:13.6,label:"Quinten Dekkers",aachen:true},{x:0.0,y:3.9,label:"Isak Skotheim",aachen:true},{x:0.0,y:5.2,label:"Halvard Urnes",aachen:true},{x:0.0,y:12.4,label:"Ola Visted",aachen:true},{x:0.0,y:5.1,label:"Emmanuel Danso",aachen:true},{x:0.0,y:5.6,label:"Torbjørn Kallevåg",aachen:true},{x:0.0,y:15.6,label:"Mirza Mulac",aachen:true},{x:0.1,y:5.0,label:"Matthew Scarcella",aachen:true},{x:0.0,y:12.0,label:"Sondre Fosnæss Hanssen",aachen:true},{x:0.0,y:1.7,label:"Kongsvinger",aachen:false},{x:0.087,y:14.3,label:"Kongsvinger",aachen:false},{x:0.0,y:9.8,label:"Kongsvinger",aachen:false},{x:0.08,y:7.4,label:"Kongsvinger",aachen:false},{x:0.0,y:7.7,label:"Kongsvinger",aachen:false},{x:0.0,y:5.1,label:"Kongsvinger",aachen:false},{x:0.04,y:10.0,label:"Kongsvinger",aachen:false},{x:0.044,y:9.8,label:"Kongsvinger",aachen:false},{x:0.0,y:7.4,label:"Kongsvinger",aachen:false},{x:0.0,y:5.5,label:"Kristiansund",aachen:false},{x:0.0,y:13.7,label:"Kristiansund",aachen:false},{x:0.1,y:8.3,label:"Kristiansund",aachen:false},{x:0.2,y:11.2,label:"Kristiansund",aachen:false},{x:0.0,y:6.6,label:"Kristiansund",aachen:false},{x:0.0,y:7.5,label:"Kristiansund",aachen:false},{x:0.1,y:6.0,label:"Kristiansund",aachen:false},{x:0.0,y:3.3,label:"Kristiansund",aachen:false},{x:0.122,y:14.9,label:"Lillestrøm",aachen:false},{x:0.0,y:8.7,label:"Lillestrøm",aachen:false},{x:0.08,y:12.0,label:"Lillestrøm",aachen:false},{x:0.0,y:9.7,label:"Lillestrøm",aachen:false},{x:0.0,y:7.7,label:"Lillestrøm",aachen:false},{x:0.127,y:13.2,label:"Lillestrøm",aachen:false},{x:0.0,y:2.4,label:"Lillestrøm",aachen:false},{x:0.0,y:3.7,label:"Lillestrøm",aachen:false},{x:0.0,y:9.4,label:"Lillestrøm",aachen:false},{x:0.0,y:9.6,label:"Lillestrøm",aachen:false},{x:0.0,y:9.2,label:"Molde",aachen:false},{x:0.0,y:11.2,label:"Molde",aachen:false},{x:0.0,y:13.2,label:"Molde",aachen:false},{x:0.0,y:7.3,label:"Molde",aachen:false},{x:0.0,y:3.3,label:"Molde",aachen:false},{x:0.0,y:12.5,label:"Molde",aachen:false},{x:0.0,y:9.2,label:"Molde",aachen:false},{x:0.0,y:5.6,label:"Rosenborg",aachen:false},{x:0.0,y:3.2,label:"Rosenborg",aachen:false},{x:0.081,y:13.9,label:"Rosenborg",aachen:false},{x:0.0,y:13.9,label:"Rosenborg",aachen:false},{x:0.039,y:4.7,label:"Rosenborg",aachen:false},{x:0.032,y:9.2,label:"Rosenborg",aachen:false},{x:0.0,y:8.4,label:"Rosenborg",aachen:false},{x:0.0,y:5.8,label:"Rosenborg",aachen:false},{x:0.0,y:4.9,label:"Rosenborg",aachen:false},{x:0.0,y:11.8,label:"Rosenborg",aachen:false},{x:0.032,y:1.9,label:"Rosenborg",aachen:false},{x:0.037,y:6.1,label:"Sandefjord",aachen:false},{x:0.0,y:4.9,label:"Sandefjord",aachen:false},{x:0.0,y:2.4,label:"Sandefjord",aachen:false},{x:0.0,y:8.5,label:"Sandefjord",aachen:false},{x:0.0,y:11.9,label:"Sandefjord",aachen:false},{x:0.0,y:4.9,label:"Sandefjord",aachen:false},{x:0.0,y:7.3,label:"Sandefjord",aachen:false},{x:0.0,y:7.6,label:"Sandefjord",aachen:false},{x:0.0,y:7.1,label:"Sandefjord",aachen:false},{x:0.0,y:6.4,label:"Sandefjord",aachen:false},{x:0.0,y:10.3,label:"Sandefjord",aachen:false},{x:0.0,y:3.8,label:"Sandefjord",aachen:false},{x:0.0,y:2.8,label:"Sarpsborg",aachen:false},{x:0.08,y:11.2,label:"Sarpsborg",aachen:false},{x:0.0,y:5.6,label:"Sarpsborg",aachen:false},{x:0.0,y:7.1,label:"Sarpsborg",aachen:false},{x:0.126,y:7.1,label:"Sarpsborg",aachen:false},{x:0.0,y:12.1,label:"Sarpsborg",aachen:false},{x:0.043,y:12.4,label:"Sarpsborg",aachen:false},{x:0.04,y:7.5,label:"Sarpsborg",aachen:false},{x:0.081,y:7.7,label:"Sarpsborg",aachen:false},{x:0.05,y:14.2,label:"Strømsgodset",aachen:false},{x:0.0,y:13.2,label:"Strømsgodset",aachen:false},{x:0.0,y:7.0,label:"Strømsgodset",aachen:false},{x:0.0,y:3.6,label:"Strømsgodset",aachen:false},{x:0.0,y:4.3,label:"Strømsgodset",aachen:false},{x:0.0,y:14.3,label:"Strømsgodset",aachen:false},{x:0.0,y:5.5,label:"Strømsgodset",aachen:false},{x:0.0,y:1.2,label:"Strømsgodset",aachen:false},{x:0.0,y:10.4,label:"Strømsgodset",aachen:false},{x:0.0,y:5.9,label:"Tromsø",aachen:false},{x:0.0,y:7.0,label:"Tromsø",aachen:false},{x:0.0,y:12.9,label:"Tromsø",aachen:false},{x:0.0,y:2.3,label:"Tromsø",aachen:false},{x:0.05,y:9.9,label:"Tromsø",aachen:false},{x:0.0,y:2.8,label:"Tromsø",aachen:false},{x:0.0,y:10.3,label:"Tromsø",aachen:false},{x:0.042,y:7.7,label:"Tromsø",aachen:false},{x:0.033,y:5.5,label:"Tromsø",aachen:false},{x:0.07,y:8.1,label:"Tromsø",aachen:false},{x:0.0,y:6.9,label:"Vålerenga",aachen:false},{x:0.0,y:7.4,label:"Vålerenga",aachen:false},{x:0.05,y:10.2,label:"Vålerenga",aachen:false},{x:0.0,y:2.0,label:"Vålerenga",aachen:false},{x:0.0,y:6.8,label:"Vålerenga",aachen:false},{x:0.0,y:14.7,label:"Vålerenga",aachen:false},{x:0.05,y:8.5,label:"Vålerenga",aachen:false},{x:0.0,y:1.8,label:"Viking",aachen:false},{x:0.0,y:7.3,label:"Viking",aachen:false},{x:0.0,y:13.4,label:"Viking",aachen:false},{x:0.087,y:11.7,label:"Viking",aachen:false},{x:0.0,y:8.0,label:"Viking",aachen:false},{x:0.04,y:10.6,label:"Viking",aachen:false},{x:0.046,y:14.1,label:"Viking",aachen:false},{x:0.0,y:7.6,label:"Viking",aachen:false},{x:0.0,y:11.0,label:"Viking",aachen:false}],   {xLabel:'Key Tackles / 90', yLabel:'Possession Won / 90', height:320});
+  drawP50('chart-scatter-ktck', 0.0, 7.6);
+  Charts.scatter('chart-scatter-pres',   [{x:1.5,y:26.7,label:"Bodø/Glimt",aachen:false},{x:6.4,y:29.7,label:"Bodø/Glimt",aachen:false},{x:7.3,y:41.1,label:"Bodø/Glimt",aachen:false},{x:3.8,y:23.7,label:"Bodø/Glimt",aachen:false},{x:10.1,y:31.7,label:"Bodø/Glimt",aachen:false},{x:2.1,y:19.0,label:"Bodø/Glimt",aachen:false},{x:5.0,y:20.0,label:"Bodø/Glimt",aachen:false},{x:4.8,y:16.7,label:"Bodø/Glimt",aachen:false},{x:2.0,y:45.0,label:"Bodø/Glimt",aachen:false},{x:8.0,y:35.0,label:"Bodø/Glimt",aachen:false},{x:8.2,y:19.5,label:"Bodø/Glimt",aachen:false},{x:7.7,y:26.0,label:"Bodø/Glimt",aachen:false},{x:1.3,y:61.5,label:"Bodø/Glimt",aachen:false},{x:2.8,y:53.6,label:"Brann",aachen:false},{x:2.8,y:32.1,label:"Brann",aachen:false},{x:4.5,y:33.3,label:"Brann",aachen:false},{x:4.4,y:20.5,label:"Brann",aachen:false},{x:1.5,y:46.7,label:"Brann",aachen:false},{x:10.1,y:15.8,label:"Brann",aachen:false},{x:6.6,y:42.4,label:"Brann",aachen:false},{x:12.9,y:21.7,label:"Brann",aachen:false},{x:2.2,y:22.7,label:"Brann",aachen:false},{x:5.9,y:25.4,label:"Brann",aachen:false},{x:5.8,y:37.9,label:"Brann",aachen:false},{x:9.1,y:38.5,label:"Brann",aachen:false},{x:6.7,y:25.4,label:"Brann",aachen:false},{x:1.7,y:23.5,label:"Bryne",aachen:false},{x:8.1,y:25.9,label:"Bryne",aachen:false},{x:4.1,y:22.0,label:"Bryne",aachen:false},{x:5.3,y:15.1,label:"Bryne",aachen:false},{x:1.3,y:30.8,label:"Bryne",aachen:false},{x:2.0,y:35.0,label:"Bryne",aachen:false},{x:7.7,y:24.7,label:"Bryne",aachen:false},{x:7.3,y:27.4,label:"Bryne",aachen:false},{x:1.5,y:20.0,label:"Bryne",aachen:false},{x:8.5,y:25.9,label:"Bryne",aachen:false},{x:6.5,y:30.8,label:"Fredrikstad",aachen:false},{x:4.1,y:34.1,label:"Fredrikstad",aachen:false},{x:5.3,y:30.2,label:"Fredrikstad",aachen:false},{x:11.2,y:18.8,label:"Fredrikstad",aachen:false},{x:3.5,y:34.3,label:"Fredrikstad",aachen:false},{x:4.4,y:13.6,label:"Fredrikstad",aachen:false},{x:1.6,y:62.5,label:"Fredrikstad",aachen:false},{x:9.3,y:10.8,label:"Fredrikstad",aachen:false},{x:9.9,y:23.2,label:"Fredrikstad",aachen:false},{x:6.0,y:18.3,label:"Teodor Håland",aachen:true},{x:2.6,y:19.2,label:"Sebastian Haugland",aachen:true},{x:11.1,y:24.3,label:"Quinten Dekkers",aachen:true},{x:5.1,y:27.5,label:"Isak Skotheim",aachen:true},{x:10.0,y:21.0,label:"Halvard Urnes",aachen:true},{x:11.2,y:22.3,label:"Ola Visted",aachen:true},{x:2.5,y:40.0,label:"Emmanuel Danso",aachen:true},{x:8.3,y:18.1,label:"Torbjørn Kallevåg",aachen:true},{x:4.1,y:31.7,label:"Mirza Mulac",aachen:true},{x:1.0,y:0.0,label:"Matthew Scarcella",aachen:true},{x:5.1,y:21.6,label:"Sondre Fosnæss Hanssen",aachen:true},{x:2.5,y:16.0,label:"Kongsvinger",aachen:false},{x:8.7,y:32.2,label:"Kongsvinger",aachen:false},{x:1.4,y:42.9,label:"Kongsvinger",aachen:false},{x:1.0,y:20.0,label:"Kongsvinger",aachen:false},{x:7.4,y:21.6,label:"Kongsvinger",aachen:false},{x:9.8,y:17.3,label:"Kongsvinger",aachen:false},{x:3.6,y:22.2,label:"Kongsvinger",aachen:false},{x:8.5,y:20.0,label:"Kongsvinger",aachen:false},{x:7.2,y:22.2,label:"Kongsvinger",aachen:false},{x:7.1,y:35.2,label:"Kristiansund",aachen:false},{x:12.9,y:33.3,label:"Kristiansund",aachen:false},{x:1.0,y:0.0,label:"Kristiansund",aachen:false},{x:3.5,y:28.6,label:"Kristiansund",aachen:false},{x:12.5,y:32.8,label:"Kristiansund",aachen:false},{x:10.8,y:24.1,label:"Kristiansund",aachen:false},{x:7.3,y:31.5,label:"Kristiansund",aachen:false},{x:2.0,y:15.0,label:"Kristiansund",aachen:false},{x:8.8,y:17.0,label:"Lillestrøm",aachen:false},{x:1.0,y:30.0,label:"Lillestrøm",aachen:false},{x:2.4,y:41.7,label:"Lillestrøm",aachen:false},{x:10.6,y:25.5,label:"Lillestrøm",aachen:false},{x:8.7,y:14.9,label:"Lillestrøm",aachen:false},{x:10.1,y:29.7,label:"Lillestrøm",aachen:false},{x:1.1,y:18.2,label:"Lillestrøm",aachen:false},{x:5.0,y:20.0,label:"Lillestrøm",aachen:false},{x:7.6,y:36.8,label:"Lillestrøm",aachen:false},{x:11.7,y:21.4,label:"Lillestrøm",aachen:false},{x:5.0,y:24.0,label:"Molde",aachen:false},{x:5.5,y:16.4,label:"Molde",aachen:false},{x:3.5,y:22.9,label:"Molde",aachen:false},{x:7.3,y:41.1,label:"Molde",aachen:false},{x:1.8,y:44.4,label:"Molde",aachen:false},{x:8.5,y:25.9,label:"Molde",aachen:false},{x:2.2,y:22.7,label:"Molde",aachen:false},{x:3.0,y:26.7,label:"Rosenborg",aachen:false},{x:7.6,y:28.9,label:"Rosenborg",aachen:false},{x:9.1,y:15.4,label:"Rosenborg",aachen:false},{x:2.6,y:26.9,label:"Rosenborg",aachen:false},{x:7.8,y:20.5,label:"Rosenborg",aachen:false},{x:1.7,y:29.4,label:"Rosenborg",aachen:false},{x:2.6,y:30.8,label:"Rosenborg",aachen:false},{x:8.4,y:19.0,label:"Rosenborg",aachen:false},{x:4.9,y:28.6,label:"Rosenborg",aachen:false},{x:9.5,y:28.4,label:"Rosenborg",aachen:false},{x:1.3,y:15.4,label:"Rosenborg",aachen:false},{x:8.9,y:37.1,label:"Sandefjord",aachen:false},{x:7.9,y:24.1,label:"Sandefjord",aachen:false},{x:1.1,y:18.2,label:"Sandefjord",aachen:false},{x:2.8,y:35.7,label:"Sandefjord",aachen:false},{x:2.0,y:50.0,label:"Sandefjord",aachen:false},{x:7.6,y:25.0,label:"Sandefjord",aachen:false},{x:8.8,y:29.5,label:"Sandefjord",aachen:false},{x:1.9,y:36.8,label:"Sandefjord",aachen:false},{x:5.0,y:16.0,label:"Sandefjord",aachen:false},{x:4.2,y:23.8,label:"Sandefjord",aachen:false},{x:6.3,y:39.7,label:"Sandefjord",aachen:false},{x:8.8,y:23.9,label:"Sandefjord",aachen:false},{x:0.8,y:37.5,label:"Sarpsborg",aachen:false},{x:3.4,y:17.6,label:"Sarpsborg",aachen:false},{x:2.8,y:17.9,label:"Sarpsborg",aachen:false},{x:10.3,y:16.5,label:"Sarpsborg",aachen:false},{x:10.8,y:23.1,label:"Sarpsborg",aachen:false},{x:10.8,y:23.1,label:"Sarpsborg",aachen:false},{x:7.3,y:31.5,label:"Sarpsborg",aachen:false},{x:2.4,y:33.3,label:"Sarpsborg",aachen:false},{x:3.8,y:36.8,label:"Sarpsborg",aachen:false},{x:3.0,y:26.7,label:"Strømsgodset",aachen:false},{x:1.5,y:33.3,label:"Strømsgodset",aachen:false},{x:5.3,y:32.1,label:"Strømsgodset",aachen:false},{x:5.3,y:37.7,label:"Strømsgodset",aachen:false},{x:5.7,y:12.3,label:"Strømsgodset",aachen:false},{x:8.1,y:28.4,label:"Strømsgodset",aachen:false},{x:8.1,y:24.7,label:"Strømsgodset",aachen:false},{x:1.2,y:0.0,label:"Strømsgodset",aachen:false},{x:5.3,y:9.4,label:"Strømsgodset",aachen:false},{x:8.1,y:17.3,label:"Tromsø",aachen:false},{x:11.9,y:28.6,label:"Tromsø",aachen:false},{x:3.0,y:53.3,label:"Tromsø",aachen:false},{x:2.9,y:13.8,label:"Tromsø",aachen:false},{x:3.2,y:15.6,label:"Tromsø",aachen:false},{x:4.8,y:6.2,label:"Tromsø",aachen:false},{x:3.2,y:37.5,label:"Tromsø",aachen:false},{x:7.7,y:37.7,label:"Tromsø",aachen:false},{x:8.3,y:32.5,label:"Tromsø",aachen:false},{x:6.9,y:30.4,label:"Tromsø",aachen:false},{x:8.5,y:28.2,label:"Vålerenga",aachen:false},{x:12.7,y:19.7,label:"Vålerenga",aachen:false},{x:2.2,y:45.5,label:"Vålerenga",aachen:false},{x:3.0,y:16.7,label:"Vålerenga",aachen:false},{x:1.5,y:33.3,label:"Vålerenga",aachen:false},{x:14.7,y:36.7,label:"Vålerenga",aachen:false},{x:9.8,y:30.6,label:"Vålerenga",aachen:false},{x:0.8,y:0.0,label:"Viking",aachen:false},{x:12.6,y:23.8,label:"Viking",aachen:false},{x:4.9,y:32.7,label:"Viking",aachen:false},{x:4.1,y:48.8,label:"Viking",aachen:false},{x:7.3,y:27.4,label:"Viking",aachen:false},{x:9.2,y:37.0,label:"Viking",aachen:false},{x:0.7,y:0.0,label:"Viking",aachen:false},{x:7.3,y:28.8,label:"Viking",aachen:false},{x:2.2,y:36.4,label:"Viking",aachen:false}],   {xLabel:'Pressures Applied / 90', yLabel:'Press Success %', height:320});
+  drawP50('chart-scatter-pres', 5.3, 25.9);
+
+  Charts.percBar('chart-radar-cb',  {axes:["Tackles","K.Tckle","Intercpt","Headers","Pressing","PossWon"],series:[]});
+  Charts.percBar('chart-radar-mid', {axes:["Tackles","K.Tckle","Intercpt","Headers","Pressing","PossWon"],series:[{label:"Torbjørn Kallevåg",values:[0.349,0,0.232,0.128,0.278,0.359],color:"#F6E216"},{label:"Halvard Urnes",values:[0.488,0,0.275,0.064,0.389,0.333],color:"#60a5fa"},{label:"Quinten Dekkers",values:[0.721,0.182,0.609,0.141,0.5,0.872],color:"#4ade80"}]});
+  Charts.percBar('chart-radar-wb',  {axes:["Tackles","K.Tckle","Intercpt","Headers","Pressing","PossWon"],series:[{label:"Quinten Dekkers",values:[0.721,0.182,0.609,0.141,0.5,0.872],color:"#F6E216"},{label:"Ola Visted",values:[0.628,0,0.507,0.397,0.463,0.795],color:"#60a5fa"}]});
+};
+</script>
+
+    <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+    <footer>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIGlkPSJzdmc3NSIgaGVpZ2h0PSIzNTYuNDg4OTgiIHZpZXdCb3g9IjAgMCAyMDEuNzUwMDEgMjY3LjM2Njc0IiB3aWR0aD0iMjY5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgPGcgaWQ9InN1cmZhY2U0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI5OS4xMjUgLTE2Ni4zMTY2MykiPg0KICAgICAgPHBhdGggaWQ9InBhdGgyIiBkPSJtMzAwLjYyNSAxNjcuODE2NjNoMTk4Ljc1djE2NC45OTQ2NmMwIDU0LjcwNTkzLTQ0LjY2OTA2IDk5LjM3MjA4LTk5LjM3NSA5OS4zNzIwOC01NC43MDU5NCAwLTk5LjM3NS00NC42NjYxNS05OS4zNzUtOTkuMzcyMDh6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0IiBkPSJtMzA0LjYyNjMxIDE3MS44NTMwMXYxNjAuOTU4MjhjMCA1Mi41MjI2IDQyLjg0ODE2IDk1LjM3MDc3IDk1LjM3MzY5IDk1LjM3MDc3IDUyLjUyNTUzIDAgOTUuMzczNjktNDIuODQ4MTcgOTUuMzczNjktOTUuMzcwNzd2LTE2MC45NTgyOHptMCAwIiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDYiIGQ9Im00MjYuMDA3MDIgMjE0Ljg4NTMxYy0xNi40NzU3OSAwLTMxLjM1MjgxIDYuNjkwMjgtNDIuMTU4MzggMTcuNDk1ODUtMTAuODM3NzIgMTAuODM3NzItMTcuNTMwOTIgMjUuNzUyNzMtMTcuNTMwOTIgNDIuMTkzNDUgMCAzMi44ODQzNiAyNi44MDc4NyA1OS42OTIyMiA1OS42ODkzIDU5LjY5MjIyIDMyLjg4MTQzIDAgNTkuNjg5My0yNi44MDc4NiA1OS42ODkzLTU5LjY5MjIyIDAtMTYuNDQwNzItNi42OTMxOS0zMS4zNTU3My0xNy40OTI5Mi00Mi4xOTM0NS0xMC44NDA2NC0xMC44MDU1Ny0yNS43NTU2Ni0xNy40OTU4NS00Mi4xOTYzOC0xNy40OTU4NSIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMzk2LjYxODMzIDMyMi42NjA0M2MtMi4yOTQ0LTEuNDE3NTctNC41MTI4LTIuOTgxMjYtNi41ODUwNi00LjcyNjE3di0zOC40NDkzNWgtNy4zNDc5MXYzMS4xMzY1MmMtMi41MTA2Ny0zLjAxOTI0LTQuNzI5MDgtNi4yOTI3Ny02LjU4MjEyLTkuODIwNTl2LTUyLjQ1MjQ2YzEuODUzMDQtMy41Mjc4MSA0LjA3MTQ1LTYuODAxMzQgNi41ODIxMi05LjgyMDU5djM0LjMzNjk5aDcuMzQ3OTF2LTQxLjY4NDg5YzIuMDcyMjYtMS43MDk4NCA0LjI5MDY2LTMuMjczNTMgNi41ODUwNi00LjY5MTA4em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTAiIGQ9Im00MTguMTE1NDggMzE5Ljg5ODM4YzAgMS40NTI2My0uMTQ2MTUgMy43NDcwMi0zLjg5MzE3IDMuMjAwNDYtLjExMTA2IDAtLjIxNjI4LS4wMzgtLjMyNzM1LS4wMzgtLjU0MzY0LS4xMDgxNC0xLjA5MzEzLS4zMjczNS0xLjYzNjc2LS40NzA1Ny0xLjkyNjEzLS41MDg1Ni0yLjU0NTc1LTEuOTI5MDQtMi41NDU3NS00LjE0NzQ0di03NS40NDAyM2MwLTIuMjE4NC42MTk2Mi0zLjYzODg4IDIuNTQ1NzUtNC4xODI1Mi41NDM2My0uMTQ2MTQgMS4wOTMxMi0uMzI3MzUgMS42MzY3Ni0uNDM4NDEuMTExMDctLjAzNTEuMjE2MjktLjAzNTEuMzI3MzUtLjA3MzEgMy43NDcwMi0uNTQzNjMgMy44OTMxNyAxLjc0Nzg0IDMuODkzMTcgMy4yMDA0NnptLS4xNDYxNS04OC44NjQ2M2MtMS4zODI0Ny4xODEyMS0yLjcyOTg4LjQzODQyLTQuMDc0MzcuNzI3NzctMS41OTg3Ny4zNjI0My0zLjE2MjQ2Ljc2Mjg1LTQuNzI5MDggMS4yMzYzNC01LjQ5MTkyIDEuNzA5ODQtNi4wMzg0OSA1LjY3NjA3LTYuMDM4NDkgOS40NTgxN3Y3Ni40OTUzNmMwIDMuNzgyMS41NDY1NyA3Ljc0ODMzIDYuMDM4NDkgOS40NTgxNyAxLjU2NjYyLjQ3MzQ5IDMuMTMwMzEuOTA4OTkgNC43MjkwOCAxLjIzNjM0IDEuMzQ0NDkuMzI3MzUgMi42OTE5LjU0NjU2IDQuMDc0MzcuNzYyODUgMi41ODM3Ni4zMjczNSA2LjcyODI4LS44MDA4NSA2LjcyODI4LTYuNjIwMTN2LTg2LjE2OTgxYzAtNS44MTkyOS00LjE0NDUyLTYuOTQ3NDktNi43MjgyOC02LjU4NTA2IiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtNDI0LjY5NzYxIDIyNC42MzI4M2MtMi4yNTYzOS4wMzgtNC40MzY4LjI1NDI4LTYuNTg1MDYuNTgxNjR2LTYuNTExOTljMi4xNDgyNi0uMjg5MzUgNC4zMjg2Ny0uNDcwNTcgNi41ODUwNi0uNTA4NTZ6bTAgMCIgZmlsbD0iI2ZmZiIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgxNCIgZD0ibTQxMC45ODM4NiAyMjYuOTI0M2MtMi41MDc3Ni44MzU5Mi00LjcyNjE2IDEuNzQ0OTEtNi41ODIxMyAyLjQ3MjY4di02LjgwMTM0YzIuMTgwNC0uODM1OTIgNC4xNDQ1Mi0xLjcwOTg0IDYuNTgyMTMtMi4yMTg0em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTYiIGQ9Im00NjkuNDc0ODIgMjk0LjgzNTQzYzAgMi41MTA2Ny0uMjE2MjkgNC45ODMzNS0xLjkyNjEzIDcuMzgyOTctLjQzODQxLjY1NDctLjg3MzkxIDEuMjc0MzQtMS4zMDk0MSAxLjg5MTA1LTEuMDU1MTIgMS4zODI0OC0yLjExMDI1IDIuNzI5ODgtMy4yNzM1MyA0LjAwMTN2LTY3LjExMDI3YzEuMTYzMjggMS4zMDk0MSAyLjI1MzQ4IDIuNjU2ODIgMy4yNzM1MyA0LjAzOTMuNTQzNjUuNzYyODUgMS4wOTAyIDEuNTI1NyAxLjU5ODc3IDIuMjkxNDcgMS40MjA0OCAyLjEwNzMzIDEuNjM2NzcgMy4zMDg2IDEuNjM2NzcgNi4wMzU1N3ptNi41ODUwNS0xLjAxNzE0di00MC41OTQ2OWMwLTMuMjM4NDUtLjQzODQxLTUuNjM4MDctMS45NjQxMi04LjA3NTY3LTIuMjU2MzktMy42MDA4OS00LjkxMzIxLTYuOTgyNTctNy44NTY0Ny0xMC4wMDE4MS0yLjk4NDE3LTMuMDU3MjQtNi4yOTI3Ny01Ljc0OTE0LTkuODU4NTgtOC4wNDA2MXY5NC45MzgyMWMzLjU2NTgxLTIuMjkxNDggNi44NzQ0MS00Ljk4MzM3IDkuODU4NTgtOC4wMDI2MiAyLjM2NDU0LTIuNDM3NjEgNC41MDY5NS01LjA1NjQzIDYuNDM2LTcuODU2NDcgMi41NDg2OC0zLjc0NzAyIDMuMzg0NTktNi45ODU0NyAzLjQxOTY3LTExLjAyMTg1di0uNDczNWMwLS4yODkzNiAwLS41ODE2My0uMDM1MS0uODcwOTkiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTgiIGQ9Im00NDQuNTkzMDcgMzE2LjczM2MwIDMuMjAwNDUtLjY4OTc4IDQuNTQ0OTQtMy4xMjczOSA1LjM0NTc5LS4xNDYxNC4wMzgtLjI1NDI5LjA3MzEtLjQwMDQyLjExMTA2LTEuMTYzMjguMzYyNDMtMi4zMjY1NC42ODk3OC0zLjUyNzgxLjk4MjA2di05Ny4yMjk2N2MxLjIzOTI2LjMyNzM2IDIuMzY0NTMuNjE2NzEgMy41Mjc4MSAxLjAxNzEzLjE4NDE0LjAzOC4zNjUzNC4xMTEwNy41MTE0OS4xODQxNCAxLjk2NDEyLjY1NDcxIDIuOTQ2MTggMi42NTM5IDMuMDE2MzIgNC4yNTU1OXptLjExMTA2LTk1LjM3MzdjLTEuMjAxMjctLjQwMDQyLTIuNDAyNTMtLjgwMDg1LTMuNjM4ODctMS4xMjgyLTMuMjczNTMtLjkwODk5LTYuNjU1MjEtMS41Mjg2Mi0xMC4xMDk5NS0xLjg1MzA1djExMi4zNTgwNWMzLjQ1NDc0LS4yODkzNSA2LjgzNjQyLS45MDg5OSAxMC4xMDk5NS0xLjgxNzk3IDEuMzQ3NC0uMzYyNDMgMi42OTQ4MS0uODAwODUgMy45NjYyMy0xLjI3MTQyIDQuODAyMTUtMS43MDk4NCA2LjE0NjY0LTQuMjU4NTEgNi4xNDY2NC05Ljk2Njczdi04Ni4yMDc4MWMwLTQuODM3MjMtMS44MTc5OC04LjQ3NjEtNi40NzQtMTAuMTEyODciIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im00MjYuMzM0MzcgMzQyLjc0MDAyYy0uOTgyMDYgMS4zMDk0MS0xLjUyNTY5IDIuOTQ2MTctMi4xODA0IDQuNjk0MDFsMS4yNzE0MiAxLjY3MTg0IDkuNDkzMjMtNC4wMzkzMS0zLjg1NTE3LTQuMzI4NjZ6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTM4MS4zMDI4OSAyMDYuMDA4NzhjLjkwODk4IDAgMS42MzY3Ni41MTE1IDEuNjM2NzYgMS4yNzQzNSAwIC43Mjc3Ny0uNzI3NzggMS4yMzYzMy0xLjYzNjc2IDEuMjM2MzMtLjkwOSAwLTEuNjcxODUtLjUwODU2LTEuNjcxODUtMS4yMzYzMyAwLS43NjI4NS43NjI4NS0xLjI3NDM1IDEuNjcxODUtMS4yNzQzNW0tNDEuMTAzMjYgMTA5Ljk2MTM3YzIuMjIxMzItLjY5MjcgNC40NzQ4LTEuNDkzNTUgNi42NTgxMi0yLjMyOTQ3LjkwOS0uMzI3MzUgMS44NTU5OC0uNjg5NzggMi43NjQ5Ny0xLjA1NTEzIDEuNDE3NTYtLjU4MTYzIDIuODAwMDMtMS4xNjMyNyA0LjE4MjUyLTEuNzgyOSAxLjEyODItLjU0NjU3IDIuMjUzNDctMS4wNTIyMSAzLjM4MTY3LTEuNTk4NzcgMS4xNjYxOS0uNTgxNjQgMi4zMjk0Ny0xLjE2NjE5IDMuNDE5NjctMS43ODI5IDEuODE3OTgtLjk4MjA2IDMuNTI3ODItMi4wMDIxMiA1LjEyOTUtMy4wNTcyNSAxLjE5ODM1LS43OTc5MiAyLjMyNjU1LTEuNTk4NzcgMy4zODE2OC0yLjQzNzYxLTEuMzA5NDItMi43NjIwNC0yLjQ3MjY5LTUuNjM1MTQtMy4zODE2OC04LjU4MTMyLS4xODEyMS0uNTg0NTYtLjM2NTM1LTEuMjAxMjctLjUxMTQ4LTEuNzgyOWwtMjQuOTg2OTcgOS44OTM2NS0uMDM4LS4wMzUxLTE0LjE0OTI0LTE0LjM2ODQ2di0yOC45OTExOWwxNC40NzY1OS0xMC43Mjk1OSAyMy41MzQzNSAxNS4wMjMxN2MuNDM4NDItMi4yMTg0IDEuMDIwMDUtNC40MDE3MyAxLjY3NDc2LTYuNTQ5OTkgMy4wNTQzMS05LjgyMDU4IDguNDczMTgtMTguNTg2MDQgMTUuNTY2OC0yNS43MTQ3My4wMzgtLjAzNTEuMDczLS4wNzMxLjExMTA3LS4xMTEwNyAyLjMyNjU0LTIuMzYxNjIgNC44NzIyOS00LjUwOTg4IDcuNTI5MTItNi40NzM5OWw1LjUyNjk5LTguODM4NTMuMjE5MjEtMTEuMjc2MTQtMTcuNDk1ODQtMjIuODA2NTctMTEuNzQ5NjMtLjE0NjEzLTEyLjgwMTg0IDEyLjAzODk4djI4LjczNjkxbDE1LjE2NjM4LjY1NDcxLjQwMDQyLTIxLjc1MTQzIDE4LjMzMTc3LjgwMDg0IDMuNzg1MDEgMTEuNjc2NTdjLjI4OTM2Ljc5NzkyLjU0MzY0IDEuNjM2NzYtMS4wOTMxMiAyLjE0NTMzLTEuNjM2NzcuNTQ2NTYtMS44OTEwNS0uMjkyMjgtMi4xNDUzMy0xLjA5MDJsLTMuMDkyMzItOS4zODUxLTEyLjQwNDM0LS41ODE2My0uMzk3NSAyMS43ODY1LTI3Ljk3NDA2LTEuMDU1MTIuMDM4IDYuMDc2NDkgMTUuNDU4NjYgOC45MTE2Yy43NjI4NS4zOTc1IDEuNDkwNjMuODM1OTIuNjU0NzEgMi4zMjY1NC0uODAwODUgMS4zODI0OC0xLjQ5MDYzIDEuMTI4Mi0yLjE4MzMzLjcyNzc4LS4wNzMxLS4wMzgtLjEwODE0LS4wNzMxLS4xODEyMi0uMDczMWwtMTUuMzEyNTEtOC44MDA1My0yNC4zMDAxMSAyMC4zNjg5NSAzLjg5MzE2IDQ4LjA4NTgyIDExLjQyMjI4IDE2LjExMzM2YzEuOTk5MTktLjUwODU3IDQuMDAxMy0xLjA5MDIgNi4wNzM1Ni0xLjcwOTgzLjQ3MzUtLjE4MTIyLjk0NDA2LS4zMjczNiAxLjQxNzU2LS40NzA1OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyNCIgZD0ibTMzNy43MjY5NSAzNzAuODIyMjJoNS43NDYyMWwtNy40MTgwNS0xMi45ODU5N2MuMTQzMjIgMy42NzM5NS41NDM2NCA3LjYzNzI2IDEuMzA5NDEgMTEuMzExMjEuMTA4MTQuNTgxNjQuMjU0MjkgMS4xMjgyLjM2MjQzIDEuNjc0NzYiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjYiIGQ9Im0zMzQuMDE3OTIgMzY5Ljg0MDE2Yy0xLjEyODItNS41Mjk5Mi0xLjUyODYyLTExLjU2ODQxLTEuNDIwNDctMTYuNTg2ODVsLTguOTg0NjctNS4wNTY0NGMtMS4xMjUyOC0uNjE5NjItMi4xNDUzNC0uOTQ0MDYtMi45ODEyNi0uOTQ0MDYtLjYxOTYyLS4wMzgtMS4xMjgxOS4xMDgxNC0xLjUyODYyLjM2MjQzLS40MzU0OS4yNTQyOC0uODM1OTIuNjg5NzgtMS4xNjMyNyAxLjIzNjM0LS41ODE2NCAxLjAxNzE0LS45MDg5OSAyLjQ3MjY5LS45NDY5OCA0LjI5MzU4LS4xMDgxNSA0LjA3MTQ2IDIuMTEwMjUgMTEuMjM4MTUgNC4zNjY2NSAxOC42MjExMy41MDg1NiAxLjcwOTgzIDEuMDE3MTMgMy4zODQ1OSAxLjEyODIgMy42Mzg4Ny40MzU0OSAxLjQ5MDYzIDEuMDkwMiAzLjc0NDExIDIuMjkxNDcgNS44MTkyOSAxLjE2MzI3IDEuOTY0MTIgMi44NzMxIDMuODU1MTYgNS41NjUgNC44MzcyMi40NzM0OS4xODQxNCAxLjIzNjM0LjE4NDE0IDIuMTgzMzMuMDM1MSAxLjQ5MDYyLS4yMTYzIDMuMjM1NTMtLjc2Mjg2IDQuNjkxMDgtMS40OTA2M2gtLjAzOGMuODAwODUtLjQwMDQzIDEuNDU1NTUtLjgzNTkyIDEuODkzOTctMS4yMzYzNS4xNDMyMS0uMTA4MTQuMjU0MjgtLjI1NDI4LjM2MjQyLS4zNjI0Mi0uMTA4MTQtLjE4NDEzLS4yNTQyOC0uMzI3MzUtLjM2MjQyLS40NzM0OS0yLjQzNzYxLTMuMTY1MzktNC4wNzQzNy03Ljc0ODMzLTUuMDU2NDMtMTIuNjkzNyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyOCIgZD0ibTM2Ni44MjYyOCAzNTcuMzI0NzZjLTIuNjE4ODIgMS43NDc4My01LjA1NjQzIDMuNDkyNzQtNy4zNDc5IDUuMjc1NjQtMS40MTc1NSAxLjEyODItMi43NjQ5NiAyLjIxODQxLTQuMDAxMzEgMy4zNDY2MSAxLjM4MjQ5IDIuMjkxNDcgMi43Mjk5IDQuNzY0MTUgNC4wMDEzMSA3LjIzNjgzLjQzODQyLjg3MzkyLjgzNTkyIDEuNzA5ODQgMS4yMzYzNCAyLjU4Mzc1IDEuODU1OTggMy45MjgyNCAzLjQxOTY4IDcuODIxNCA0LjU0Nzg3IDExLjI3NjE0IDEuMDU1MTMgMy4zMTE1MyAxLjU2MzY5IDYuMDAwNSAxLjYzNjc3IDguNjk1MzEuMDczIDEuNzA2OTEtLjAzNTEgMy4zODE2OC0uMjE5MjEgNS4yMzc2NSAyLjAzNzE5LjkwODk5IDQuNjU2MDEgMS40NTI2MyA3LjI3NDgzIDEuNzA2OTEgNC4yOTM1OS40Mzg0MiA4LjQ0MTAzLS4wMzUxIDEwLjE0Nzk1LTEuNDE3NTVsNy45MzI0Ni02LjQzODkyLjA3MDEtNTIuMDE0MDRjLTkuMzQ3MSA0LjgzNzIyLTE3LjkzMTM1IDkuNjA0My0yNS4yNzkyNSAxNC41MTE2NyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTM1Mi44OTYyNSAzNjguMzExNTRjLS44Mzg4NC44MDA4NS0xLjYzOTY5IDEuNjM2NzctMi40Mzc2MSAyLjUxMDY4bDMuODU1MTctLjAzOGMtLjQ3MzUtLjgzNTkyLS45NDY5OS0xLjY3MTgzLTEuNDE3NTYtMi40NzI2OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMiIgZD0ibTM2MS45ODkwNiAzODguMDk4ODZjLS4xNDYxMy0uNDM1NDktLjI1NDI4LS44MzU5Mi0uNDAwNDItMS4yNzE0MWwtOS4xMzA4MS43OTc5MS41NDY1NyAyLjQzNzYyIDEwLjQwMjIyIDguODM4NTNjLjA3MzEtMS4wNTUxMy4xMTEwNy0yLjAzNzE5LjA3MzEtMy4wMTkyNS0uMTA4MTUtMi40Mzc2MS0uNTQ2NTYtNC44MDIxNS0xLjQ5MDYzLTcuNzgzNCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTMzOC43MDkwMSAzNzQuMjc2OTdjLjEwODE0LjMyNzM1LjIxOTIxLjY5MjcuMzY1MzUgMS4wMTcxMy44NzA5OSAyLjM2NDU0IDEuOTY0MTEgNC40MDE3MyAzLjMwODYgNS44NTcyOGwuMDM1MS0uMDM1MSA0LjIyMDUxIDMuNTYyODggMS41NjM3LS4xNDYxNC0yLjA3MjI2LTEwLjI1NjA5em0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMzYiIGQ9Im0zNjAuMzUyMyAzODMuNDgwODRjLS4yOTIyOC0uNjkyNy0uNTgxNjQtMS4zODI0Ny0uODczOTItMi4xMTAyNS0uNTgxNjMtMS4zNDc0MS0xLjIwMTI3LTIuNzY0OTYtMS44NTU5Ny00LjE0NzQ1LS40MzU1LS45NDY5OC0uOTA4OTktMS44OTEwNC0xLjQxNzU2LTIuODczMWgtNi41NDcwNmwxLjk5OTE5IDkuODkzNjUgNy44MjE0LS42ODk3N3ptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDM4IiBkPSJtMzUzLjgwNTI0IDMyMy42MDc0MWMuMTgxMjEtLjEwODE1LjM2MjQyLS4xODEyMi41NDM2NC0uMjU0MjhsLS41NDM2NC0uOTA5LTMuNzExOTUtNi4zNjU4NGMtMS4wOTAyLjQzNTUtMi4xNDUzMy44MzU5Mi0zLjIzNTU0IDEuMjM2MzQtLjIxOTIxLjA3MzEtLjQzODQyLjE0NjE0LS42NTQ3LjI1NDI5bC42NTQ3IDEuMTYzMjcgMy41NjI4OSA2LjMzMDc3YzEuMTY2MTktLjQ3MzQ5IDIuMjkxNDctLjk4MjA2IDMuMzg0Ni0xLjQ1NTU1IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtNDQ3LjQ2OTEgMzYxLjc2NDQ4Yy4xNDMyMS0uNTgxNjMuMjkyMjgtMS4xNjYxOS40MzU1LTEuNjcxODNsLS40MzU1LS41MTE0OS0xLjM4MjQ4LTEuNzA5ODQtMS43NDc4My43Mjc3OC0yLjM2NDU0Ljk0Njk4LTQuOTgzMzcgMi4wNzIyNi0uMzYyNDMuMTQ2MTQuMzYyNDMuNDAwNDMgNC45ODMzNyA1LjYzODA3IDEuNjc0NzYgMS44OTEwNS42ODk3OC0uNDAwNDMgMS42MDE2OS0uODczOTFjLjM2MjQyLTEuOTk5MTkuOTgyMDYtNC40NzE4OCAxLjUyODYyLTYuNjU1MjEiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDIiIGQ9Im00MjYuMDQyMSAzNjYuMjM5MjhsNy42NzgxOCA4LjgwMDU0IDYuODM2NDEtMy42NzM5NS03LjIzNjg0LTguMTgzODN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NCIgZD0ibTQzNy44NjQ4IDM0My43NTcxNWw5LjYwNDMtNC4xNDQ1MiA5Ljc0NzUyLTQuMTg1NDQuMDM1MS4wNzYgNy42MDIxOS00LjIyMDUyLTMuOTI4MjMtNC4xNDc0NGMtNC4xODI1MiAyLjc2NDk3LTguNjU3MzIgNS4wNTY0NC0xMy40NTY1NCA2LjgwMTM0LTEuMDIwMDcuMzY1MzUtMi4wNzUxOS43MzA3LTMuMTMwMzIgMS4wNTUxMy0uNzYyODUuMjE5MjEtMS41NjM2OS40MzU1LTIuMzY0NTQuNjU0Ny0uMTA4MTUuMDM4LS4yMTYyOS4wNzMxLS4zMjQ0My4wNzMxbC03LjY3NTI2IDMuNTMwNzN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NiIgZD0ibTQ0My43MjIwNyAzNTUuMTQ0MzZsLTYuMzMwNzYtNy4yMzk3Ni05LjU2MzM4IDMuODkzMTYgNi40MDA5MSA3LjIzNjg0LjIxOTIxLS4wNzMxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDgiIGQ9Im00NDAuNTIxNjIgMzgyLjUzMzg2Yy40NzM0OS0uMjkyMjggMy4wNTQzMi0xLjg1NTk3IDMuODIwMDktMi4zNjQ1NC4xNDYxNC0uMTA4MTQuMzI0NDMtLjIxOTIxLjQ3MDU3LS4yOTIyOCAwLS4xMDgxNS4wMzUxLS4yMTYyOS4wMzUxLS4yODkzNS4xMTEwNy0xLjAyMDA2LjIxOTIxLTIuMDM3MTkuMzMwMjgtMy4wMTkyNWwtMi4yOTE0Ny0yLjU4Mzc1LTYuNzY2MjcgMy42Mzg4OHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUwIiBkPSJtMzQyLjg5MTUyIDMxOC42OTcxMWMtLjg3MDk5LjI5MjI5LTEuNzgyOS41ODE2NC0yLjY5MTg5Ljg3MzkyLS4xODEyMS4wNzMxLS4zNjI0Mi4xMDgxNC0uNTQzNjQuMTgxMjFsLjU0MzY0Ljk0NDA3IDMuODU4MDkgNi44MDQyNmMuOTQ0MDYtLjMyNzM1IDEuODkxMDUtLjY5MjcxIDIuODAwMDMtMS4wNTUxMy4xMDgxNS0uMDM4LjI1NDI5LS4wNzMxLjM2MjQ0LS4xMDgxNGwtLjM2MjQ0LS42MTk2NHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNDU0LjcwNTk0IDM0MC4yMzIyNmwtMTQuNDc2NjEgNi4yNTQ3OCA2LjMyNzg2IDcuMjM2ODQgMy44OTMxNi0xLjY3MTg0YzEuMjM5MjYtMy45MjgyMyAyLjY1NjgyLTcuODU2NDcgNC4yNTU1OS0xMS44MTk3OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg1NCIgZD0ibTQzMC45OTAzOSAzNzYuNDk1MzZsLTcuODkxNTUtOC44NzM1OS0uMjkyMjguMTA4MTRjLjI1NDI4IDEuMzQ0NDkuNTgxNjQgMi42OTE4OS45ODIwNiA0LjA3NDM3LjY1NDcxIDIuMjkxNDcgMS41Mjg2MiA0LjY5MTA4IDIuNjE4ODMgNy4xNjM3N2wuMjkyMjctLjE4MTIxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNTYiIGQ9Im00MzAuOTIwMjQgMzYwLjQ5MDE1bC02LjQwMzg1LTcuMjM2ODQtMi4xNDgyNS44MDA4NWMtLjM5NzUgMy4zMDg2LS41NDM2NCA2Ljg3NDQxLS4xNDMyMiAxMC4xODMwMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDU4IiBkPSJtNDM2LjU1NTM5IDM4NC43NTIyNmMuMTQ2MTQtLjA3MzEuMjkyMjctLjE0NjE0LjQzODQyLS4yNTQyOC4yODkzNS0uMTQ2MTQuNTgxNjMtLjI5MjI4Ljg3MDk5LS40NzM1bC00LjQwMTczLTQuOTgzMzYtNS41NjIwOCAyLjk4NDE4Yy4xODEyMi40MzU0OS40MzU1LjgzNTkyLjY1MTc5IDEuMjcxNDEuNjE5NjMgMS4xNjMyOCAxLjMwOTQxIDIuMzI5NDcgMi4wNzUxOCAzLjQ5Mjc0LjEwODE0LjIxOTIxLjIxNjI5LjQzODQxLjI5MjI4LjY1NDcxIDEuMDkwMi0uNDM1NSAyLjI4ODU1LS45ODIwNiAzLjUyNzgxLTEuNjAxNy42ODk3OC0uMzYyNDIgMS4zNzk1Ni0uNzI3NzcgMi4xMDczNC0xLjA5MDIiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNjAiIGQ9Im00NDEuOTc0MjUgMzg5LjI2MjEzYy0uNDcwNTctLjk4MjA2LS45NDQwNi0xLjg5MTA1LTEuNDE3NTYtMi44MDAwMy0uODAwODUuNDczNDktMS41OTg3Ni45MDg5OC0yLjM5OTYyIDEuMzA5NDEtLjQwMDQxLjIxOTIxLS43NjU3Ni40Mzg0MS0xLjE2MzI2LjYxOTYzLS44NzM5Mi40MzU0OS0xLjcwOTg0Ljg3MDk5LTIuNTQ4NjggMS4yMzYzNS0xLjEyNTI4LjU0MzYzLTIuMTgwNDEuOTgyMDUtMy4xMjczOSAxLjM3OTU1LS4wMzUxLjUxMTQ5LS4wMzUxIDEuMDU1MTMtLjA3MzEgMS42MDE2OS0uMDczIDEuNDU1NTUtLjE0MzIxIDMuMDU3MjUtLjAzNTEgNC4zMjg2Ni4xODEyIDEuNzA5ODMuNjU0NyAyLjQ3NTYxIDEuMzgyNDcgMi42NTY4Mi41MDg1Ny4xMDgxNCAxLjEyODIxLjA3MyAxLjg1MzA2LS4wMzguNzY1NzctLjEwODE0IDEuNjAxNjktLjMyNzM1IDIuNTQ4NjgtLjYxNjcxLjE4MTItLjAzOC4zNjI0Mi0uMTExMDcuNTQzNjMtLjE0NjE0IDEuMzQ3NDEtLjQwMDQyIDIuODM4MDQtLjk0NDA2IDQuNDM2ODEtMS41Mjg2Mi43NjU3Ni0uMjg5MzYgMS41NjY2MS0uNjE5NjQgMi4zNjQ1My0uOTQ0MDYuMTExMDctLjAzOC4yMTkyMS0uMTExMDcuMzMwMjgtLjE0NjE0LS4xMTEwNy0uMzI3MzUtLjIxOTIxLS42NTQ3MS0uMzMwMjgtMS4wMjAwNi0uNjg5NzctMi4wMzcxOS0xLjQ5MDYyLTQuMDM2MzgtMi4zNjQ1My01Ljg5MjM2IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDYyIiBkPSJtNDYzLjQ3NDMyIDM4MS4wNzgzMWMtLjUxMTQ5LS4yMTYyOS0xLjIzNjM0LS4yODkzNS0yLjI5NDQtLjI1NDI4LTEuODE1MDUuMDczMS00LjIxNzU4LjYxNjcxLTYuNDczOTggMS4xMjgxOS0yLjgwMDA0LjY1NDcxLTUuNDkxOTMgMS4yNzE0Mi03LjIzNjg0IDEuMDU1MTMtLjEwODE1LS4wMzgtLjIxOTIxLS4wMzgtLjMyNzM1LS4wNzMxLS4xODEyMi0uMDM4LS4zNjI0My0uMDczLS41NDY1Ni0uMTQ2MTQtLjcyNzc4LjQ3MzQ5LTEuNDkzNTYuOTgyMDYtMi4yNTM0OCAxLjQ1NTU1LS4yNTQyOS4xNDYxNS0uNTQ2NTYuMzI3MzYtLjgzODg1LjUwODU3LjI5MjI5LjQ3MzQ5LjU4NDU2IDEuMDE3MTQuODM4ODUgMS41NjM2OSAxLjE2MzI3IDIuMjU2NCAyLjI1MzQ4IDQuODAyMTUgMy4xMjczOSA3LjQyMDk4LjE0NjE0LjM2MjQzLjI1NDI4LjcyNzc4LjM2MjQzIDEuMDkzMTMgMS4zMDk0MS0uNTg0NTYgMi41ODM3NS0xLjE2NjIgMy44NTgwOC0xLjc0Nzg0IDUuMzEwNzItMi41NDU3NSA5LjcwOTUyLTQuOTQ1MzYgMTAuMjU2MDktNS42NzMxNC45ODIwNi0xLjMwOTQxIDEuODE3OTgtMi44MDI5NiAyLjE0NTMzLTQuMTEyMzcuMTQ2MTQtLjYxNjcxLjIxOTIxLTEuMTk4MzQuMDczMS0xLjU5ODc3LS4wNzMxLS4yNTcyLS4yOTIyOC0uNDczNDktLjY4OTc4LS42MTk2MyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg2NCIgZD0ibTQyNi42OTY4IDMzOC43NzY3MWwxLjg1NTk4LS44MzU5Mi42OTI3LS4zMzAyOGMtLjIxOTIxLjAzOC0uNDczNS4wMzgtLjY5MjcuMDM4LS42MTY3MS4wMzUxLTEuMjM2MzUuMDM1MS0xLjg1NTk4LjA3M2gtLjY4OTc4Yy0xNy40NjA3NyAwLTMzLjI4MTg2LTcuMTY2NjktNDQuNzA0MTMtMTguNjYyMDQtMS42MzY3Ny0xLjYzNjc2LTMuMjAwNDctMy4zODE2OC00LjYxODAyLTUuMTk5NjUtMi41ODM3NSAyLjM2NDU0LTYuNzMxMTkgNC45ODMzNi0xMC45NDg3OSA3LjQxODA1LTEuMDkzMTIuNjE5NjMtMi4xODMzMiAxLjIzOTI3LTMuMjczNTMgMS44NTU5OC0uNjE5NjIuMzI3MzUtMS4yMzYzNC42NTQ3LTEuODU1OTcuOTgyMDYtMS4xMjgyLjU4MTYzLTIuMjU2MzkgMS4xNjYxOS0zLjQxOTY3IDEuNzA5ODMtMS4xMjgyLjUxMTQ5LTIuMjUzNDcgMS4wMjAwNi0zLjM4MTY3IDEuNTI4NjItLjk0Njk5LjQwMDQyLTEuOTI5MDUuODM1OTItMi45MTExMSAxLjIwMTI3LTEuMzQ0NDguNTQzNjMtMi42OTE4OSAxLjA1NTEzLTQuMDM2MzggMS41NjM3LTIuMjE4MzkuODAwODQtNC40Mzk3MiAxLjU2MzY5LTYuNjU4MTIgMi4yNTM0Ni0uNDAwNDIuMTExMDctLjc2Mjg1LjI1NDI5LTEuMTYzMjcuMzY1MzZsLTIuMjU2NCAxOS40OTUwMyAxMC4wMzk4IDE3LjUzMzg1LjAzOC0uMDM4YzIuMDM3MTktMi4zNjQ1NSA0LjM2MzczLTQuNjU2MDIgNi45NDc0OC02LjkwOTQ5IDEuMDkwMjEtLjkwODk5IDIuMjE4NC0xLjg1NTk4IDMuMzgxNjgtMi43NjQ5NiAxLjA5MzEyLS44NzM5MiAyLjI1NjM5LTEuNzA5ODQgMy40MTk2Ni0yLjU4Mzc2IDEuNDE3NTYtMS4wMTcxMiAyLjgzODA0LTEuOTk5MTggNC4zMjg2Ni0yLjk4MTI0LjI1NDI4LS4xODEyMi41NDY1Ny0uMzY1MzUuODAwODUtLjU0NjU3IDQuNzY0MTUtMy4xMjczOSAxMC4wMDE4LTYuMjE5NyAxNS41NjY4LTkuMjc0MDIgMy43NDcwMi0yLjA3NTE5IDcuNjc1MjYtNC4xMDk0NSAxMS43NDk2My02LjE4NDY0bDIuNDcyNjktMS4yNzQzM3Y1LjYwMjk5YzUuMjc1NjQtMS4zNDQ0OSA5Ljg1ODU4LTIuMzI5NDYgMTQuMzMwNDUtMi45MTExIDQuOTEzMjItLjYxNjcxIDkuNjM5MzgtLjcyNzc3IDE0Ljg0MTk1LS4xODEyMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY2IiBkPSJtMzY1LjczNjA4IDMxNy4yMDY0OWMzLjM0NjYxLTEuOTY3MDQgNi4zNjU4NS0zLjYzODg4IDguNzY1NDYtNS45NjU0Mi0xLjIwMTI2LTEuNjc0NzYtMi43NjQ5Ni00LjQzOTczLTMuNzgyMDktNi4yMTk3MS0xLjUyODYyIDEuMTYzMjctMy4yMDA0NiAyLjI4ODU1LTQuOTgzMzcgMy4zODE2Ny0xLjYzNjc2IDEuMDE3MTMtMy4zNDY2IDEuOTY0MTItNS4xMjk1IDIuOTA4MTktLjE0NjE0LjA3Ni0uMjg5MzYuMTQ2MTMtLjQzNTUuMjE5MjFsLjQzNTUuNzY1NzYgMy40MTk2NyA1Ljk2MjVjLjU4MTY0LS4zNjI0MiAxLjEyODItLjcyNDg1IDEuNzA5ODMtMS4wNTIyIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY4IiBkPSJtMzU3LjQ0MTE5IDMyMS44NjI1YzEuMDkzMTMtLjUxMTQ5IDIuMTQ1MzMtMS4wOTMxMyAzLjE2NTM5LTEuNjM2NzYuMTQ2MTQtLjA3MzEuMjkyMjgtLjE4NDE0LjQzNTQ5LS4yNTQyOGwtLjQzNTQ5LS43NjU3OC0zLjQxOTY3LTYuMDM4NDktLjA3MzEtLjEwODE1Yy0xLjA5MDIuNTA4NTctMi4xODA0Ljk4MjA2LTMuMzA4NiAxLjQ5MDYzLS4xODEyMi4wNzMxLS4zNjUzNS4xNDYxNC0uNTA4NTcuMjE5MjFsLjUwODU3LjkwODk4IDMuMzgxNjcgNS43NDYyMnptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDcwIiBkPSJtMzUyLjE2ODQ3IDI4MC43MjEyNWwxMi4wNzY5OSA2Ljk4NTQ4Yy0uOTExOTItNC4yMjA1Mi0xLjM4NTQxLTguNjIyMjUtMS4zODU0MS0xMy4xMzIxMiAwLTIuODczMS4yMTkyMS01Ljc0NjIxLjU4NDU2LTguNTExMTdsLTIyLjgwNjU2LTE0LjU0OTY3LTExLjE2OCA4LjI1Njg5djI1LjcxNzY3bDExLjYwMzQ5IDExLjkyNzkyIDE5LjUzMzA0LTcuNzQ1NDEuMTQ2MTQtLjAzOC0uMTQ2MTQtLjA3MzEtMTAuMTQ3OTQtNS44OTIzNWMtMi44MDAwNC0xLjU5ODc2LTEuMDkwMi00LjU4Mjk0IDEuNzA5ODMtMi45NDYxOCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg3MiIgZD0ibTMzOC43ODIwNyAzMjkuMjQ1NDhjLjQ3MzUtLjE0NjE1Ljk0Njk5LS4zMjczNSAxLjQxNzU2LS40NzM1LjE4NDE0LS4wMzUxLjM2NTM1LS4xMDgxNC41NDY1Ni0uMTgxMjFsLS41NDY1Ni0uOTQ2OTgtMS40MTc1Ni0yLjUwNzc2LTIuNTEwNjgtNC40MDE3M2MtLjUwODU2LjE0NjE0LTEuMDE3MTMuMjkyMjgtMS40OTA2Mi40MDA0MnYuMDM1MWwzLjQxOTY3IDguMjIxODJjLjIxOTIxLS4wMzguNDAwNDMtLjEwODE0LjU4MTYzLS4xNDYxMyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgPC9nPg0KPC9zdmc+" alt="" aria-hidden="true" />
+      <p>Data: stats/*.csv  -  Alemannia Aachen 2026-09-12.</p>
+    </footer>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CHART TOOLTIP (shared singleton)
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="chart-tooltip" id="chart-tooltip"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       JAVASCRIPT
+       - Tab switching
+       - Filter buttons
+       - Table search + sort
+       - Charts: hbar, radar, scatter, hist, agecurve
+  ═══════════════════════════════════════════════════════════ -->
+  <script>
+  'use strict';
+
+  /* ─── Design constants (mirrors CSS tokens) ────────────────── */
+  const C = {
+    accent:   '#F6E216',
+    accentDim:'rgba(246,226,22,0.18)',
+    white:    '#ffffff',
+    muted:    '#888070',
+    muted2:   '#5a5650',
+    text:     '#f0ede0',
+    panel2:   '#161616',
+    panel3:   '#1c1c1c',
+    grid:     'rgba(255,255,255,0.055)',
+    axis:     'rgba(255,255,255,0.10)',
+    red:      '#f87171',
+    green:    '#4ade80',
+    blue:     '#60a5fa',
+    fontMono: "'IBM Plex Mono', monospace",
+    fontBody: "'DM Sans', sans-serif",
+  };
+
+  /* ─── Tooltip ──────────────────────────────────────────────── */
+  const Tooltip = {
+    el: null,
+    init() { this.el = document.getElementById('chart-tooltip'); },
+    show(html, x, y) {
+      if (!this.el) return;
+      this.el.innerHTML = html;
+      this.el.classList.add('visible');
+      this.move(x, y);
+    },
+    move(x, y) {
+      if (!this.el) return;
+      const pad = 14;
+      const w = this.el.offsetWidth, h = this.el.offsetHeight;
+      let left = x + pad, top = y - h / 2;
+      if (left + w > window.innerWidth - 8) left = x - w - pad;
+      if (top < 8) top = 8;
+      if (top + h > window.innerHeight - 8) top = window.innerHeight - h - 8;
+      this.el.style.left = left + 'px';
+      this.el.style.top  = top + 'px';
+    },
+    hide() {
+      if (!this.el) return;
+      this.el.classList.remove('visible');
+    },
+  };
+
+  /* ─── Tabs ─────────────────────────────────────────────────── */
+  function initTabs(wrapper) {
+    const btns   = wrapper.querySelectorAll('.tab-btn');
+    const panels = wrapper.querySelectorAll('.tab-panel');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        btns.forEach(b => b.classList.toggle('active', b === btn));
+        panels.forEach(p => p.classList.toggle('active', p.id === target));
+      });
+    });
+    if (btns.length) btns[0].click();
+  }
+
+  /* ─── Filter buttons ───────────────────────────────────────── */
+  function initFilters(wrapper) {
+    const btns   = wrapper.querySelectorAll('.filter-btn');
+    const table  = wrapper.querySelector('table');
+    if (!table) return;
+
+    function applyFilters() {
+      const active = [...btns]
+        .filter(b => b.classList.contains('active') && b.dataset.filter !== 'all')
+        .map(b => ({ col: +b.dataset.col, val: b.dataset.filter }));
+
+      const searchInput = wrapper.querySelector('.search-input');
+      const searchTerm  = searchInput ? searchInput.value.toLowerCase() : '';
+
+      table.querySelectorAll('tbody tr:not(.group-header)').forEach(row => {
+        let show = true;
+
+        if (active.length) {
+          show = active.some(f => {
+            const cell = row.cells[f.col];
+            return cell && cell.textContent.trim().toLowerCase().includes(f.val.toLowerCase());
+          });
+        }
+
+        if (show && searchTerm) {
+          show = [...row.cells].some(c => c.textContent.toLowerCase().includes(searchTerm));
+        }
+
+        row.classList.toggle('filtered-out', !show);
+      });
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.filter === 'all') {
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        } else {
+          wrapper.querySelectorAll('.filter-btn[data-filter="all"]').forEach(b => b.classList.remove('active'));
+          btn.classList.toggle('active');
+          if (![...btns].some(b => b.classList.contains('active'))) {
+            const allBtn = wrapper.querySelector('.filter-btn[data-filter="all"]');
+            if (allBtn) allBtn.classList.add('active');
+          }
+        }
+        applyFilters();
+      });
+    });
+
+    const searchInput = wrapper.querySelector('.search-input');
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+    const allBtn = wrapper.querySelector('.filter-btn[data-filter="all"]');
+    if (allBtn) allBtn.classList.add('active');
+  }
+
+  /* ─── Table sort ───────────────────────────────────────────── */
+  function initSort(table) {
+    const headers = table.querySelectorAll('th.sortable');
+    let currentCol = -1, ascending = true;
+
+    headers.forEach((th, i) => {
+      th.addEventListener('click', () => {
+        const colIdx = [...th.parentElement.children].indexOf(th);
+        if (currentCol === colIdx) {
+          ascending = !ascending;
+        } else {
+          ascending = false;
+          currentCol = colIdx;
+        }
+
+        headers.forEach(h => { h.classList.remove('sort-asc', 'sort-desc'); });
+        th.classList.add(ascending ? 'sort-asc' : 'sort-desc');
+
+        const tbody  = table.querySelector('tbody');
+        const rows   = [...tbody.querySelectorAll('tr:not(.group-header)')];
+        const isNum  = th.classList.contains('num');
+
+        rows.sort((a, b) => {
+          const av = a.cells[colIdx] ? a.cells[colIdx].dataset.sort || a.cells[colIdx].textContent.trim() : '';
+          const bv = b.cells[colIdx] ? b.cells[colIdx].dataset.sort || b.cells[colIdx].textContent.trim() : '';
+          let cmp;
+          if (isNum) {
+            cmp = (parseFloat(av.replace(/[^0-9.\-]/g, '')) || 0) - (parseFloat(bv.replace(/[^0-9.\-]/g, '')) || 0);
+          } else {
+            cmp = av.localeCompare(bv);
+          }
+          return ascending ? cmp : -cmp;
+        });
+
+        rows.forEach(r => tbody.appendChild(r));
+      });
+    });
+  }
+
+  /* ─── Canvas helpers ───────────────────────────────────────── */
+  function dpr() { return Math.min(window.devicePixelRatio || 1, 2); }
+
+  function setupCanvas(canvas, w, h) {
+    const r = dpr();
+    canvas.width  = w * r;
+    canvas.height = h * r;
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(r, r);
+    return ctx;
+  }
+
+  /* ─── Charts namespace ─────────────────────────────────────── */
+  const Charts = {
+
+    /* ── Horizontal bar chart ──────────────────────────────────
+       data: [{ label, value, sub?, color? }]
+       opts: { title, unit, maxValue, height, barH, color }
+    ──────────────────────────────────────────────────────────── */
+    hbar(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const barH    = opts.barH    || 28;
+      const gap     = opts.gap     || 10;
+      const labelW  = opts.labelW  || 160;
+      const valW    = opts.valW    || 52;
+      const padX    = opts.padX    || 16;
+      const padTop  = opts.padTop  || 12;
+      const padBot  = opts.padBot  || 12;
+
+      const totalH  = padTop + data.length * (barH + gap) - gap + padBot;
+      const totalW  = canvas.parentElement.offsetWidth || 600;
+      const barMax  = totalW - labelW - valW - padX * 2;
+      const maxVal  = opts.maxValue || Math.max(...data.map(d => d.value || 0));
+
+      const ctx = setupCanvas(canvas, totalW, totalH);
+      ctx.clearRect(0, 0, totalW, totalH);
+
+      data.forEach((d, i) => {
+        const y   = padTop + i * (barH + gap);
+        const pct = maxVal > 0 ? Math.min(1, (d.value || 0) / maxVal) : 0;
+        const bw  = pct * barMax;
+        const x0  = padX + labelW;
+
+        /* label */
+        ctx.font = `500 12px ${C.fontBody}`;
+        ctx.fillStyle = C.text;
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'right';
+        ctx.fillText(d.label, padX + labelW - 8, y + barH / 2);
+
+        /* sub label */
+        if (d.sub) {
+          ctx.font = `11px ${C.fontMono}`;
+          ctx.fillStyle = C.muted;
+          ctx.fillText(d.sub, padX + labelW - 8, y + barH / 2 + 13);
+        }
+
+        /* track */
+        ctx.beginPath();
+        ctx.roundRect(x0, y + (barH - 6) / 2, barMax, 6, 3);
+        ctx.fillStyle = 'rgba(246,226,22,0.10)';
+        ctx.fill();
+
+        /* bar */
+        if (bw > 0) {
+          const grad = ctx.createLinearGradient(x0, 0, x0 + bw, 0);
+          grad.addColorStop(0, d.color || C.accent);
+          grad.addColorStop(1, '#fffba0');
+          ctx.beginPath();
+          ctx.roundRect(x0, y + (barH - 6) / 2, bw, 6, 3);
+          ctx.fillStyle = grad;
+          ctx.fill();
+        }
+
+        /* value */
+        const unit = opts.unit || '';
+        const display = typeof d.display !== 'undefined' ? d.display
+          : (Number.isInteger(d.value) ? d.value : (d.value || 0).toFixed(2));
+        ctx.font = `600 12px ${C.fontMono}`;
+        ctx.fillStyle = d.color || C.accent;
+        ctx.textAlign = 'left';
+        ctx.fillText(display + unit, x0 + barMax + 8, y + barH / 2);
+      });
+    },
+
+    /* ── Grouped percentile bar chart ─────────────────────────
+       Replaces radar. Same data contract as radar:
+         data: {
+           axes: ['Tackles','Intercpt',...],
+           series: [
+             { label, values: [0-1,...], color? },
+           ]
+         }
+         opts: { labelW, rowH, barH, barGap, gap, padX, padTop, padBot }
+    ──────────────────────────────────────────────────────────── */
+    percBar(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.axes || !data.series) return;
+
+      const labelW  = opts.labelW  || 88;
+      const rowH    = opts.rowH    || 22;
+      const barH    = opts.barH    || 8;
+      const barGap  = opts.barGap  || 2;
+      const gap     = opts.gap     || 10;
+      const padX    = opts.padX    || 16;
+      const padTop  = opts.padTop  || 20;
+      const padBot  = opts.padBot  || 12;
+
+      const nSeries = data.series.length;
+      const groupH  = nSeries * barH + Math.max(0, nSeries - 1) * barGap;
+      const effectiveRowH = Math.max(rowH, groupH + 6);
+
+      const W      = canvas.parentElement.offsetWidth || 500;
+      const trackW = W - labelW - padX * 2;
+      const totalH = padTop + data.axes.length * (effectiveRowH + gap) - gap + padBot;
+
+      const ctx = setupCanvas(canvas, W, totalH);
+      ctx.clearRect(0, 0, W, totalH);
+
+      /* grid lines at 25 / 50 / 75 % */
+      [0.25, 0.5, 0.75].forEach(frac => {
+        const x = padX + labelW + frac * trackW;
+        ctx.beginPath();
+        ctx.moveTo(x, padTop - 6);
+        ctx.lineTo(x, totalH - padBot + 4);
+        ctx.strokeStyle = frac === 0.5 ? C.axis : C.grid;
+        ctx.lineWidth   = frac === 0.5 ? 0.8   : 0.4;
+        ctx.stroke();
+      });
+
+      /* tick labels at 25 / 50 / 75 */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted;
+      ctx.textBaseline = 'bottom';
+      [0.25, 0.5, 0.75].forEach(frac => {
+        const x = padX + labelW + frac * trackW;
+        ctx.textAlign = frac === 0.5 ? 'center' : frac < 0.5 ? 'center' : 'center';
+        ctx.fillText(`${Math.round(frac * 100)}`, x, padTop - 2);
+      });
+
+      data.axes.forEach((axis, ai) => {
+        const rowY  = padTop + ai * (effectiveRowH + gap);
+        const grpY  = rowY + (effectiveRowH - groupH) / 2;
+
+        /* axis label */
+        ctx.font = `11px ${C.fontMono}`;
+        ctx.fillStyle = C.muted;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(axis, padX + labelW - 6, rowY + effectiveRowH / 2);
+
+        /* row background track */
+        ctx.beginPath();
+        ctx.roundRect(padX + labelW, grpY, trackW, groupH, 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.fill();
+
+        /* series bars */
+        data.series.forEach((s, si) => {
+          const val = Math.max(0, Math.min(1, (s.values && s.values[ai]) || 0));
+          const bw  = val * trackW;
+          const by  = grpY + si * (barH + barGap);
+          if (bw > 0) {
+            ctx.beginPath();
+            ctx.roundRect(padX + labelW, by, bw, barH, 2);
+            ctx.fillStyle = s.color || C.accent;
+            ctx.fill();
+          }
+        });
+      });
+
+      /* legend — same pattern as radar */
+      const parent = canvas.parentElement;
+      if (parent) {
+        const existing = parent.parentElement && parent.parentElement.querySelector(`.legend[data-for="${canvasId}"]`);
+        if (existing) existing.remove();
+        const legend = document.createElement('div');
+        legend.className = 'legend';
+        legend.dataset.for = canvasId;
+        data.series.forEach(s => {
+          const item = document.createElement('span');
+          item.className = 'legend-item';
+          item.style.color = s.color || C.accent;
+          const dot = document.createElement('span');
+          dot.className = 'legend-dot';
+          dot.style.background = s.color || C.accent;
+          const lbl = document.createElement('b');
+          lbl.textContent = s.label || '';
+          item.appendChild(dot);
+          item.appendChild(lbl);
+          legend.appendChild(item);
+        });
+        parent.insertAdjacentElement('afterend', legend);
+      }
+    },
+
+    /* ── Radar / spider chart ──────────────────────────────────
+       data: {
+         axes: ['Shooting','Passing',...],
+         series: [
+           { label, values: [0-1,...], color?, fill? },
+         ]
+       }
+       opts: { size, levels }
+    ──────────────────────────────────────────────────────────── */
+    radar(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data) return;
+
+      const size    = opts.size || Math.min(canvas.parentElement.offsetWidth || 420, 420);
+      const levels  = opts.levels || 5;
+      const cx = size / 2, cy = size / 2;
+      const r  = size * 0.31;
+      const n  = data.axes.length;
+
+      const ctx = setupCanvas(canvas, size, size);
+      ctx.clearRect(0, 0, size, size);
+
+      function angle(i) { return (Math.PI * 2 * i / n) - Math.PI / 2; }
+      function pt(i, frac) {
+        return { x: cx + Math.cos(angle(i)) * r * frac, y: cy + Math.sin(angle(i)) * r * frac };
+      }
+
+      /* grid rings */
+      for (let l = 1; l <= levels; l++) {
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const p = pt(i, l / levels);
+          i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = l === levels ? C.axis : C.grid;
+        ctx.lineWidth = l === levels ? 1 : 0.5;
+        ctx.stroke();
+      }
+
+      /* spokes */
+      for (let i = 0; i < n; i++) {
+        const p = pt(i, 1);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = C.grid;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+
+      /* series */
+      data.series.forEach(s => {
+        const vals = s.values;
+        ctx.beginPath();
+        vals.forEach((v, i) => {
+          const p = pt(i, Math.max(0, Math.min(1, v)));
+          i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        const col = s.color || C.accent;
+        if (s.fill !== false) {
+          ctx.fillStyle = col.startsWith('#') ? col + '28' : col;
+          ctx.fill();
+        }
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        /* dots */
+        vals.forEach((v, i) => {
+          const p = pt(i, Math.max(0, Math.min(1, v)));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = col;
+          ctx.fill();
+        });
+      });
+
+      /* axis labels */
+      ctx.font = `11px ${C.fontMono}`;
+      ctx.fillStyle = C.muted;
+      ctx.textBaseline = 'middle';
+      data.axes.forEach((label, i) => {
+        const p = pt(i, 1.16);
+        ctx.textAlign = p.x < cx - 2 ? 'right' : p.x > cx + 2 ? 'left' : 'center';
+        ctx.fillText(label, p.x, p.y);
+      });
+
+      /* legend */
+      const parent = canvas.parentElement;
+      if (parent) {
+        const existing = parent.parentElement?.querySelector(`.legend[data-for="${canvasId}"]`);
+        if (existing) existing.remove();
+
+        const legend = document.createElement('div');
+        legend.className = 'legend';
+        legend.dataset.for = canvasId;
+        data.series.forEach(s => {
+          const item = document.createElement('span');
+          item.className = 'legend-item';
+          item.style.color = s.color || C.accent;
+
+          const dot = document.createElement('span');
+          dot.className = 'legend-dot';
+          dot.style.background = s.color || C.accent;
+
+          const label = document.createElement('b');
+          label.textContent = s.label || '';
+
+          item.appendChild(dot);
+          item.appendChild(label);
+          legend.appendChild(item);
+        });
+
+        parent.insertAdjacentElement('afterend', legend);
+      }
+    },
+
+    /* ── Scatter plot ──────────────────────────────────────────
+       data: [{ x, y, label, team?, aachen? }]
+       opts: { xLabel, yLabel, xUnit, yUnit, height, aachenColor }
+    ──────────────────────────────────────────────────────────── */
+    scatter(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const W      = canvas.parentElement.offsetWidth || 700;
+      const H      = opts.height || 380;
+      const padL   = opts.padL || 52;
+      const padR   = opts.padR || 20;
+      const padT   = opts.padT || 20;
+      const padB   = opts.padB || 44;
+      const plotW  = W - padL - padR;
+      const plotH  = H - padT - padB;
+
+      const xs = data.map(d => d.x), ys = data.map(d => d.y);
+      const xMin = opts.xMin ?? Math.min(...xs), xMax = opts.xMax ?? Math.max(...xs);
+      const yMin = opts.yMin ?? Math.min(...ys), yMax = opts.yMax ?? Math.max(...ys);
+      const xRange = xMax - xMin || 1, yRange = yMax - yMin || 1;
+
+      const toX = v => padL + ((v - xMin) / xRange) * plotW;
+      const toY = v => padT + plotH - ((v - yMin) / yRange) * plotH;
+
+      const ctx = setupCanvas(canvas, W, H);
+      ctx.clearRect(0, 0, W, H);
+
+      /* grid */
+      ctx.strokeStyle = C.grid;
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 5; i++) {
+        const gy = padT + (i / 5) * plotH;
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke();
+        const gx = padL + (i / 5) * plotW;
+        ctx.beginPath(); ctx.moveTo(gx, padT); ctx.lineTo(gx, padT + plotH); ctx.stroke();
+      }
+
+      /* axes */
+      ctx.strokeStyle = C.axis;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+      /* axis labels */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted2;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      if (opts.xLabel) ctx.fillText(opts.xLabel, padL + plotW / 2, padT + plotH + 28);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      if (opts.yLabel) {
+        ctx.save();
+        ctx.translate(14, padT + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(opts.yLabel, 0, 0);
+        ctx.restore();
+      }
+
+      /* tick labels */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted2;
+      for (let i = 0; i <= 4; i++) {
+        const xv = xMin + (i / 4) * xRange;
+        const yv = yMin + (i / 4) * yRange;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(xv.toFixed(1), toX(xv), padT + plotH + 6);
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(yv.toFixed(1), padL - 5, toY(yv));
+      }
+
+      /* dots — non-Aachen first, then Aachen on top */
+      const dotR = opts.dotR || 4.5;
+      [false, true].forEach(isAachen => {
+        data.filter(d => !!d.aachen === isAachen).forEach(d => {
+          const x = toX(d.x), y = toY(d.y);
+          ctx.beginPath();
+          ctx.arc(x, y, dotR, 0, Math.PI * 2);
+          ctx.fillStyle = d.aachen ? (opts.aachenColor || C.accent)
+            : d.color || 'rgba(255,255,255,0.28)';
+          ctx.fill();
+          if (d.aachen) {
+            ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        });
+      });
+
+      /* hover interaction */
+      canvas._scatterData = data;
+      canvas._scatterMap  = { toX, toY, xMin, xRange, yMin, yRange, plotW, plotH, padL, padT, dotR, xLabel: opts.xLabel || 'x', yLabel: opts.yLabel || 'y' };
+      canvas.style.cursor = 'crosshair';
+    },
+
+    /* ── Histogram / distribution ──────────────────────────────
+       data: number[]
+       opts: { bins, xLabel, height, highlight? }
+    ──────────────────────────────────────────────────────────── */
+    hist(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const bins   = opts.bins || 12;
+      const W      = canvas.parentElement.offsetWidth || 500;
+      const H      = opts.height || 200;
+      const padL   = 42, padR = 16, padT = 16, padB = 36;
+      const plotW  = W - padL - padR;
+      const plotH  = H - padT - padB;
+
+      const mn = Math.min(...data), mx = Math.max(...data);
+      const range = mx - mn || 1;
+      const bw = range / bins;
+
+      const counts = Array(bins).fill(0);
+      data.forEach(v => {
+        const i = Math.min(bins - 1, Math.floor((v - mn) / bw));
+        counts[i]++;
+      });
+      const maxCount = Math.max(...counts) || 1;
+
+      const ctx = setupCanvas(canvas, W, H);
+      ctx.clearRect(0, 0, W, H);
+
+      /* bars */
+      counts.forEach((cnt, i) => {
+        const bx = padL + (i / bins) * plotW;
+        const bw2 = plotW / bins;
+        const bh = (cnt / maxCount) * plotH;
+        const by = padT + plotH - bh;
+
+        const binCenter = mn + (i + 0.5) * bw;
+        const isHighlight = opts.highlight !== undefined && Math.abs(binCenter - opts.highlight) < bw;
+
+        const grad = ctx.createLinearGradient(0, by, 0, by + bh);
+        grad.addColorStop(0, isHighlight ? C.white : C.accent);
+        grad.addColorStop(1, isHighlight ? 'rgba(255,255,255,0.3)' : 'rgba(246,226,22,0.3)');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(bx + 1, by, bw2 - 2, bh);
+      });
+
+      /* axis */
+      ctx.strokeStyle = C.axis;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+      /* x tick labels */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted2;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let i = 0; i <= 4; i++) {
+        const v = mn + (i / 4) * range;
+        const x = padL + (i / 4) * plotW;
+        ctx.fillText(v.toFixed(1), x, padT + plotH + 6);
+      }
+
+      if (opts.xLabel) {
+        ctx.fillStyle = C.muted;
+        ctx.fillText(opts.xLabel, padL + plotW / 2, padT + plotH + 22);
+      }
+    },
+
+    /* ── Age curve (bubble) ────────────────────────────────────
+       data: [{ age, value, name, minutes? }]
+       opts: { xLabel, yLabel, height }
+    ──────────────────────────────────────────────────────────── */
+    agecurve(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const W      = canvas.parentElement.offsetWidth || 700;
+      const H      = opts.height || 300;
+      const padL   = 44, padR = 20, padT = 20, padB = 44;
+      const plotW  = W - padL - padR;
+      const plotH  = H - padT - padB;
+
+      const ages  = data.map(d => d.age);
+      const vals  = data.map(d => d.value);
+      const mins  = data.map(d => d.minutes || 1);
+      const ageMin = Math.min(...ages) - 1, ageMax = Math.max(...ages) + 1;
+      const vMin = Math.min(...vals), vMax = Math.max(...vals);
+      const mMax = Math.max(...mins);
+
+      const toX = a => padL + ((a - ageMin) / (ageMax - ageMin)) * plotW;
+      const toY = v => padT + plotH - ((v - vMin) / (vMax - vMin || 1)) * plotH;
+      const toR = m => 4 + (m / mMax) * 10;
+
+      const ctx = setupCanvas(canvas, W, H);
+      ctx.clearRect(0, 0, W, H);
+
+      /* grid */
+      ctx.strokeStyle = C.grid; ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 4; i++) {
+        const gy = padT + (i / 4) * plotH;
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke();
+      }
+
+      /* prime age band (23-29) */
+      const primeX1 = toX(23), primeX2 = toX(29);
+      if (primeX1 < padL + plotW && primeX2 > padL) {
+        ctx.fillStyle = 'rgba(246,226,22,0.04)';
+        ctx.fillRect(Math.max(padL, primeX1), padT, Math.min(padL + plotW, primeX2) - Math.max(padL, primeX1), plotH);
+      }
+
+      /* axes */
+      ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+      /* bubbles */
+      data.forEach(d => {
+        const x = toX(d.age), y = toY(d.value), r = toR(d.minutes || 1);
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = d.aachen ? 'rgba(246,226,22,0.8)' : 'rgba(255,255,255,0.22)';
+        ctx.fill();
+        if (d.aachen) {
+          ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      });
+
+      /* axis labels */
+      ctx.font = `10px ${C.fontMono}`; ctx.fillStyle = C.muted2;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (let age = Math.ceil(ageMin); age <= Math.floor(ageMax); age++) {
+        if (age % 2 === 0) ctx.fillText(age, toX(age), padT + plotH + 6);
+      }
+      if (opts.xLabel) ctx.fillText(opts.xLabel, padL + plotW / 2, padT + plotH + 22);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      for (let i = 0; i <= 4; i++) {
+        const v = vMin + (i / 4) * (vMax - vMin);
+        ctx.fillText(v.toFixed(1), padL - 5, toY(v));
+      }
+      if (opts.yLabel) {
+        ctx.save();
+        ctx.translate(12, padT + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText(opts.yLabel, 0, 0);
+        ctx.restore();
+      }
+    },
+  };
+
+  /* ─── Scatter hover ────────────────────────────────────────── */
+  document.addEventListener('mousemove', e => {
+    const canvas = e.target.closest('canvas');
+    if (!canvas || !canvas._scatterData) { Tooltip.hide(); return; }
+    const m  = canvas._scatterMap;
+    const r  = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+
+    let hit = null, best = Infinity;
+    canvas._scatterData.forEach(d => {
+      const dx = m.toX(d.x) - mx, dy = m.toY(d.y) - my;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < best && dist < 16) { best = dist; hit = d; }
+    });
+
+    if (hit) {
+      Tooltip.show(
+        `<strong>${hit.label || ''}</strong>${hit.team ? '<br>' + hit.team : ''}<div style="display:flex;justify-content:space-between;gap:16px;margin-top:4px"><span>${m.xLabel}</span><span>${hit.x}</span></div><div style="display:flex;justify-content:space-between;gap:16px"><span>${m.yLabel}</span><span>${hit.y}</span></div>`,
+        e.clientX, e.clientY
+      );
+    } else {
+      Tooltip.hide();
+    }
+  });
+
+  document.addEventListener('mouseleave', () => Tooltip.hide(), true);
+
+  /* ─── Auto-init on load ────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', () => {
+    Tooltip.init();
+
+    /* tabs */
+    document.querySelectorAll('.tabs').forEach(initTabs);
+
+    /* filter bars */
+    document.querySelectorAll('[data-filterable]').forEach(initFilters);
+
+    /* sortable tables */
+    document.querySelectorAll('table[data-sortable]').forEach(initSort);
+
+    /* resize-redraw charts — each report script should call Charts.* in a
+       window.__initCharts function, which we call here and on resize */
+    if (typeof window.__initCharts === 'function') {
+      window.__initCharts();
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(window.__initCharts, 120);
+      });
+    }
+  });
+  </script>
+</body>
+</html>

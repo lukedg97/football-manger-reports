@@ -1,0 +1,1877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Isak Skotheim — IL Hødd FM26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       DESIGN TOKENS
+    ═══════════════════════════════════════════════════════════ */
+    :root {
+      --bg:          #070707;
+      --panel:       #111111;
+      --panel-2:     #161616;
+      --panel-3:     #1c1c1c;
+      --text:        #f0ede0;
+      --muted:       #888070;
+      --muted-2:     #5a5650;
+      --accent:      #1d4278;
+      --accent-dim:  rgba(29,66,120,0.14);
+      --accent-glow: rgba(29,66,120,0.06);
+      --white:       #ffffff;
+      --red:         #f87171;
+      --green:       #4ade80;
+      --blue:        #60a5fa;
+      --line:        rgba(29,66,120,0.10);
+      --line-hard:   rgba(29,66,120,0.22);
+      --radius-sm:   10px;
+      --radius-md:   16px;
+      --radius-lg:   22px;
+      --shadow-sm:   0 4px 16px rgba(0,0,0,0.32);
+      --shadow-md:   0 12px 36px rgba(0,0,0,0.42);
+      --shadow-lg:   0 24px 64px rgba(0,0,0,0.56);
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+      --font-mono:    'IBM Plex Mono', monospace;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+      background-image:
+        radial-gradient(circle at 18% 0%, rgba(246,226,22,0.055) 0%, transparent 42%),
+        radial-gradient(ellipse at 90% 80%, rgba(246,226,22,0.03) 0%, transparent 50%),
+        radial-gradient(rgba(246,226,22,0.07) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 28px 28px;
+    }
+
+    /* top accent stripe */
+    body::before {
+      content: '';
+      display: block;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #F6E216 0%, #fff9a0 50%, #F6E216 100%);
+      z-index: 1000;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       LAYOUT
+    ═══════════════════════════════════════════════════════════ */
+    .wrap {
+      max-width: 1560px;
+      margin: 0 auto;
+      padding: 32px 24px 56px;
+    }
+
+    .hero-shot {
+      padding: 12px;
+      margin: -12px -12px 4px;
+      background: transparent;
+      border-radius: calc(var(--radius-lg) + 12px);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      background: linear-gradient(135deg, #0e0e0e 0%, #0a0a0a 100%);
+      border: 1px solid var(--line-hard);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px 28px;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      margin-bottom: 16px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--accent);
+      border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    }
+
+    .hero-watermark {
+      position: absolute;
+      right: -40px; top: -40px;
+      width: 320px; height: 320px;
+      opacity: 0.045;
+      pointer-events: none;
+      filter: grayscale(1) blur(1px);
+    }
+    .hero-watermark img { width: 100%; height: 100%; object-fit: contain; }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .hero-crest { flex: 0 0 72px; width: 72px; filter: drop-shadow(0 8px 24px rgba(0,0,0,0.7)); margin-top: 2px; }
+    .hero-crest img { display: block; width: 100%; height: auto; }
+
+    .hero-text { flex: 1; min-width: 0; }
+
+    .report-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .report-badge::before {
+      content: '';
+      display: inline-block;
+      width: 18px; height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4.5vw, 68px);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .hero h1 em { font-style: normal; color: var(--accent); }
+
+    .hero-subtitle {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted-2);
+    }
+    .hero-meta span { display: flex; align-items: center; gap: 5px; }
+    .hero-meta span::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       STAT CARDS
+    ═══════════════════════════════════════════════════════════ */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px 14px;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .card:hover { border-color: var(--line-hard); background: rgba(246,226,22,0.025); }
+    .card:hover::after { opacity: 1; }
+
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .card-value {
+      font-family: var(--font-mono);
+      font-size: 30px;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1.1;
+      margin: 6px 0 4px;
+    }
+    .card-value.white  { color: var(--white); }
+    .card-value.red    { color: var(--red); }
+    .card-value.green  { color: var(--green); }
+    .card-sub { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+    /* ═══════════════════════════════════════════════════════════
+       HIGHLIGHT CHIPS
+    ═══════════════════════════════════════════════════════════ */
+    .chips {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .chip {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      transition: border-color 0.2s;
+    }
+    .chip:hover { border-color: var(--line-hard); }
+    .chip-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .chip-name { font-size: 16px; font-weight: 600; color: var(--white); margin: 6px 0 3px; }
+    .chip-value { font-family: var(--font-mono); font-size: 13px; color: var(--accent); }
+
+    /* ═══════════════════════════════════════════════════════════
+       SECTIONS & PANELS
+    ═══════════════════════════════════════════════════════════ */
+    .section { margin-top: 16px; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.03em;
+      color: var(--white);
+    }
+    .section-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+    .section-note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 14px;
+      max-width: 900px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       TABS
+    ═══════════════════════════════════════════════════════════ */
+    .tabs { margin-bottom: 16px; }
+
+    .tab-list {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .tab-list::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 9px 16px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+      margin-bottom: -1px;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ═══════════════════════════════════════════════════════════
+       FILTER BAR
+    ═══════════════════════════════════════════════════════════ */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      margin-bottom: 14px;
+    }
+
+    .filter-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted-2);
+      flex-shrink: 0;
+    }
+
+    .filter-group { display: flex; gap: 4px; flex-wrap: wrap; }
+
+    .filter-btn {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 5px 13px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: var(--line-hard); color: var(--text); }
+    .filter-btn.active {
+      background: var(--accent-dim);
+      border-color: var(--line-hard);
+      color: var(--accent);
+    }
+
+    .search-wrap {
+      position: relative;
+      margin-left: auto;
+    }
+    .search-wrap::before {
+      content: '⌕';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-2);
+      font-size: 14px;
+      pointer-events: none;
+    }
+    .search-input {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 99px;
+      padding: 6px 14px 6px 30px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text);
+      width: 200px;
+      outline: none;
+      transition: border-color 0.15s, width 0.2s;
+    }
+    .search-input::placeholder { color: var(--muted-2); }
+    .search-input:focus { border-color: var(--line-hard); width: 240px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       DATA TABLE
+    ═══════════════════════════════════════════════════════════ */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+    }
+
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+
+    thead tr { border-bottom: 2px solid rgba(246,226,22,0.25); }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--panel-3);
+      padding: 11px 12px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      text-align: left;
+      user-select: none;
+    }
+    th.num { text-align: right; }
+
+    /* sortable column headers */
+    th.sortable { cursor: pointer; }
+    th.sortable:hover { color: var(--white); }
+    th.sort-asc::after  { content: ' ↑'; opacity: 0.7; }
+    th.sort-desc::after { content: ' ↓'; opacity: 0.7; }
+
+    td {
+      padding: 9px 12px;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.03);
+      background: var(--panel-2);
+      vertical-align: middle;
+      transition: background 0.12s;
+    }
+
+    tbody tr:hover td { background: rgba(246,226,22,0.04); }
+    tbody tr:hover td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* Aachen player highlight in league tables */
+    tr.aachen td { background: rgba(246,226,22,0.06); }
+    tr.aachen td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+    tr.aachen:hover td { background: rgba(246,226,22,0.10); }
+
+    /* hidden rows (filtered out) */
+    tr.filtered-out { display: none; }
+
+    /* Cell utility classes */
+    td.player, td.name { font-weight: 600; color: var(--white); white-space: nowrap; }
+    td.pos, td.club, td.muted { color: var(--muted); font-size: 12px; }
+    td.num {
+      text-align: right;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    td.accent { font-family: var(--font-mono); font-weight: 600; color: var(--accent); text-align: right; }
+    td.emph   { font-weight: 700; color: var(--white); }
+    td.rank   { font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-align: right; }
+    td.red    { color: var(--red); font-family: var(--font-mono); }
+    td.green  { color: var(--green); font-family: var(--font-mono); }
+
+    /* group header rows (for position-grouped tables) */
+    tr.group-header td {
+      background: var(--panel-3);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 7px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BAR COMPONENT (inline spark bar)
+    ═══════════════════════════════════════════════════════════ */
+    .bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 90px;
+    }
+    .bar-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      white-space: nowrap;
+      min-width: 32px;
+      text-align: right;
+    }
+    .bar {
+      flex: 1;
+      height: 5px;
+      border-radius: 99px;
+      background: rgba(246,226,22,0.10);
+      overflow: hidden;
+      min-width: 40px;
+    }
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent) 0%, #fffba0 100%);
+    }
+
+    /* percentile pill bar */
+    .pct-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+    .pct-bar-track {
+      width: 72px;
+      height: 5px;
+      border-radius: 99px;
+      background: rgba(246,226,22,0.10);
+      overflow: hidden;
+    }
+    .pct-bar-track span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), #fffba0);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       BADGE / PILL
+    ═══════════════════════════════════════════════════════════ */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .badge-yellow { background: rgba(246,226,22,0.15); color: var(--accent); }
+    .badge-white  { background: rgba(255,255,255,0.08); color: var(--white); }
+    .badge-red    { background: rgba(220,50,50,0.18);   color: var(--red); }
+    .badge-green  { background: rgba(50,200,100,0.15);  color: var(--green); }
+    .badge-blue   { background: rgba(96,165,250,0.15);  color: var(--blue); }
+
+    /* ═══════════════════════════════════════════════════════════
+       CHART CONTAINERS
+    ═══════════════════════════════════════════════════════════ */
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      margin: 14px 0 4px;
+    }
+    .chart-wrap canvas {
+      display: block;
+      width: 100% !important;
+    }
+    .chart-title {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* chart grid: 2-up and 3-up layouts */
+    .chart-grid {
+      display: grid;
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .chart-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .chart-grid-3 { grid-template-columns: repeat(3, 1fr); }
+
+    /* chart panel (self-contained chart block with label + canvas) */
+    .chart-panel {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+    }
+
+    /* radar/spider chart wrapper — square aspect */
+    .radar-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .radar-wrap canvas { display: block; width: 100% !important; }
+
+    /* grouped percentile bar wrapper — grows vertically */
+    .percbar-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .percbar-wrap canvas { display: block; width: 100% !important; height: auto !important; }
+
+    /* scatter plot wrapper */
+    .scatter-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .scatter-wrap canvas { display: block; width: 100% !important; }
+
+    /* tooltip */
+    .chart-tooltip {
+      position: fixed;
+      background: var(--panel-3);
+      border: 1px solid var(--line-hard);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text);
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0;
+      transition: opacity 0.1s;
+      line-height: 1.7;
+      max-width: 200px;
+      box-shadow: var(--shadow-md);
+    }
+    .chart-tooltip.visible { opacity: 1; }
+    .chart-tooltip strong { color: var(--accent); display: block; }
+
+    /* ═══════════════════════════════════════════════════════════
+       LEGEND
+    ═══════════════════════════════════════════════════════════ */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+    }
+    .legend b {
+      color: inherit;
+      font-weight: 600;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      vertical-align: middle;
+      flex: 0 0 auto;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       MISC UTILITIES
+    ═══════════════════════════════════════════════════════════ */
+    .divider { height: 1px; background: var(--line); margin: 18px 0; }
+    .text-muted  { color: var(--muted); }
+    .text-accent { color: var(--accent); }
+    .text-white  { color: var(--white); }
+    .text-mono   { font-family: var(--font-mono); }
+    .mt-sm { margin-top: 8px; }
+    .mt-md { margin-top: 16px; }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    footer {
+      margin-top: 24px;
+      padding: 18px 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    footer img { width: 28px; height: auto; opacity: 0.5; filter: grayscale(1); flex-shrink: 0; }
+    footer p { font-family: var(--font-mono); font-size: 11px; color: var(--muted-2); line-height: 1.7; }
+    footer code {
+      color: var(--muted);
+      background: rgba(255,255,255,0.05);
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 10px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 1100px) {
+      .cards { grid-template-columns: repeat(3, 1fr); }
+      .chart-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 760px) {
+      .wrap { padding: 20px 14px 36px; }
+      .hero-shot { padding: 8px; margin: -8px -8px 4px; border-radius: calc(var(--radius-md) + 8px); }
+      .hero { padding: 22px 20px 20px; border-radius: var(--radius-md); }
+      .hero-watermark { display: none; }
+      .hero h1 { font-size: 36px; }
+      .hero-inner { flex-direction: column; gap: 14px; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .chips { grid-template-columns: 1fr; }
+      .chart-grid-2, .chart-grid-3 { grid-template-columns: 1fr; }
+      .search-wrap { margin-left: 0; }
+      .search-input { width: 100%; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media print {
+      body { background: #fff; color: #111; }
+      .hero, .panel, .card { border: 1px solid #ccc; box-shadow: none; }
+      body::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- ═══ HERO ═════════════════════════════════════════════════ -->
+    <div class="hero-shot" id="hero-shot">
+    <header class="hero">
+      <div class="hero-watermark" aria-hidden="true">
+        <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIGlkPSJzdmc3NSIgaGVpZ2h0PSIzNTYuNDg4OTgiIHZpZXdCb3g9IjAgMCAyMDEuNzUwMDEgMjY3LjM2Njc0IiB3aWR0aD0iMjY5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgPGcgaWQ9InN1cmZhY2U0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI5OS4xMjUgLTE2Ni4zMTY2MykiPg0KICAgICAgPHBhdGggaWQ9InBhdGgyIiBkPSJtMzAwLjYyNSAxNjcuODE2NjNoMTk4Ljc1djE2NC45OTQ2NmMwIDU0LjcwNTkzLTQ0LjY2OTA2IDk5LjM3MjA4LTk5LjM3NSA5OS4zNzIwOC01NC43MDU5NCAwLTk5LjM3NS00NC42NjYxNS05OS4zNzUtOTkuMzcyMDh6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0IiBkPSJtMzA0LjYyNjMxIDE3MS44NTMwMXYxNjAuOTU4MjhjMCA1Mi41MjI2IDQyLjg0ODE2IDk1LjM3MDc3IDk1LjM3MzY5IDk1LjM3MDc3IDUyLjUyNTUzIDAgOTUuMzczNjktNDIuODQ4MTcgOTUuMzczNjktOTUuMzcwNzd2LTE2MC45NTgyOHptMCAwIiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDYiIGQ9Im00MjYuMDA3MDIgMjE0Ljg4NTMxYy0xNi40NzU3OSAwLTMxLjM1MjgxIDYuNjkwMjgtNDIuMTU4MzggMTcuNDk1ODUtMTAuODM3NzIgMTAuODM3NzItMTcuNTMwOTIgMjUuNzUyNzMtMTcuNTMwOTIgNDIuMTkzNDUgMCAzMi44ODQzNiAyNi44MDc4NyA1OS42OTIyMiA1OS42ODkzIDU5LjY5MjIyIDMyLjg4MTQzIDAgNTkuNjg5My0yNi44MDc4NiA1OS42ODkzLTU5LjY5MjIyIDAtMTYuNDQwNzItNi42OTMxOS0zMS4zNTU3My0xNy40OTI5Mi00Mi4xOTM0NS0xMC44NDA2NC0xMC44MDU1Ny0yNS43NTU2Ni0xNy40OTU4NS00Mi4xOTYzOC0xNy40OTU4NSIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMzk2LjYxODMzIDMyMi42NjA0M2MtMi4yOTQ0LTEuNDE3NTctNC41MTI4LTIuOTgxMjYtNi41ODUwNi00LjcyNjE3di0zOC40NDkzNWgtNy4zNDc5MXYzMS4xMzY1MmMtMi41MTA2Ny0zLjAxOTI0LTQuNzI5MDgtNi4yOTI3Ny02LjU4MjEyLTkuODIwNTl2LTUyLjQ1MjQ2YzEuODUzMDQtMy41Mjc4MSA0LjA3MTQ1LTYuODAxMzQgNi41ODIxMi05LjgyMDU5djM0LjMzNjk5aDcuMzQ3OTF2LTQxLjY4NDg5YzIuMDcyMjYtMS43MDk4NCA0LjI5MDY2LTMuMjczNTMgNi41ODUwNi00LjY5MTA4em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTAiIGQ9Im00MTguMTE1NDggMzE5Ljg5ODM4YzAgMS40NTI2My0uMTQ2MTUgMy43NDcwMi0zLjg5MzE3IDMuMjAwNDYtLjExMTA2IDAtLjIxNjI4LS4wMzgtLjMyNzM1LS4wMzgtLjU0MzY0LS4xMDgxNC0xLjA5MzEzLS4zMjczNS0xLjYzNjc2LS40NzA1Ny0xLjkyNjEzLS41MDg1Ni0yLjU0NTc1LTEuOTI5MDQtMi41NDU3NS00LjE0NzQ0di03NS40NDAyM2MwLTIuMjE4NC42MTk2Mi0zLjYzODg4IDIuNTQ1NzUtNC4xODI1Mi41NDM2My0uMTQ2MTQgMS4wOTMxMi0uMzI3MzUgMS42MzY3Ni0uNDM4NDEuMTExMDctLjAzNTEuMjE2MjktLjAzNTEuMzI3MzUtLjA3MzEgMy43NDcwMi0uNTQzNjMgMy44OTMxNyAxLjc0Nzg0IDMuODkzMTcgMy4yMDA0NnptLS4xNDYxNS04OC44NjQ2M2MtMS4zODI0Ny4xODEyMS0yLjcyOTg4LjQzODQyLTQuMDc0MzcuNzI3NzctMS41OTg3Ny4zNjI0My0zLjE2MjQ2Ljc2Mjg1LTQuNzI5MDggMS4yMzYzNC01LjQ5MTkyIDEuNzA5ODQtNi4wMzg0OSA1LjY3NjA3LTYuMDM4NDkgOS40NTgxN3Y3Ni40OTUzNmMwIDMuNzgyMS41NDY1NyA3Ljc0ODMzIDYuMDM4NDkgOS40NTgxNyAxLjU2NjYyLjQ3MzQ5IDMuMTMwMzEuOTA4OTkgNC43MjkwOCAxLjIzNjM0IDEuMzQ0NDkuMzI3MzUgMi42OTE5LjU0NjU2IDQuMDc0MzcuNzYyODUgMi41ODM3Ni4zMjczNSA2LjcyODI4LS44MDA4NSA2LjcyODI4LTYuNjIwMTN2LTg2LjE2OTgxYzAtNS44MTkyOS00LjE0NDUyLTYuOTQ3NDktNi43MjgyOC02LjU4NTA2IiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtNDI0LjY5NzYxIDIyNC42MzI4M2MtMi4yNTYzOS4wMzgtNC40MzY4LjI1NDI4LTYuNTg1MDYuNTgxNjR2LTYuNTExOTljMi4xNDgyNi0uMjg5MzUgNC4zMjg2Ny0uNDcwNTcgNi41ODUwNi0uNTA4NTZ6bTAgMCIgZmlsbD0iI2ZmZiIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgxNCIgZD0ibTQxMC45ODM4NiAyMjYuOTI0M2MtMi41MDc3Ni44MzU5Mi00LjcyNjE2IDEuNzQ0OTEtNi41ODIxMyAyLjQ3MjY4di02LjgwMTM0YzIuMTgwNC0uODM1OTIgNC4xNDQ1Mi0xLjcwOTg0IDYuNTgyMTMtMi4yMTg0em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTYiIGQ9Im00NjkuNDc0ODIgMjk0LjgzNTQzYzAgMi41MTA2Ny0uMjE2MjkgNC45ODMzNS0xLjkyNjEzIDcuMzgyOTctLjQzODQxLjY1NDctLjg3MzkxIDEuMjc0MzQtMS4zMDk0MSAxLjg5MTA1LTEuMDU1MTIgMS4zODI0OC0yLjExMDI1IDIuNzI5ODgtMy4yNzM1MyA0LjAwMTN2LTY3LjExMDI3YzEuMTYzMjggMS4zMDk0MSAyLjI1MzQ4IDIuNjU2ODIgMy4yNzM1MyA0LjAzOTMuNTQzNjUuNzYyODUgMS4wOTAyIDEuNTI1NyAxLjU5ODc3IDIuMjkxNDcgMS40MjA0OCAyLjEwNzMzIDEuNjM2NzcgMy4zMDg2IDEuNjM2NzcgNi4wMzU1N3ptNi41ODUwNS0xLjAxNzE0di00MC41OTQ2OWMwLTMuMjM4NDUtLjQzODQxLTUuNjM4MDctMS45NjQxMi04LjA3NTY3LTIuMjU2MzktMy42MDA4OS00LjkxMzIxLTYuOTgyNTctNy44NTY0Ny0xMC4wMDE4MS0yLjk4NDE3LTMuMDU3MjQtNi4yOTI3Ny01Ljc0OTE0LTkuODU4NTgtOC4wNDA2MXY5NC45MzgyMWMzLjU2NTgxLTIuMjkxNDggNi44NzQ0MS00Ljk4MzM3IDkuODU4NTgtOC4wMDI2MiAyLjM2NDU0LTIuNDM3NjEgNC41MDY5NS01LjA1NjQzIDYuNDM2LTcuODU2NDcgMi41NDg2OC0zLjc0NzAyIDMuMzg0NTktNi45ODU0NyAzLjQxOTY3LTExLjAyMTg1di0uNDczNWMwLS4yODkzNiAwLS41ODE2My0uMDM1MS0uODcwOTkiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTgiIGQ9Im00NDQuNTkzMDcgMzE2LjczM2MwIDMuMjAwNDUtLjY4OTc4IDQuNTQ0OTQtMy4xMjczOSA1LjM0NTc5LS4xNDYxNC4wMzgtLjI1NDI5LjA3MzEtLjQwMDQyLjExMTA2LTEuMTYzMjguMzYyNDMtMi4zMjY1NC42ODk3OC0zLjUyNzgxLjk4MjA2di05Ny4yMjk2N2MxLjIzOTI2LjMyNzM2IDIuMzY0NTMuNjE2NzEgMy41Mjc4MSAxLjAxNzEzLjE4NDE0LjAzOC4zNjUzNC4xMTEwNy41MTE0OS4xODQxNCAxLjk2NDEyLjY1NDcxIDIuOTQ2MTggMi42NTM5IDMuMDE2MzIgNC4yNTU1OXptLjExMTA2LTk1LjM3MzdjLTEuMjAxMjctLjQwMDQyLTIuNDAyNTMtLjgwMDg1LTMuNjM4ODctMS4xMjgyLTMuMjczNTMtLjkwODk5LTYuNjU1MjEtMS41Mjg2Mi0xMC4xMDk5NS0xLjg1MzA1djExMi4zNTgwNWMzLjQ1NDc0LS4yODkzNSA2LjgzNjQyLS45MDg5OSAxMC4xMDk5NS0xLjgxNzk3IDEuMzQ3NC0uMzYyNDMgMi42OTQ4MS0uODAwODUgMy45NjYyMy0xLjI3MTQyIDQuODAyMTUtMS43MDk4NCA2LjE0NjY0LTQuMjU4NTEgNi4xNDY2NC05Ljk2Njczdi04Ni4yMDc4MWMwLTQuODM3MjMtMS44MTc5OC04LjQ3NjEtNi40NzQtMTAuMTEyODciIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im00MjYuMzM0MzcgMzQyLjc0MDAyYy0uOTgyMDYgMS4zMDk0MS0xLjUyNTY5IDIuOTQ2MTctMi4xODA0IDQuNjk0MDFsMS4yNzE0MiAxLjY3MTg0IDkuNDkzMjMtNC4wMzkzMS0zLjg1NTE3LTQuMzI4NjZ6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTM4MS4zMDI4OSAyMDYuMDA4NzhjLjkwODk4IDAgMS42MzY3Ni41MTE1IDEuNjM2NzYgMS4yNzQzNSAwIC43Mjc3Ny0uNzI3NzggMS4yMzYzMy0xLjYzNjc2IDEuMjM2MzMtLjkwOSAwLTEuNjcxODUtLjUwODU2LTEuNjcxODUtMS4yMzYzMyAwLS43NjI4NS43NjI4NS0xLjI3NDM1IDEuNjcxODUtMS4yNzQzNW0tNDEuMTAzMjYgMTA5Ljk2MTM3YzIuMjIxMzItLjY5MjcgNC40NzQ4LTEuNDkzNTUgNi42NTgxMi0yLjMyOTQ3LjkwOS0uMzI3MzUgMS44NTU5OC0uNjg5NzggMi43NjQ5Ny0xLjA1NTEzIDEuNDE3NTYtLjU4MTYzIDIuODAwMDMtMS4xNjMyNyA0LjE4MjUyLTEuNzgyOSAxLjEyODItLjU0NjU3IDIuMjUzNDctMS4wNTIyMSAzLjM4MTY3LTEuNTk4NzcgMS4xNjYxOS0uNTgxNjQgMi4zMjk0Ny0xLjE2NjE5IDMuNDE5NjctMS43ODI5IDEuODE3OTgtLjk4MjA2IDMuNTI3ODItMi4wMDIxMiA1LjEyOTUtMy4wNTcyNSAxLjE5ODM1LS43OTc5MiAyLjMyNjU1LTEuNTk4NzcgMy4zODE2OC0yLjQzNzYxLTEuMzA5NDItMi43NjIwNC0yLjQ3MjY5LTUuNjM1MTQtMy4zODE2OC04LjU4MTMyLS4xODEyMS0uNTg0NTYtLjM2NTM1LTEuMjAxMjctLjUxMTQ4LTEuNzgyOWwtMjQuOTg2OTcgOS44OTM2NS0uMDM4LS4wMzUxLTE0LjE0OTI0LTE0LjM2ODQ2di0yOC45OTExOWwxNC40NzY1OS0xMC43Mjk1OSAyMy41MzQzNSAxNS4wMjMxN2MuNDM4NDItMi4yMTg0IDEuMDIwMDUtNC40MDE3MyAxLjY3NDc2LTYuNTQ5OTkgMy4wNTQzMS05LjgyMDU4IDguNDczMTgtMTguNTg2MDQgMTUuNTY2OC0yNS43MTQ3My4wMzgtLjAzNTEuMDczLS4wNzMxLjExMTA3LS4xMTEwNyAyLjMyNjU0LTIuMzYxNjIgNC44NzIyOS00LjUwOTg4IDcuNTI5MTItNi40NzM5OWw1LjUyNjk5LTguODM4NTMuMjE5MjEtMTEuMjc2MTQtMTcuNDk1ODQtMjIuODA2NTctMTEuNzQ5NjMtLjE0NjEzLTEyLjgwMTg0IDEyLjAzODk4djI4LjczNjkxbDE1LjE2NjM4LjY1NDcxLjQwMDQyLTIxLjc1MTQzIDE4LjMzMTc3LjgwMDg0IDMuNzg1MDEgMTEuNjc2NTdjLjI4OTM2Ljc5NzkyLjU0MzY0IDEuNjM2NzYtMS4wOTMxMiAyLjE0NTMzLTEuNjM2NzcuNTQ2NTYtMS44OTEwNS0uMjkyMjgtMi4xNDUzMy0xLjA5MDJsLTMuMDkyMzItOS4zODUxLTEyLjQwNDM0LS41ODE2My0uMzk3NSAyMS43ODY1LTI3Ljk3NDA2LTEuMDU1MTIuMDM4IDYuMDc2NDkgMTUuNDU4NjYgOC45MTE2Yy43NjI4NS4zOTc1IDEuNDkwNjMuODM1OTIuNjU0NzEgMi4zMjY1NC0uODAwODUgMS4zODI0OC0xLjQ5MDYzIDEuMTI4Mi0yLjE4MzMzLjcyNzc4LS4wNzMxLS4wMzgtLjEwODE0LS4wNzMxLS4xODEyMi0uMDczMWwtMTUuMzEyNTEtOC44MDA1My0yNC4zMDAxMSAyMC4zNjg5NSAzLjg5MzE2IDQ4LjA4NTgyIDExLjQyMjI4IDE2LjExMzM2YzEuOTk5MTktLjUwODU3IDQuMDAxMy0xLjA5MDIgNi4wNzM1Ni0xLjcwOTgzLjQ3MzUtLjE4MTIyLjk0NDA2LS4zMjczNiAxLjQxNzU2LS40NzA1OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyNCIgZD0ibTMzNy43MjY5NSAzNzAuODIyMjJoNS43NDYyMWwtNy40MTgwNS0xMi45ODU5N2MuMTQzMjIgMy42NzM5NS41NDM2NCA3LjYzNzI2IDEuMzA5NDEgMTEuMzExMjEuMTA4MTQuNTgxNjQuMjU0MjkgMS4xMjgyLjM2MjQzIDEuNjc0NzYiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjYiIGQ9Im0zMzQuMDE3OTIgMzY5Ljg0MDE2Yy0xLjEyODItNS41Mjk5Mi0xLjUyODYyLTExLjU2ODQxLTEuNDIwNDctMTYuNTg2ODVsLTguOTg0NjctNS4wNTY0NGMtMS4xMjUyOC0uNjE5NjItMi4xNDUzNC0uOTQ0MDYtMi45ODEyNi0uOTQ0MDYtLjYxOTYyLS4wMzgtMS4xMjgxOS4xMDgxNC0xLjUyODYyLjM2MjQzLS40MzU0OS4yNTQyOC0uODM1OTIuNjg5NzgtMS4xNjMyNyAxLjIzNjM0LS41ODE2NCAxLjAxNzE0LS45MDg5OSAyLjQ3MjY5LS45NDY5OCA0LjI5MzU4LS4xMDgxNSA0LjA3MTQ2IDIuMTEwMjUgMTEuMjM4MTUgNC4zNjY2NSAxOC42MjExMy41MDg1NiAxLjcwOTgzIDEuMDE3MTMgMy4zODQ1OSAxLjEyODIgMy42Mzg4Ny40MzU0OSAxLjQ5MDYzIDEuMDkwMiAzLjc0NDExIDIuMjkxNDcgNS44MTkyOSAxLjE2MzI3IDEuOTY0MTIgMi44NzMxIDMuODU1MTYgNS41NjUgNC44MzcyMi40NzM0OS4xODQxNCAxLjIzNjM0LjE4NDE0IDIuMTgzMzMuMDM1MSAxLjQ5MDYyLS4yMTYzIDMuMjM1NTMtLjc2Mjg2IDQuNjkxMDgtMS40OTA2M2gtLjAzOGMuODAwODUtLjQwMDQzIDEuNDU1NTUtLjgzNTkyIDEuODkzOTctMS4yMzYzNS4xNDMyMS0uMTA4MTQuMjU0MjgtLjI1NDI4LjM2MjQyLS4zNjI0Mi0uMTA4MTQtLjE4NDEzLS4yNTQyOC0uMzI3MzUtLjM2MjQyLS40NzM0OS0yLjQzNzYxLTMuMTY1MzktNC4wNzQzNy03Ljc0ODMzLTUuMDU2NDMtMTIuNjkzNyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyOCIgZD0ibTM2Ni44MjYyOCAzNTcuMzI0NzZjLTIuNjE4ODIgMS43NDc4My01LjA1NjQzIDMuNDkyNzQtNy4zNDc5IDUuMjc1NjQtMS40MTc1NSAxLjEyODItMi43NjQ5NiAyLjIxODQxLTQuMDAxMzEgMy4zNDY2MSAxLjM4MjQ5IDIuMjkxNDcgMi43Mjk5IDQuNzY0MTUgNC4wMDEzMSA3LjIzNjgzLjQzODQyLjg3MzkyLjgzNTkyIDEuNzA5ODQgMS4yMzYzNCAyLjU4Mzc1IDEuODU1OTggMy45MjgyNCAzLjQxOTY4IDcuODIxNCA0LjU0Nzg3IDExLjI3NjE0IDEuMDU1MTMgMy4zMTE1MyAxLjU2MzY5IDYuMDAwNSAxLjYzNjc3IDguNjk1MzEuMDczIDEuNzA2OTEtLjAzNTEgMy4zODE2OC0uMjE5MjEgNS4yMzc2NSAyLjAzNzE5LjkwODk5IDQuNjU2MDEgMS40NTI2MyA3LjI3NDgzIDEuNzA2OTEgNC4yOTM1OS40Mzg0MiA4LjQ0MTAzLS4wMzUxIDEwLjE0Nzk1LTEuNDE3NTVsNy45MzI0Ni02LjQzODkyLjA3MDEtNTIuMDE0MDRjLTkuMzQ3MSA0LjgzNzIyLTE3LjkzMTM1IDkuNjA0My0yNS4yNzkyNSAxNC41MTE2NyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTM1Mi44OTYyNSAzNjguMzExNTRjLS44Mzg4NC44MDA4NS0xLjYzOTY5IDEuNjM2NzctMi40Mzc2MSAyLjUxMDY4bDMuODU1MTctLjAzOGMtLjQ3MzUtLjgzNTkyLS45NDY5OS0xLjY3MTgzLTEuNDE3NTYtMi40NzI2OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMiIgZD0ibTM2MS45ODkwNiAzODguMDk4ODZjLS4xNDYxMy0uNDM1NDktLjI1NDI4LS44MzU5Mi0uNDAwNDItMS4yNzE0MWwtOS4xMzA4MS43OTc5MS41NDY1NyAyLjQzNzYyIDEwLjQwMjIyIDguODM4NTNjLjA3MzEtMS4wNTUxMy4xMTEwNy0yLjAzNzE5LjA3MzEtMy4wMTkyNS0uMTA4MTUtMi40Mzc2MS0uNTQ2NTYtNC44MDIxNS0xLjQ5MDYzLTcuNzgzNCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTMzOC43MDkwMSAzNzQuMjc2OTdjLjEwODE0LjMyNzM1LjIxOTIxLjY5MjcuMzY1MzUgMS4wMTcxMy44NzA5OSAyLjM2NDU0IDEuOTY0MTEgNC40MDE3MyAzLjMwODYgNS44NTcyOGwuMDM1MS0uMDM1MSA0LjIyMDUxIDMuNTYyODggMS41NjM3LS4xNDYxNC0yLjA3MjI2LTEwLjI1NjA5em0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMzYiIGQ9Im0zNjAuMzUyMyAzODMuNDgwODRjLS4yOTIyOC0uNjkyNy0uNTgxNjQtMS4zODI0Ny0uODczOTItMi4xMTAyNS0uNTgxNjMtMS4zNDc0MS0xLjIwMTI3LTIuNzY0OTYtMS44NTU5Ny00LjE0NzQ1LS40MzU1LS45NDY5OC0uOTA4OTktMS44OTEwNC0xLjQxNzU2LTIuODczMWgtNi41NDcwNmwxLjk5OTE5IDkuODkzNjUgNy44MjE0LS42ODk3N3ptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDM4IiBkPSJtMzUzLjgwNTI0IDMyMy42MDc0MWMuMTgxMjEtLjEwODE1LjM2MjQyLS4xODEyMi41NDM2NC0uMjU0MjhsLS41NDM2NC0uOTA5LTMuNzExOTUtNi4zNjU4NGMtMS4wOTAyLjQzNTUtMi4xNDUzMy44MzU5Mi0zLjIzNTU0IDEuMjM2MzQtLjIxOTIxLjA3MzEtLjQzODQyLjE0NjE0LS42NTQ3LjI1NDI5bC42NTQ3IDEuMTYzMjcgMy41NjI4OSA2LjMzMDc3YzEuMTY2MTktLjQ3MzQ5IDIuMjkxNDctLjk4MjA2IDMuMzg0Ni0xLjQ1NTU1IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtNDQ3LjQ2OTEgMzYxLjc2NDQ4Yy4xNDMyMS0uNTgxNjMuMjkyMjgtMS4xNjYxOS40MzU1LTEuNjcxODNsLS40MzU1LS41MTE0OS0xLjM4MjQ4LTEuNzA5ODQtMS43NDc4My43Mjc3OC0yLjM2NDU0Ljk0Njk4LTQuOTgzMzcgMi4wNzIyNi0uMzYyNDMuMTQ2MTQuMzYyNDMuNDAwNDMgNC45ODMzNyA1LjYzODA3IDEuNjc0NzYgMS44OTEwNS42ODk3OC0uNDAwNDMgMS42MDE2OS0uODczOTFjLjM2MjQyLTEuOTk5MTkuOTgyMDYtNC40NzE4OCAxLjUyODYyLTYuNjU1MjEiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDIiIGQ9Im00MjYuMDQyMSAzNjYuMjM5MjhsNy42NzgxOCA4LjgwMDU0IDYuODM2NDEtMy42NzM5NS03LjIzNjg0LTguMTgzODN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NCIgZD0ibTQzNy44NjQ4IDM0My43NTcxNWw5LjYwNDMtNC4xNDQ1MiA5Ljc0NzUyLTQuMTg1NDQuMDM1MS4wNzYgNy42MDIxOS00LjIyMDUyLTMuOTI4MjMtNC4xNDc0NGMtNC4xODI1MiAyLjc2NDk3LTguNjU3MzIgNS4wNTY0NC0xMy40NTY1NCA2LjgwMTM0LTEuMDIwMDcuMzY1MzUtMi4wNzUxOS43MzA3LTMuMTMwMzIgMS4wNTUxMy0uNzYyODUuMjE5MjEtMS41NjM2OS40MzU1LTIuMzY0NTQuNjU0Ny0uMTA4MTUuMDM4LS4yMTYyOS4wNzMxLS4zMjQ0My4wNzMxbC03LjY3NTI2IDMuNTMwNzN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NiIgZD0ibTQ0My43MjIwNyAzNTUuMTQ0MzZsLTYuMzMwNzYtNy4yMzk3Ni05LjU2MzM4IDMuODkzMTYgNi40MDA5MSA3LjIzNjg0LjIxOTIxLS4wNzMxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDgiIGQ9Im00NDAuNTIxNjIgMzgyLjUzMzg2Yy40NzM0OS0uMjkyMjggMy4wNTQzMi0xLjg1NTk3IDMuODIwMDktMi4zNjQ1NC4xNDYxNC0uMTA4MTQuMzI0NDMtLjIxOTIxLjQ3MDU3LS4yOTIyOCAwLS4xMDgxNS4wMzUxLS4yMTYyOS4wMzUxLS4yODkzNS4xMTEwNy0xLjAyMDA2LjIxOTIxLTIuMDM3MTkuMzMwMjgtMy4wMTkyNWwtMi4yOTE0Ny0yLjU4Mzc1LTYuNzY2MjcgMy42Mzg4OHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUwIiBkPSJtMzQyLjg5MTUyIDMxOC42OTcxMWMtLjg3MDk5LjI5MjI5LTEuNzgyOS41ODE2NC0yLjY5MTg5Ljg3MzkyLS4xODEyMS4wNzMxLS4zNjI0Mi4xMDgxNC0uNTQzNjQuMTgxMjFsLjU0MzY0Ljk0NDA3IDMuODU4MDkgNi44MDQyNmMuOTQ0MDYtLjMyNzM1IDEuODkxMDUtLjY5MjcxIDIuODAwMDMtMS4wNTUxMy4xMDgxNS0uMDM4LjI1NDI5LS4wNzMxLjM2MjQ0LS4xMDgxNGwtLjM2MjQ0LS42MTk2NHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNDU0LjcwNTk0IDM0MC4yMzIyNmwtMTQuNDc2NjEgNi4yNTQ3OCA2LjMyNzg2IDcuMjM2ODQgMy44OTMxNi0xLjY3MTg0YzEuMjM5MjYtMy45MjgyMyAyLjY1NjgyLTcuODU2NDcgNC4yNTU1OS0xMS44MTk3OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg1NCIgZD0ibTQzMC45OTAzOSAzNzYuNDk1MzZsLTcuODkxNTUtOC44NzM1OS0uMjkyMjguMTA4MTRjLjI1NDI4IDEuMzQ0NDkuNTgxNjQgMi42OTE4OS45ODIwNiA0LjA3NDM3LjY1NDcxIDIuMjkxNDcgMS41Mjg2MiA0LjY5MTA4IDIuNjE4ODMgNy4xNjM3N2wuMjkyMjctLjE4MTIxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNTYiIGQ9Im00MzAuOTIwMjQgMzYwLjQ5MDE1bC02LjQwMzg1LTcuMjM2ODQtMi4xNDgyNS44MDA4NWMtLjM5NzUgMy4zMDg2LS41NDM2NCA2Ljg3NDQxLS4xNDMyMiAxMC4xODMwMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDU4IiBkPSJtNDM2LjU1NTM5IDM4NC43NTIyNmMuMTQ2MTQtLjA3MzEuMjkyMjctLjE0NjE0LjQzODQyLS4yNTQyOC4yODkzNS0uMTQ2MTQuNTgxNjMtLjI5MjI4Ljg3MDk5LS40NzM1bC00LjQwMTczLTQuOTgzMzYtNS41NjIwOCAyLjk4NDE4Yy4xODEyMi40MzU0OS40MzU1LjgzNTkyLjY1MTc5IDEuMjcxNDEuNjE5NjMgMS4xNjMyOCAxLjMwOTQxIDIuMzI5NDcgMi4wNzUxOCAzLjQ5Mjc0LjEwODE0LjIxOTIxLjIxNjI5LjQzODQxLjI5MjI4LjY1NDcxIDEuMDkwMi0uNDM1NSAyLjI4ODU1LS45ODIwNiAzLjUyNzgxLTEuNjAxNy42ODk3OC0uMzYyNDIgMS4zNzk1Ni0uNzI3NzcgMi4xMDczNC0xLjA5MDIiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNjAiIGQ9Im00NDEuOTc0MjUgMzg5LjI2MjEzYy0uNDcwNTctLjk4MjA2LS45NDQwNi0xLjg5MTA1LTEuNDE3NTYtMi44MDAwMy0uODAwODUuNDczNDktMS41OTg3Ni45MDg5OC0yLjM5OTYyIDEuMzA5NDEtLjQwMDQxLjIxOTIxLS43NjU3Ni40Mzg0MS0xLjE2MzI2LjYxOTYzLS44NzM5Mi40MzU0OS0xLjcwOTg0Ljg3MDk5LTIuNTQ4NjggMS4yMzYzNS0xLjEyNTI4LjU0MzYzLTIuMTgwNDEuOTgyMDUtMy4xMjczOSAxLjM3OTU1LS4wMzUxLjUxMTQ5LS4wMzUxIDEuMDU1MTMtLjA3MzEgMS42MDE2OS0uMDczIDEuNDU1NTUtLjE0MzIxIDMuMDU3MjUtLjAzNTEgNC4zMjg2Ni4xODEyIDEuNzA5ODMuNjU0NyAyLjQ3NTYxIDEuMzgyNDcgMi42NTY4Mi41MDg1Ny4xMDgxNCAxLjEyODIxLjA3MyAxLjg1MzA2LS4wMzguNzY1NzctLjEwODE0IDEuNjAxNjktLjMyNzM1IDIuNTQ4NjgtLjYxNjcxLjE4MTItLjAzOC4zNjI0Mi0uMTExMDcuNTQzNjMtLjE0NjE0IDEuMzQ3NDEtLjQwMDQyIDIuODM4MDQtLjk0NDA2IDQuNDM2ODEtMS41Mjg2Mi43NjU3Ni0uMjg5MzYgMS41NjY2MS0uNjE5NjQgMi4zNjQ1My0uOTQ0MDYuMTExMDctLjAzOC4yMTkyMS0uMTExMDcuMzMwMjgtLjE0NjE0LS4xMTEwNy0uMzI3MzUtLjIxOTIxLS42NTQ3MS0uMzMwMjgtMS4wMjAwNi0uNjg5NzctMi4wMzcxOS0xLjQ5MDYyLTQuMDM2MzgtMi4zNjQ1My01Ljg5MjM2IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDYyIiBkPSJtNDYzLjQ3NDMyIDM4MS4wNzgzMWMtLjUxMTQ5LS4yMTYyOS0xLjIzNjM0LS4yODkzNS0yLjI5NDQtLjI1NDI4LTEuODE1MDUuMDczMS00LjIxNzU4LjYxNjcxLTYuNDczOTggMS4xMjgxOS0yLjgwMDA0LjY1NDcxLTUuNDkxOTMgMS4yNzE0Mi03LjIzNjg0IDEuMDU1MTMtLjEwODE1LS4wMzgtLjIxOTIxLS4wMzgtLjMyNzM1LS4wNzMxLS4xODEyMi0uMDM4LS4zNjI0My0uMDczLS41NDY1Ni0uMTQ2MTQtLjcyNzc4LjQ3MzQ5LTEuNDkzNTYuOTgyMDYtMi4yNTM0OCAxLjQ1NTU1LS4yNTQyOS4xNDYxNS0uNTQ2NTYuMzI3MzYtLjgzODg1LjUwODU3LjI5MjI5LjQ3MzQ5LjU4NDU2IDEuMDE3MTQuODM4ODUgMS41NjM2OSAxLjE2MzI3IDIuMjU2NCAyLjI1MzQ4IDQuODAyMTUgMy4xMjczOSA3LjQyMDk4LjE0NjE0LjM2MjQzLjI1NDI4LjcyNzc4LjM2MjQzIDEuMDkzMTMgMS4zMDk0MS0uNTg0NTYgMi41ODM3NS0xLjE2NjIgMy44NTgwOC0xLjc0Nzg0IDUuMzEwNzItMi41NDU3NSA5LjcwOTUyLTQuOTQ1MzYgMTAuMjU2MDktNS42NzMxNC45ODIwNi0xLjMwOTQxIDEuODE3OTgtMi44MDI5NiAyLjE0NTMzLTQuMTEyMzcuMTQ2MTQtLjYxNjcxLjIxOTIxLTEuMTk4MzQuMDczMS0xLjU5ODc3LS4wNzMxLS4yNTcyLS4yOTIyOC0uNDczNDktLjY4OTc4LS42MTk2MyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg2NCIgZD0ibTQyNi42OTY4IDMzOC43NzY3MWwxLjg1NTk4LS44MzU5Mi42OTI3LS4zMzAyOGMtLjIxOTIxLjAzOC0uNDczNS4wMzgtLjY5MjcuMDM4LS42MTY3MS4wMzUxLTEuMjM2MzUuMDM1MS0xLjg1NTk4LjA3M2gtLjY4OTc4Yy0xNy40NjA3NyAwLTMzLjI4MTg2LTcuMTY2NjktNDQuNzA0MTMtMTguNjYyMDQtMS42MzY3Ny0xLjYzNjc2LTMuMjAwNDctMy4zODE2OC00LjYxODAyLTUuMTk5NjUtMi41ODM3NSAyLjM2NDU0LTYuNzMxMTkgNC45ODMzNi0xMC45NDg3OSA3LjQxODA1LTEuMDkzMTIuNjE5NjMtMi4xODMzMiAxLjIzOTI3LTMuMjczNTMgMS44NTU5OC0uNjE5NjIuMzI3MzUtMS4yMzYzNC42NTQ3LTEuODU1OTcuOTgyMDYtMS4xMjgyLjU4MTYzLTIuMjU2MzkgMS4xNjYxOS0zLjQxOTY3IDEuNzA5ODMtMS4xMjgyLjUxMTQ5LTIuMjUzNDcgMS4wMjAwNi0zLjM4MTY3IDEuNTI4NjItLjk0Njk5LjQwMDQyLTEuOTI5MDUuODM1OTItMi45MTExMSAxLjIwMTI3LTEuMzQ0NDguNTQzNjMtMi42OTE4OSAxLjA1NTEzLTQuMDM2MzggMS41NjM3LTIuMjE4MzkuODAwODQtNC40Mzk3MiAxLjU2MzY5LTYuNjU4MTIgMi4yNTM0Ni0uNDAwNDIuMTExMDctLjc2Mjg1LjI1NDI5LTEuMTYzMjcuMzY1MzZsLTIuMjU2NCAxOS40OTUwMyAxMC4wMzk4IDE3LjUzMzg1LjAzOC0uMDM4YzIuMDM3MTktMi4zNjQ1NSA0LjM2MzczLTQuNjU2MDIgNi45NDc0OC02LjkwOTQ5IDEuMDkwMjEtLjkwODk5IDIuMjE4NC0xLjg1NTk4IDMuMzgxNjgtMi43NjQ5NiAxLjA5MzEyLS44NzM5MiAyLjI1NjM5LTEuNzA5ODQgMy40MTk2Ni0yLjU4Mzc2IDEuNDE3NTYtMS4wMTcxMiAyLjgzODA0LTEuOTk5MTggNC4zMjg2Ni0yLjk4MTI0LjI1NDI4LS4xODEyMi41NDY1Ny0uMzY1MzUuODAwODUtLjU0NjU3IDQuNzY0MTUtMy4xMjczOSAxMC4wMDE4LTYuMjE5NyAxNS41NjY4LTkuMjc0MDIgMy43NDcwMi0yLjA3NTE5IDcuNjc1MjYtNC4xMDk0NSAxMS43NDk2My02LjE4NDY0bDIuNDcyNjktMS4yNzQzM3Y1LjYwMjk5YzUuMjc1NjQtMS4zNDQ0OSA5Ljg1ODU4LTIuMzI5NDYgMTQuMzMwNDUtMi45MTExIDQuOTEzMjItLjYxNjcxIDkuNjM5MzgtLjcyNzc3IDE0Ljg0MTk1LS4xODEyMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY2IiBkPSJtMzY1LjczNjA4IDMxNy4yMDY0OWMzLjM0NjYxLTEuOTY3MDQgNi4zNjU4NS0zLjYzODg4IDguNzY1NDYtNS45NjU0Mi0xLjIwMTI2LTEuNjc0NzYtMi43NjQ5Ni00LjQzOTczLTMuNzgyMDktNi4yMTk3MS0xLjUyODYyIDEuMTYzMjctMy4yMDA0NiAyLjI4ODU1LTQuOTgzMzcgMy4zODE2Ny0xLjYzNjc2IDEuMDE3MTMtMy4zNDY2IDEuOTY0MTItNS4xMjk1IDIuOTA4MTktLjE0NjE0LjA3Ni0uMjg5MzYuMTQ2MTMtLjQzNTUuMjE5MjFsLjQzNTUuNzY1NzYgMy40MTk2NyA1Ljk2MjVjLjU4MTY0LS4zNjI0MiAxLjEyODItLjcyNDg1IDEuNzA5ODMtMS4wNTIyIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY4IiBkPSJtMzU3LjQ0MTE5IDMyMS44NjI1YzEuMDkzMTMtLjUxMTQ5IDIuMTQ1MzMtMS4wOTMxMyAzLjE2NTM5LTEuNjM2NzYuMTQ2MTQtLjA3MzEuMjkyMjgtLjE4NDE0LjQzNTQ5LS4yNTQyOGwtLjQzNTQ5LS43NjU3OC0zLjQxOTY3LTYuMDM4NDktLjA3MzEtLjEwODE1Yy0xLjA5MDIuNTA4NTctMi4xODA0Ljk4MjA2LTMuMzA4NiAxLjQ5MDYzLS4xODEyMi4wNzMxLS4zNjUzNS4xNDYxNC0uNTA4NTcuMjE5MjFsLjUwODU3LjkwODk4IDMuMzgxNjcgNS43NDYyMnptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDcwIiBkPSJtMzUyLjE2ODQ3IDI4MC43MjEyNWwxMi4wNzY5OSA2Ljk4NTQ4Yy0uOTExOTItNC4yMjA1Mi0xLjM4NTQxLTguNjIyMjUtMS4zODU0MS0xMy4xMzIxMiAwLTIuODczMS4yMTkyMS01Ljc0NjIxLjU4NDU2LTguNTExMTdsLTIyLjgwNjU2LTE0LjU0OTY3LTExLjE2OCA4LjI1Njg5djI1LjcxNzY3bDExLjYwMzQ5IDExLjkyNzkyIDE5LjUzMzA0LTcuNzQ1NDEuMTQ2MTQtLjAzOC0uMTQ2MTQtLjA3MzEtMTAuMTQ3OTQtNS44OTIzNWMtMi44MDAwNC0xLjU5ODc2LTEuMDkwMi00LjU4Mjk0IDEuNzA5ODMtMi45NDYxOCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg3MiIgZD0ibTMzOC43ODIwNyAzMjkuMjQ1NDhjLjQ3MzUtLjE0NjE1Ljk0Njk5LS4zMjczNSAxLjQxNzU2LS40NzM1LjE4NDE0LS4wMzUxLjM2NTM1LS4xMDgxNC41NDY1Ni0uMTgxMjFsLS41NDY1Ni0uOTQ2OTgtMS40MTc1Ni0yLjUwNzc2LTIuNTEwNjgtNC40MDE3M2MtLjUwODU2LjE0NjE0LTEuMDE3MTMuMjkyMjgtMS40OTA2Mi40MDA0MnYuMDM1MWwzLjQxOTY3IDguMjIxODJjLjIxOTIxLS4wMzguNDAwNDMtLjEwODE0LjU4MTYzLS4xNDYxMyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgPC9nPg0KPC9zdmc+" alt="" />
+      </div>
+      <div class="hero-inner">
+        <div class="hero-crest">
+          <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIGlkPSJzdmc3NSIgaGVpZ2h0PSIzNTYuNDg4OTgiIHZpZXdCb3g9IjAgMCAyMDEuNzUwMDEgMjY3LjM2Njc0IiB3aWR0aD0iMjY5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgPGcgaWQ9InN1cmZhY2U0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI5OS4xMjUgLTE2Ni4zMTY2MykiPg0KICAgICAgPHBhdGggaWQ9InBhdGgyIiBkPSJtMzAwLjYyNSAxNjcuODE2NjNoMTk4Ljc1djE2NC45OTQ2NmMwIDU0LjcwNTkzLTQ0LjY2OTA2IDk5LjM3MjA4LTk5LjM3NSA5OS4zNzIwOC01NC43MDU5NCAwLTk5LjM3NS00NC42NjYxNS05OS4zNzUtOTkuMzcyMDh6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0IiBkPSJtMzA0LjYyNjMxIDE3MS44NTMwMXYxNjAuOTU4MjhjMCA1Mi41MjI2IDQyLjg0ODE2IDk1LjM3MDc3IDk1LjM3MzY5IDk1LjM3MDc3IDUyLjUyNTUzIDAgOTUuMzczNjktNDIuODQ4MTcgOTUuMzczNjktOTUuMzcwNzd2LTE2MC45NTgyOHptMCAwIiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDYiIGQ9Im00MjYuMDA3MDIgMjE0Ljg4NTMxYy0xNi40NzU3OSAwLTMxLjM1MjgxIDYuNjkwMjgtNDIuMTU4MzggMTcuNDk1ODUtMTAuODM3NzIgMTAuODM3NzItMTcuNTMwOTIgMjUuNzUyNzMtMTcuNTMwOTIgNDIuMTkzNDUgMCAzMi44ODQzNiAyNi44MDc4NyA1OS42OTIyMiA1OS42ODkzIDU5LjY5MjIyIDMyLjg4MTQzIDAgNTkuNjg5My0yNi44MDc4NiA1OS42ODkzLTU5LjY5MjIyIDAtMTYuNDQwNzItNi42OTMxOS0zMS4zNTU3My0xNy40OTI5Mi00Mi4xOTM0NS0xMC44NDA2NC0xMC44MDU1Ny0yNS43NTU2Ni0xNy40OTU4NS00Mi4xOTYzOC0xNy40OTU4NSIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMzk2LjYxODMzIDMyMi42NjA0M2MtMi4yOTQ0LTEuNDE3NTctNC41MTI4LTIuOTgxMjYtNi41ODUwNi00LjcyNjE3di0zOC40NDkzNWgtNy4zNDc5MXYzMS4xMzY1MmMtMi41MTA2Ny0zLjAxOTI0LTQuNzI5MDgtNi4yOTI3Ny02LjU4MjEyLTkuODIwNTl2LTUyLjQ1MjQ2YzEuODUzMDQtMy41Mjc4MSA0LjA3MTQ1LTYuODAxMzQgNi41ODIxMi05LjgyMDU5djM0LjMzNjk5aDcuMzQ3OTF2LTQxLjY4NDg5YzIuMDcyMjYtMS43MDk4NCA0LjI5MDY2LTMuMjczNTMgNi41ODUwNi00LjY5MTA4em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTAiIGQ9Im00MTguMTE1NDggMzE5Ljg5ODM4YzAgMS40NTI2My0uMTQ2MTUgMy43NDcwMi0zLjg5MzE3IDMuMjAwNDYtLjExMTA2IDAtLjIxNjI4LS4wMzgtLjMyNzM1LS4wMzgtLjU0MzY0LS4xMDgxNC0xLjA5MzEzLS4zMjczNS0xLjYzNjc2LS40NzA1Ny0xLjkyNjEzLS41MDg1Ni0yLjU0NTc1LTEuOTI5MDQtMi41NDU3NS00LjE0NzQ0di03NS40NDAyM2MwLTIuMjE4NC42MTk2Mi0zLjYzODg4IDIuNTQ1NzUtNC4xODI1Mi41NDM2My0uMTQ2MTQgMS4wOTMxMi0uMzI3MzUgMS42MzY3Ni0uNDM4NDEuMTExMDctLjAzNTEuMjE2MjktLjAzNTEuMzI3MzUtLjA3MzEgMy43NDcwMi0uNTQzNjMgMy44OTMxNyAxLjc0Nzg0IDMuODkzMTcgMy4yMDA0NnptLS4xNDYxNS04OC44NjQ2M2MtMS4zODI0Ny4xODEyMS0yLjcyOTg4LjQzODQyLTQuMDc0MzcuNzI3NzctMS41OTg3Ny4zNjI0My0zLjE2MjQ2Ljc2Mjg1LTQuNzI5MDggMS4yMzYzNC01LjQ5MTkyIDEuNzA5ODQtNi4wMzg0OSA1LjY3NjA3LTYuMDM4NDkgOS40NTgxN3Y3Ni40OTUzNmMwIDMuNzgyMS41NDY1NyA3Ljc0ODMzIDYuMDM4NDkgOS40NTgxNyAxLjU2NjYyLjQ3MzQ5IDMuMTMwMzEuOTA4OTkgNC43MjkwOCAxLjIzNjM0IDEuMzQ0NDkuMzI3MzUgMi42OTE5LjU0NjU2IDQuMDc0MzcuNzYyODUgMi41ODM3Ni4zMjczNSA2LjcyODI4LS44MDA4NSA2LjcyODI4LTYuNjIwMTN2LTg2LjE2OTgxYzAtNS44MTkyOS00LjE0NDUyLTYuOTQ3NDktNi43MjgyOC02LjU4NTA2IiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtNDI0LjY5NzYxIDIyNC42MzI4M2MtMi4yNTYzOS4wMzgtNC40MzY4LjI1NDI4LTYuNTg1MDYuNTgxNjR2LTYuNTExOTljMi4xNDgyNi0uMjg5MzUgNC4zMjg2Ny0uNDcwNTcgNi41ODUwNi0uNTA4NTZ6bTAgMCIgZmlsbD0iI2ZmZiIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgxNCIgZD0ibTQxMC45ODM4NiAyMjYuOTI0M2MtMi41MDc3Ni44MzU5Mi00LjcyNjE2IDEuNzQ0OTEtNi41ODIxMyAyLjQ3MjY4di02LjgwMTM0YzIuMTgwNC0uODM1OTIgNC4xNDQ1Mi0xLjcwOTg0IDYuNTgyMTMtMi4yMTg0em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTYiIGQ9Im00NjkuNDc0ODIgMjk0LjgzNTQzYzAgMi41MTA2Ny0uMjE2MjkgNC45ODMzNS0xLjkyNjEzIDcuMzgyOTctLjQzODQxLjY1NDctLjg3MzkxIDEuMjc0MzQtMS4zMDk0MSAxLjg5MTA1LTEuMDU1MTIgMS4zODI0OC0yLjExMDI1IDIuNzI5ODgtMy4yNzM1MyA0LjAwMTN2LTY3LjExMDI3YzEuMTYzMjggMS4zMDk0MSAyLjI1MzQ4IDIuNjU2ODIgMy4yNzM1MyA0LjAzOTMuNTQzNjUuNzYyODUgMS4wOTAyIDEuNTI1NyAxLjU5ODc3IDIuMjkxNDcgMS40MjA0OCAyLjEwNzMzIDEuNjM2NzcgMy4zMDg2IDEuNjM2NzcgNi4wMzU1N3ptNi41ODUwNS0xLjAxNzE0di00MC41OTQ2OWMwLTMuMjM4NDUtLjQzODQxLTUuNjM4MDctMS45NjQxMi04LjA3NTY3LTIuMjU2MzktMy42MDA4OS00LjkxMzIxLTYuOTgyNTctNy44NTY0Ny0xMC4wMDE4MS0yLjk4NDE3LTMuMDU3MjQtNi4yOTI3Ny01Ljc0OTE0LTkuODU4NTgtOC4wNDA2MXY5NC45MzgyMWMzLjU2NTgxLTIuMjkxNDggNi44NzQ0MS00Ljk4MzM3IDkuODU4NTgtOC4wMDI2MiAyLjM2NDU0LTIuNDM3NjEgNC41MDY5NS01LjA1NjQzIDYuNDM2LTcuODU2NDcgMi41NDg2OC0zLjc0NzAyIDMuMzg0NTktNi45ODU0NyAzLjQxOTY3LTExLjAyMTg1di0uNDczNWMwLS4yODkzNiAwLS41ODE2My0uMDM1MS0uODcwOTkiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTgiIGQ9Im00NDQuNTkzMDcgMzE2LjczM2MwIDMuMjAwNDUtLjY4OTc4IDQuNTQ0OTQtMy4xMjczOSA1LjM0NTc5LS4xNDYxNC4wMzgtLjI1NDI5LjA3MzEtLjQwMDQyLjExMTA2LTEuMTYzMjguMzYyNDMtMi4zMjY1NC42ODk3OC0zLjUyNzgxLjk4MjA2di05Ny4yMjk2N2MxLjIzOTI2LjMyNzM2IDIuMzY0NTMuNjE2NzEgMy41Mjc4MSAxLjAxNzEzLjE4NDE0LjAzOC4zNjUzNC4xMTEwNy41MTE0OS4xODQxNCAxLjk2NDEyLjY1NDcxIDIuOTQ2MTggMi42NTM5IDMuMDE2MzIgNC4yNTU1OXptLjExMTA2LTk1LjM3MzdjLTEuMjAxMjctLjQwMDQyLTIuNDAyNTMtLjgwMDg1LTMuNjM4ODctMS4xMjgyLTMuMjczNTMtLjkwODk5LTYuNjU1MjEtMS41Mjg2Mi0xMC4xMDk5NS0xLjg1MzA1djExMi4zNTgwNWMzLjQ1NDc0LS4yODkzNSA2LjgzNjQyLS45MDg5OSAxMC4xMDk5NS0xLjgxNzk3IDEuMzQ3NC0uMzYyNDMgMi42OTQ4MS0uODAwODUgMy45NjYyMy0xLjI3MTQyIDQuODAyMTUtMS43MDk4NCA2LjE0NjY0LTQuMjU4NTEgNi4xNDY2NC05Ljk2Njczdi04Ni4yMDc4MWMwLTQuODM3MjMtMS44MTc5OC04LjQ3NjEtNi40NzQtMTAuMTEyODciIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im00MjYuMzM0MzcgMzQyLjc0MDAyYy0uOTgyMDYgMS4zMDk0MS0xLjUyNTY5IDIuOTQ2MTctMi4xODA0IDQuNjk0MDFsMS4yNzE0MiAxLjY3MTg0IDkuNDkzMjMtNC4wMzkzMS0zLjg1NTE3LTQuMzI4NjZ6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTM4MS4zMDI4OSAyMDYuMDA4NzhjLjkwODk4IDAgMS42MzY3Ni41MTE1IDEuNjM2NzYgMS4yNzQzNSAwIC43Mjc3Ny0uNzI3NzggMS4yMzYzMy0xLjYzNjc2IDEuMjM2MzMtLjkwOSAwLTEuNjcxODUtLjUwODU2LTEuNjcxODUtMS4yMzYzMyAwLS43NjI4NS43NjI4NS0xLjI3NDM1IDEuNjcxODUtMS4yNzQzNW0tNDEuMTAzMjYgMTA5Ljk2MTM3YzIuMjIxMzItLjY5MjcgNC40NzQ4LTEuNDkzNTUgNi42NTgxMi0yLjMyOTQ3LjkwOS0uMzI3MzUgMS44NTU5OC0uNjg5NzggMi43NjQ5Ny0xLjA1NTEzIDEuNDE3NTYtLjU4MTYzIDIuODAwMDMtMS4xNjMyNyA0LjE4MjUyLTEuNzgyOSAxLjEyODItLjU0NjU3IDIuMjUzNDctMS4wNTIyMSAzLjM4MTY3LTEuNTk4NzcgMS4xNjYxOS0uNTgxNjQgMi4zMjk0Ny0xLjE2NjE5IDMuNDE5NjctMS43ODI5IDEuODE3OTgtLjk4MjA2IDMuNTI3ODItMi4wMDIxMiA1LjEyOTUtMy4wNTcyNSAxLjE5ODM1LS43OTc5MiAyLjMyNjU1LTEuNTk4NzcgMy4zODE2OC0yLjQzNzYxLTEuMzA5NDItMi43NjIwNC0yLjQ3MjY5LTUuNjM1MTQtMy4zODE2OC04LjU4MTMyLS4xODEyMS0uNTg0NTYtLjM2NTM1LTEuMjAxMjctLjUxMTQ4LTEuNzgyOWwtMjQuOTg2OTcgOS44OTM2NS0uMDM4LS4wMzUxLTE0LjE0OTI0LTE0LjM2ODQ2di0yOC45OTExOWwxNC40NzY1OS0xMC43Mjk1OSAyMy41MzQzNSAxNS4wMjMxN2MuNDM4NDItMi4yMTg0IDEuMDIwMDUtNC40MDE3MyAxLjY3NDc2LTYuNTQ5OTkgMy4wNTQzMS05LjgyMDU4IDguNDczMTgtMTguNTg2MDQgMTUuNTY2OC0yNS43MTQ3My4wMzgtLjAzNTEuMDczLS4wNzMxLjExMTA3LS4xMTEwNyAyLjMyNjU0LTIuMzYxNjIgNC44NzIyOS00LjUwOTg4IDcuNTI5MTItNi40NzM5OWw1LjUyNjk5LTguODM4NTMuMjE5MjEtMTEuMjc2MTQtMTcuNDk1ODQtMjIuODA2NTctMTEuNzQ5NjMtLjE0NjEzLTEyLjgwMTg0IDEyLjAzODk4djI4LjczNjkxbDE1LjE2NjM4LjY1NDcxLjQwMDQyLTIxLjc1MTQzIDE4LjMzMTc3LjgwMDg0IDMuNzg1MDEgMTEuNjc2NTdjLjI4OTM2Ljc5NzkyLjU0MzY0IDEuNjM2NzYtMS4wOTMxMiAyLjE0NTMzLTEuNjM2NzcuNTQ2NTYtMS44OTEwNS0uMjkyMjgtMi4xNDUzMy0xLjA5MDJsLTMuMDkyMzItOS4zODUxLTEyLjQwNDM0LS41ODE2My0uMzk3NSAyMS43ODY1LTI3Ljk3NDA2LTEuMDU1MTIuMDM4IDYuMDc2NDkgMTUuNDU4NjYgOC45MTE2Yy43NjI4NS4zOTc1IDEuNDkwNjMuODM1OTIuNjU0NzEgMi4zMjY1NC0uODAwODUgMS4zODI0OC0xLjQ5MDYzIDEuMTI4Mi0yLjE4MzMzLjcyNzc4LS4wNzMxLS4wMzgtLjEwODE0LS4wNzMxLS4xODEyMi0uMDczMWwtMTUuMzEyNTEtOC44MDA1My0yNC4zMDAxMSAyMC4zNjg5NSAzLjg5MzE2IDQ4LjA4NTgyIDExLjQyMjI4IDE2LjExMzM2YzEuOTk5MTktLjUwODU3IDQuMDAxMy0xLjA5MDIgNi4wNzM1Ni0xLjcwOTgzLjQ3MzUtLjE4MTIyLjk0NDA2LS4zMjczNiAxLjQxNzU2LS40NzA1OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyNCIgZD0ibTMzNy43MjY5NSAzNzAuODIyMjJoNS43NDYyMWwtNy40MTgwNS0xMi45ODU5N2MuMTQzMjIgMy42NzM5NS41NDM2NCA3LjYzNzI2IDEuMzA5NDEgMTEuMzExMjEuMTA4MTQuNTgxNjQuMjU0MjkgMS4xMjgyLjM2MjQzIDEuNjc0NzYiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjYiIGQ9Im0zMzQuMDE3OTIgMzY5Ljg0MDE2Yy0xLjEyODItNS41Mjk5Mi0xLjUyODYyLTExLjU2ODQxLTEuNDIwNDctMTYuNTg2ODVsLTguOTg0NjctNS4wNTY0NGMtMS4xMjUyOC0uNjE5NjItMi4xNDUzNC0uOTQ0MDYtMi45ODEyNi0uOTQ0MDYtLjYxOTYyLS4wMzgtMS4xMjgxOS4xMDgxNC0xLjUyODYyLjM2MjQzLS40MzU0OS4yNTQyOC0uODM1OTIuNjg5NzgtMS4xNjMyNyAxLjIzNjM0LS41ODE2NCAxLjAxNzE0LS45MDg5OSAyLjQ3MjY5LS45NDY5OCA0LjI5MzU4LS4xMDgxNSA0LjA3MTQ2IDIuMTEwMjUgMTEuMjM4MTUgNC4zNjY2NSAxOC42MjExMy41MDg1NiAxLjcwOTgzIDEuMDE3MTMgMy4zODQ1OSAxLjEyODIgMy42Mzg4Ny40MzU0OSAxLjQ5MDYzIDEuMDkwMiAzLjc0NDExIDIuMjkxNDcgNS44MTkyOSAxLjE2MzI3IDEuOTY0MTIgMi44NzMxIDMuODU1MTYgNS41NjUgNC44MzcyMi40NzM0OS4xODQxNCAxLjIzNjM0LjE4NDE0IDIuMTgzMzMuMDM1MSAxLjQ5MDYyLS4yMTYzIDMuMjM1NTMtLjc2Mjg2IDQuNjkxMDgtMS40OTA2M2gtLjAzOGMuODAwODUtLjQwMDQzIDEuNDU1NTUtLjgzNTkyIDEuODkzOTctMS4yMzYzNS4xNDMyMS0uMTA4MTQuMjU0MjgtLjI1NDI4LjM2MjQyLS4zNjI0Mi0uMTA4MTQtLjE4NDEzLS4yNTQyOC0uMzI3MzUtLjM2MjQyLS40NzM0OS0yLjQzNzYxLTMuMTY1MzktNC4wNzQzNy03Ljc0ODMzLTUuMDU2NDMtMTIuNjkzNyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyOCIgZD0ibTM2Ni44MjYyOCAzNTcuMzI0NzZjLTIuNjE4ODIgMS43NDc4My01LjA1NjQzIDMuNDkyNzQtNy4zNDc5IDUuMjc1NjQtMS40MTc1NSAxLjEyODItMi43NjQ5NiAyLjIxODQxLTQuMDAxMzEgMy4zNDY2MSAxLjM4MjQ5IDIuMjkxNDcgMi43Mjk5IDQuNzY0MTUgNC4wMDEzMSA3LjIzNjgzLjQzODQyLjg3MzkyLjgzNTkyIDEuNzA5ODQgMS4yMzYzNCAyLjU4Mzc1IDEuODU1OTggMy45MjgyNCAzLjQxOTY4IDcuODIxNCA0LjU0Nzg3IDExLjI3NjE0IDEuMDU1MTMgMy4zMTE1MyAxLjU2MzY5IDYuMDAwNSAxLjYzNjc3IDguNjk1MzEuMDczIDEuNzA2OTEtLjAzNTEgMy4zODE2OC0uMjE5MjEgNS4yMzc2NSAyLjAzNzE5LjkwODk5IDQuNjU2MDEgMS40NTI2MyA3LjI3NDgzIDEuNzA2OTEgNC4yOTM1OS40Mzg0MiA4LjQ0MTAzLS4wMzUxIDEwLjE0Nzk1LTEuNDE3NTVsNy45MzI0Ni02LjQzODkyLjA3MDEtNTIuMDE0MDRjLTkuMzQ3MSA0LjgzNzIyLTE3LjkzMTM1IDkuNjA0My0yNS4yNzkyNSAxNC41MTE2NyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTM1Mi44OTYyNSAzNjguMzExNTRjLS44Mzg4NC44MDA4NS0xLjYzOTY5IDEuNjM2NzctMi40Mzc2MSAyLjUxMDY4bDMuODU1MTctLjAzOGMtLjQ3MzUtLjgzNTkyLS45NDY5OS0xLjY3MTgzLTEuNDE3NTYtMi40NzI2OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMiIgZD0ibTM2MS45ODkwNiAzODguMDk4ODZjLS4xNDYxMy0uNDM1NDktLjI1NDI4LS44MzU5Mi0uNDAwNDItMS4yNzE0MWwtOS4xMzA4MS43OTc5MS41NDY1NyAyLjQzNzYyIDEwLjQwMjIyIDguODM4NTNjLjA3MzEtMS4wNTUxMy4xMTEwNy0yLjAzNzE5LjA3MzEtMy4wMTkyNS0uMTA4MTUtMi40Mzc2MS0uNTQ2NTYtNC44MDIxNS0xLjQ5MDYzLTcuNzgzNCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTMzOC43MDkwMSAzNzQuMjc2OTdjLjEwODE0LjMyNzM1LjIxOTIxLjY5MjcuMzY1MzUgMS4wMTcxMy44NzA5OSAyLjM2NDU0IDEuOTY0MTEgNC40MDE3MyAzLjMwODYgNS44NTcyOGwuMDM1MS0uMDM1MSA0LjIyMDUxIDMuNTYyODggMS41NjM3LS4xNDYxNC0yLjA3MjI2LTEwLjI1NjA5em0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMzYiIGQ9Im0zNjAuMzUyMyAzODMuNDgwODRjLS4yOTIyOC0uNjkyNy0uNTgxNjQtMS4zODI0Ny0uODczOTItMi4xMTAyNS0uNTgxNjMtMS4zNDc0MS0xLjIwMTI3LTIuNzY0OTYtMS44NTU5Ny00LjE0NzQ1LS40MzU1LS45NDY5OC0uOTA4OTktMS44OTEwNC0xLjQxNzU2LTIuODczMWgtNi41NDcwNmwxLjk5OTE5IDkuODkzNjUgNy44MjE0LS42ODk3N3ptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDM4IiBkPSJtMzUzLjgwNTI0IDMyMy42MDc0MWMuMTgxMjEtLjEwODE1LjM2MjQyLS4xODEyMi41NDM2NC0uMjU0MjhsLS41NDM2NC0uOTA5LTMuNzExOTUtNi4zNjU4NGMtMS4wOTAyLjQzNTUtMi4xNDUzMy44MzU5Mi0zLjIzNTU0IDEuMjM2MzQtLjIxOTIxLjA3MzEtLjQzODQyLjE0NjE0LS42NTQ3LjI1NDI5bC42NTQ3IDEuMTYzMjcgMy41NjI4OSA2LjMzMDc3YzEuMTY2MTktLjQ3MzQ5IDIuMjkxNDctLjk4MjA2IDMuMzg0Ni0xLjQ1NTU1IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtNDQ3LjQ2OTEgMzYxLjc2NDQ4Yy4xNDMyMS0uNTgxNjMuMjkyMjgtMS4xNjYxOS40MzU1LTEuNjcxODNsLS40MzU1LS41MTE0OS0xLjM4MjQ4LTEuNzA5ODQtMS43NDc4My43Mjc3OC0yLjM2NDU0Ljk0Njk4LTQuOTgzMzcgMi4wNzIyNi0uMzYyNDMuMTQ2MTQuMzYyNDMuNDAwNDMgNC45ODMzNyA1LjYzODA3IDEuNjc0NzYgMS44OTEwNS42ODk3OC0uNDAwNDMgMS42MDE2OS0uODczOTFjLjM2MjQyLTEuOTk5MTkuOTgyMDYtNC40NzE4OCAxLjUyODYyLTYuNjU1MjEiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDIiIGQ9Im00MjYuMDQyMSAzNjYuMjM5MjhsNy42NzgxOCA4LjgwMDU0IDYuODM2NDEtMy42NzM5NS03LjIzNjg0LTguMTgzODN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NCIgZD0ibTQzNy44NjQ4IDM0My43NTcxNWw5LjYwNDMtNC4xNDQ1MiA5Ljc0NzUyLTQuMTg1NDQuMDM1MS4wNzYgNy42MDIxOS00LjIyMDUyLTMuOTI4MjMtNC4xNDc0NGMtNC4xODI1MiAyLjc2NDk3LTguNjU3MzIgNS4wNTY0NC0xMy40NTY1NCA2LjgwMTM0LTEuMDIwMDcuMzY1MzUtMi4wNzUxOS43MzA3LTMuMTMwMzIgMS4wNTUxMy0uNzYyODUuMjE5MjEtMS41NjM2OS40MzU1LTIuMzY0NTQuNjU0Ny0uMTA4MTUuMDM4LS4yMTYyOS4wNzMxLS4zMjQ0My4wNzMxbC03LjY3NTI2IDMuNTMwNzN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NiIgZD0ibTQ0My43MjIwNyAzNTUuMTQ0MzZsLTYuMzMwNzYtNy4yMzk3Ni05LjU2MzM4IDMuODkzMTYgNi40MDA5MSA3LjIzNjg0LjIxOTIxLS4wNzMxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDgiIGQ9Im00NDAuNTIxNjIgMzgyLjUzMzg2Yy40NzM0OS0uMjkyMjggMy4wNTQzMi0xLjg1NTk3IDMuODIwMDktMi4zNjQ1NC4xNDYxNC0uMTA4MTQuMzI0NDMtLjIxOTIxLjQ3MDU3LS4yOTIyOCAwLS4xMDgxNS4wMzUxLS4yMTYyOS4wMzUxLS4yODkzNS4xMTEwNy0xLjAyMDA2LjIxOTIxLTIuMDM3MTkuMzMwMjgtMy4wMTkyNWwtMi4yOTE0Ny0yLjU4Mzc1LTYuNzY2MjcgMy42Mzg4OHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUwIiBkPSJtMzQyLjg5MTUyIDMxOC42OTcxMWMtLjg3MDk5LjI5MjI5LTEuNzgyOS41ODE2NC0yLjY5MTg5Ljg3MzkyLS4xODEyMS4wNzMxLS4zNjI0Mi4xMDgxNC0uNTQzNjQuMTgxMjFsLjU0MzY0Ljk0NDA3IDMuODU4MDkgNi44MDQyNmMuOTQ0MDYtLjMyNzM1IDEuODkxMDUtLjY5MjcxIDIuODAwMDMtMS4wNTUxMy4xMDgxNS0uMDM4LjI1NDI5LS4wNzMxLjM2MjQ0LS4xMDgxNGwtLjM2MjQ0LS42MTk2NHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNDU0LjcwNTk0IDM0MC4yMzIyNmwtMTQuNDc2NjEgNi4yNTQ3OCA2LjMyNzg2IDcuMjM2ODQgMy44OTMxNi0xLjY3MTg0YzEuMjM5MjYtMy45MjgyMyAyLjY1NjgyLTcuODU2NDcgNC4yNTU1OS0xMS44MTk3OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg1NCIgZD0ibTQzMC45OTAzOSAzNzYuNDk1MzZsLTcuODkxNTUtOC44NzM1OS0uMjkyMjguMTA4MTRjLjI1NDI4IDEuMzQ0NDkuNTgxNjQgMi42OTE4OS45ODIwNiA0LjA3NDM3LjY1NDcxIDIuMjkxNDcgMS41Mjg2MiA0LjY5MTA4IDIuNjE4ODMgNy4xNjM3N2wuMjkyMjctLjE4MTIxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNTYiIGQ9Im00MzAuOTIwMjQgMzYwLjQ5MDE1bC02LjQwMzg1LTcuMjM2ODQtMi4xNDgyNS44MDA4NWMtLjM5NzUgMy4zMDg2LS41NDM2NCA2Ljg3NDQxLS4xNDMyMiAxMC4xODMwMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDU4IiBkPSJtNDM2LjU1NTM5IDM4NC43NTIyNmMuMTQ2MTQtLjA3MzEuMjkyMjctLjE0NjE0LjQzODQyLS4yNTQyOC4yODkzNS0uMTQ2MTQuNTgxNjMtLjI5MjI4Ljg3MDk5LS40NzM1bC00LjQwMTczLTQuOTgzMzYtNS41NjIwOCAyLjk4NDE4Yy4xODEyMi40MzU0OS40MzU1LjgzNTkyLjY1MTc5IDEuMjcxNDEuNjE5NjMgMS4xNjMyOCAxLjMwOTQxIDIuMzI5NDcgMi4wNzUxOCAzLjQ5Mjc0LjEwODE0LjIxOTIxLjIxNjI5LjQzODQxLjI5MjI4LjY1NDcxIDEuMDkwMi0uNDM1NSAyLjI4ODU1LS45ODIwNiAzLjUyNzgxLTEuNjAxNy42ODk3OC0uMzYyNDIgMS4zNzk1Ni0uNzI3NzcgMi4xMDczNC0xLjA5MDIiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNjAiIGQ9Im00NDEuOTc0MjUgMzg5LjI2MjEzYy0uNDcwNTctLjk4MjA2LS45NDQwNi0xLjg5MTA1LTEuNDE3NTYtMi44MDAwMy0uODAwODUuNDczNDktMS41OTg3Ni45MDg5OC0yLjM5OTYyIDEuMzA5NDEtLjQwMDQxLjIxOTIxLS43NjU3Ni40Mzg0MS0xLjE2MzI2LjYxOTYzLS44NzM5Mi40MzU0OS0xLjcwOTg0Ljg3MDk5LTIuNTQ4NjggMS4yMzYzNS0xLjEyNTI4LjU0MzYzLTIuMTgwNDEuOTgyMDUtMy4xMjczOSAxLjM3OTU1LS4wMzUxLjUxMTQ5LS4wMzUxIDEuMDU1MTMtLjA3MzEgMS42MDE2OS0uMDczIDEuNDU1NTUtLjE0MzIxIDMuMDU3MjUtLjAzNTEgNC4zMjg2Ni4xODEyIDEuNzA5ODMuNjU0NyAyLjQ3NTYxIDEuMzgyNDcgMi42NTY4Mi41MDg1Ny4xMDgxNCAxLjEyODIxLjA3MyAxLjg1MzA2LS4wMzguNzY1NzctLjEwODE0IDEuNjAxNjktLjMyNzM1IDIuNTQ4NjgtLjYxNjcxLjE4MTItLjAzOC4zNjI0Mi0uMTExMDcuNTQzNjMtLjE0NjE0IDEuMzQ3NDEtLjQwMDQyIDIuODM4MDQtLjk0NDA2IDQuNDM2ODEtMS41Mjg2Mi43NjU3Ni0uMjg5MzYgMS41NjY2MS0uNjE5NjQgMi4zNjQ1My0uOTQ0MDYuMTExMDctLjAzOC4yMTkyMS0uMTExMDcuMzMwMjgtLjE0NjE0LS4xMTEwNy0uMzI3MzUtLjIxOTIxLS42NTQ3MS0uMzMwMjgtMS4wMjAwNi0uNjg5NzctMi4wMzcxOS0xLjQ5MDYyLTQuMDM2MzgtMi4zNjQ1My01Ljg5MjM2IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDYyIiBkPSJtNDYzLjQ3NDMyIDM4MS4wNzgzMWMtLjUxMTQ5LS4yMTYyOS0xLjIzNjM0LS4yODkzNS0yLjI5NDQtLjI1NDI4LTEuODE1MDUuMDczMS00LjIxNzU4LjYxNjcxLTYuNDczOTggMS4xMjgxOS0yLjgwMDA0LjY1NDcxLTUuNDkxOTMgMS4yNzE0Mi03LjIzNjg0IDEuMDU1MTMtLjEwODE1LS4wMzgtLjIxOTIxLS4wMzgtLjMyNzM1LS4wNzMxLS4xODEyMi0uMDM4LS4zNjI0My0uMDczLS41NDY1Ni0uMTQ2MTQtLjcyNzc4LjQ3MzQ5LTEuNDkzNTYuOTgyMDYtMi4yNTM0OCAxLjQ1NTU1LS4yNTQyOS4xNDYxNS0uNTQ2NTYuMzI3MzYtLjgzODg1LjUwODU3LjI5MjI5LjQ3MzQ5LjU4NDU2IDEuMDE3MTQuODM4ODUgMS41NjM2OSAxLjE2MzI3IDIuMjU2NCAyLjI1MzQ4IDQuODAyMTUgMy4xMjczOSA3LjQyMDk4LjE0NjE0LjM2MjQzLjI1NDI4LjcyNzc4LjM2MjQzIDEuMDkzMTMgMS4zMDk0MS0uNTg0NTYgMi41ODM3NS0xLjE2NjIgMy44NTgwOC0xLjc0Nzg0IDUuMzEwNzItMi41NDU3NSA5LjcwOTUyLTQuOTQ1MzYgMTAuMjU2MDktNS42NzMxNC45ODIwNi0xLjMwOTQxIDEuODE3OTgtMi44MDI5NiAyLjE0NTMzLTQuMTEyMzcuMTQ2MTQtLjYxNjcxLjIxOTIxLTEuMTk4MzQuMDczMS0xLjU5ODc3LS4wNzMxLS4yNTcyLS4yOTIyOC0uNDczNDktLjY4OTc4LS42MTk2MyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg2NCIgZD0ibTQyNi42OTY4IDMzOC43NzY3MWwxLjg1NTk4LS44MzU5Mi42OTI3LS4zMzAyOGMtLjIxOTIxLjAzOC0uNDczNS4wMzgtLjY5MjcuMDM4LS42MTY3MS4wMzUxLTEuMjM2MzUuMDM1MS0xLjg1NTk4LjA3M2gtLjY4OTc4Yy0xNy40NjA3NyAwLTMzLjI4MTg2LTcuMTY2NjktNDQuNzA0MTMtMTguNjYyMDQtMS42MzY3Ny0xLjYzNjc2LTMuMjAwNDctMy4zODE2OC00LjYxODAyLTUuMTk5NjUtMi41ODM3NSAyLjM2NDU0LTYuNzMxMTkgNC45ODMzNi0xMC45NDg3OSA3LjQxODA1LTEuMDkzMTIuNjE5NjMtMi4xODMzMiAxLjIzOTI3LTMuMjczNTMgMS44NTU5OC0uNjE5NjIuMzI3MzUtMS4yMzYzNC42NTQ3LTEuODU1OTcuOTgyMDYtMS4xMjgyLjU4MTYzLTIuMjU2MzkgMS4xNjYxOS0zLjQxOTY3IDEuNzA5ODMtMS4xMjgyLjUxMTQ5LTIuMjUzNDcgMS4wMjAwNi0zLjM4MTY3IDEuNTI4NjItLjk0Njk5LjQwMDQyLTEuOTI5MDUuODM1OTItMi45MTExMSAxLjIwMTI3LTEuMzQ0NDguNTQzNjMtMi42OTE4OSAxLjA1NTEzLTQuMDM2MzggMS41NjM3LTIuMjE4MzkuODAwODQtNC40Mzk3MiAxLjU2MzY5LTYuNjU4MTIgMi4yNTM0Ni0uNDAwNDIuMTExMDctLjc2Mjg1LjI1NDI5LTEuMTYzMjcuMzY1MzZsLTIuMjU2NCAxOS40OTUwMyAxMC4wMzk4IDE3LjUzMzg1LjAzOC0uMDM4YzIuMDM3MTktMi4zNjQ1NSA0LjM2MzczLTQuNjU2MDIgNi45NDc0OC02LjkwOTQ5IDEuMDkwMjEtLjkwODk5IDIuMjE4NC0xLjg1NTk4IDMuMzgxNjgtMi43NjQ5NiAxLjA5MzEyLS44NzM5MiAyLjI1NjM5LTEuNzA5ODQgMy40MTk2Ni0yLjU4Mzc2IDEuNDE3NTYtMS4wMTcxMiAyLjgzODA0LTEuOTk5MTggNC4zMjg2Ni0yLjk4MTI0LjI1NDI4LS4xODEyMi41NDY1Ny0uMzY1MzUuODAwODUtLjU0NjU3IDQuNzY0MTUtMy4xMjczOSAxMC4wMDE4LTYuMjE5NyAxNS41NjY4LTkuMjc0MDIgMy43NDcwMi0yLjA3NTE5IDcuNjc1MjYtNC4xMDk0NSAxMS43NDk2My02LjE4NDY0bDIuNDcyNjktMS4yNzQzM3Y1LjYwMjk5YzUuMjc1NjQtMS4zNDQ0OSA5Ljg1ODU4LTIuMzI5NDYgMTQuMzMwNDUtMi45MTExIDQuOTEzMjItLjYxNjcxIDkuNjM5MzgtLjcyNzc3IDE0Ljg0MTk1LS4xODEyMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY2IiBkPSJtMzY1LjczNjA4IDMxNy4yMDY0OWMzLjM0NjYxLTEuOTY3MDQgNi4zNjU4NS0zLjYzODg4IDguNzY1NDYtNS45NjU0Mi0xLjIwMTI2LTEuNjc0NzYtMi43NjQ5Ni00LjQzOTczLTMuNzgyMDktNi4yMTk3MS0xLjUyODYyIDEuMTYzMjctMy4yMDA0NiAyLjI4ODU1LTQuOTgzMzcgMy4zODE2Ny0xLjYzNjc2IDEuMDE3MTMtMy4zNDY2IDEuOTY0MTItNS4xMjk1IDIuOTA4MTktLjE0NjE0LjA3Ni0uMjg5MzYuMTQ2MTMtLjQzNTUuMjE5MjFsLjQzNTUuNzY1NzYgMy40MTk2NyA1Ljk2MjVjLjU4MTY0LS4zNjI0MiAxLjEyODItLjcyNDg1IDEuNzA5ODMtMS4wNTIyIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY4IiBkPSJtMzU3LjQ0MTE5IDMyMS44NjI1YzEuMDkzMTMtLjUxMTQ5IDIuMTQ1MzMtMS4wOTMxMyAzLjE2NTM5LTEuNjM2NzYuMTQ2MTQtLjA3MzEuMjkyMjgtLjE4NDE0LjQzNTQ5LS4yNTQyOGwtLjQzNTQ5LS43NjU3OC0zLjQxOTY3LTYuMDM4NDktLjA3MzEtLjEwODE1Yy0xLjA5MDIuNTA4NTctMi4xODA0Ljk4MjA2LTMuMzA4NiAxLjQ5MDYzLS4xODEyMi4wNzMxLS4zNjUzNS4xNDYxNC0uNTA4NTcuMjE5MjFsLjUwODU3LjkwODk4IDMuMzgxNjcgNS43NDYyMnptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDcwIiBkPSJtMzUyLjE2ODQ3IDI4MC43MjEyNWwxMi4wNzY5OSA2Ljk4NTQ4Yy0uOTExOTItNC4yMjA1Mi0xLjM4NTQxLTguNjIyMjUtMS4zODU0MS0xMy4xMzIxMiAwLTIuODczMS4yMTkyMS01Ljc0NjIxLjU4NDU2LTguNTExMTdsLTIyLjgwNjU2LTE0LjU0OTY3LTExLjE2OCA4LjI1Njg5djI1LjcxNzY3bDExLjYwMzQ5IDExLjkyNzkyIDE5LjUzMzA0LTcuNzQ1NDEuMTQ2MTQtLjAzOC0uMTQ2MTQtLjA3MzEtMTAuMTQ3OTQtNS44OTIzNWMtMi44MDAwNC0xLjU5ODc2LTEuMDkwMi00LjU4Mjk0IDEuNzA5ODMtMi45NDYxOCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg3MiIgZD0ibTMzOC43ODIwNyAzMjkuMjQ1NDhjLjQ3MzUtLjE0NjE1Ljk0Njk5LS4zMjczNSAxLjQxNzU2LS40NzM1LjE4NDE0LS4wMzUxLjM2NTM1LS4xMDgxNC41NDY1Ni0uMTgxMjFsLS41NDY1Ni0uOTQ2OTgtMS40MTc1Ni0yLjUwNzc2LTIuNTEwNjgtNC40MDE3M2MtLjUwODU2LjE0NjE0LTEuMDE3MTMuMjkyMjgtMS40OTA2Mi40MDA0MnYuMDM1MWwzLjQxOTY3IDguMjIxODJjLjIxOTIxLS4wMzguNDAwNDMtLjEwODE0LjU4MTYzLS4xNDYxMyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgPC9nPg0KPC9zdmc+" alt="Alemannia Aachen" />
+        </div>
+        <div class="hero-text">
+          <div class="report-badge">Player Archetype</div>
+          <h1>Isak Skotheim</h1>
+          <p class="hero-subtitle">Creator / Linker · Age 25 · IL Hødd</p>
+          <div class="hero-meta">
+            <span>2026-04-20</span>
+            <span>FM26 Export · IL Hødd</span>
+            <span>Primary: Creator / Linker</span>
+          </div>
+        </div>
+      </div>
+      
+<style>
+  .archetype-hero-grid { position:relative; z-index:1; display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:18px; margin-top:20px; align-items:start; }
+  .hero-assessment { border:1px solid var(--line); background:rgba(255,255,255,.025); border-radius:8px; padding:16px 18px; }
+  .hero-kicker { display:block; color:var(--muted); font:700 10px var(--font-mono); letter-spacing:.12em; text-transform:uppercase; margin-bottom:7px; }
+  .hero-assessment p { color:var(--text); font-size:13.5px; line-height:1.62; margin:0 0 10px; max-width:1120px; }
+  .hero-assessment p:last-child { margin-bottom:0; }
+  .hero-assessment-error { color:var(--red) !important; }
+  .hero-summary-rail { display:grid; gap:10px; }
+  .hero-summary-card { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:12px; align-items:baseline; border:1px solid var(--line); background:rgba(255,255,255,.025); border-radius:8px; padding:10px 12px; }
+  .hero-summary-card span { color:var(--muted); font:700 10px var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
+  .hero-summary-card strong { color:var(--white); font-size:13px; line-height:1.2; text-align:right; }
+  .hero-summary-card em { color:var(--accent); font-style:normal; font:800 13px var(--font-mono); }
+  .hero-secondary { display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; align-items:center; }
+  .hero-secondary .hero-kicker { margin:0 4px 0 0; }
+  .hero-secondary span:not(.hero-kicker) { border:1px solid var(--line); border-radius:999px; padding:5px 9px; color:var(--muted); font:700 11px var(--font-mono); }
+  .hero-secondary strong { color:var(--white); font-family:var(--font-sans); margin-right:4px; }
+  .archetype-profile-grid { display:grid; grid-template-columns:minmax(360px,.78fr) minmax(520px,1.22fr); gap:18px; align-items:start; }
+  .archetype-chart-panel { margin:0; min-height:100%; }
+  .archetype-table-wrap { margin:0; }
+  .archetype-table-wrap table td, .archetype-table-wrap table th { padding-top:8px; padding-bottom:8px; }
+  @media (max-width:1100px) { .archetype-hero-grid, .archetype-profile-grid { grid-template-columns:1fr; } .hero-summary-rail { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  @media (max-width:700px) { .hero-summary-rail { grid-template-columns:1fr; } }
+</style>
+<div class="archetype-hero-grid">
+  <div class="hero-assessment">
+    <span class="hero-kicker">Assessment</span>
+    <p>A Creator type with a secondary Runner edge, Skotheim&#x27;s best FM26 fit in possession sits firmly in attacking-oriented midfield roles — Attacking Midfielder (Attacking) and Inside Forward (Attacking) both score 12.00/20, with Wide Forward (Attacking) and Second Striker (Attacking) fractionally behind at 11.98 and 11.96 respectively. The profile that drives these scores is coherent: Acceleration 13, Agility 13, Flair 13 and Pace 12 give him the burst and unpredictability to operate between the lines, while Technique 12, First Touch 12 and Decisions 12 mean he can receive and play quickly under pressure. His 2.40 key passes per 90 in early-season action supports the picture — the creativity is showing up in real matches, not just the attributes. Out of possession, the data points to Wide Outlet roles: Wide Outlet Wide Midfielder (Midfield) and both the Central Outlet and Splitting Outlet Attacking Midfielder (Attacking) variants all hit 12.00/20, meaning a manager can trust him to hold width and offer a simple ball rather than press aggressively.</p>
+<p>The structural limiters are hard to ignore at 25, though. Natural Fitness 5 — bottom of the league entirely — directly caps his Engine score (9.80/20) and will become a squad-management issue over a long season; paired with Work Rate 9, pressing-heavy systems will expose him. Balance 6 drags on his Ball Carrier ceiling despite the strong agility and pace profile, and Strength 5 closes off any Target or physical Finisher role. These are not attributes that improve meaningfully at his age, so a manager should deploy him in the roles the data validates — the attacking midfield and inside forward positions where his quick feet, tempo and creative instinct do the work — rather than trying to fit him into an Engine or Presser role he simply does not have the physical base to sustain.</p>
+    
+  </div>
+  <aside class="hero-summary-rail" aria-label="Player summary">
+    <div class="hero-summary-card"><span>Primary</span><strong>Creator / Linker <em>11.6</em></strong></div>
+    <div class="hero-summary-card"><span>Best IP</span><strong>Attacking Midfielder <em>12.00</em></strong></div>
+    <div class="hero-summary-card"><span>Best OOP</span><strong>Wide Outlet Wide Midfielder <em>12.00</em></strong></div>
+    <div class="hero-summary-card"><span>Form</span><strong>7.20 <em>6 apps</em></strong></div>
+  </aside>
+</div>
+
+      
+    </header>
+    </div>
+
+    <!-- ═══ MAIN CONTENT ══════════════════════════════════════════ -->
+    
+<style>
+  .wrap { max-width:none; width:100%; padding:24px 28px 56px; }
+  .archetype-workbench .panel { padding:22px; }
+  .role-toolbar { display:grid; grid-template-columns:minmax(280px,1fr) minmax(340px,.55fr); gap:18px; align-items:end; margin-top:12px; }
+  .role-select-wrap label { display:block; margin-bottom:6px; color:var(--muted); font:700 10px var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+  #role-select { width:100%; min-height:40px; background:var(--panel-2); color:var(--text); border:1px solid var(--line-hard); border-radius:6px; padding:8px 10px; font-weight:700; }
+  .role-score-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .role-score-card { border:1px solid var(--line); background:rgba(255,255,255,.025); border-radius:6px; padding:10px 12px; }
+  .role-score-card span { display:block; color:var(--muted); font:700 10px var(--font-mono); letter-spacing:.1em; text-transform:uppercase; }
+  .role-score-card strong { display:block; margin-top:4px; color:var(--white); font:800 22px var(--font-mono); line-height:1; }
+  .role-explorer-grid { display:grid; grid-template-columns:360px minmax(0,1fr); gap:18px; margin-top:18px; }
+  .role-list { max-height:620px; overflow:auto; border:1px solid var(--line); border-radius:6px; background:var(--panel-2); }
+  .role-list-title { position:sticky; top:0; z-index:1; padding:10px 12px; background:var(--panel-3); color:var(--muted); border-bottom:1px solid var(--line); font:800 10px var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+  .role-choice { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:10px; align-items:center; padding:7px 10px; border:0; border-bottom:1px solid rgba(255,255,255,.045); background:transparent; color:var(--text); text-align:left; cursor:pointer; font:inherit; }
+  .role-choice:hover, .role-choice.active { background:var(--accent-dim); }
+  .role-choice.active { box-shadow:inset 3px 0 0 var(--accent); }
+  .role-choice-main span:first-child { display:block; font-weight:750; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .role-choice-meta { display:block; margin-top:1px; color:var(--muted); font-size:11px; }
+  .role-choice-score { color:var(--accent); font:800 13px var(--font-mono); }
+  .role-detail { display:grid; grid-template-columns:minmax(220px,.7fr) minmax(320px,1.3fr); gap:14px; margin-bottom:16px; }
+  .detail-box { border:1px solid var(--line); border-radius:6px; padding:12px 14px; background:rgba(255,255,255,.02); }
+  .detail-box h3 { margin-bottom:8px; color:var(--muted); font:800 10px var(--font-mono); letter-spacing:.12em; text-transform:uppercase; }
+  .detail-title { color:var(--white); font-size:18px; font-weight:850; line-height:1.2; }
+  .detail-meta { color:var(--muted); font-size:12px; margin-top:3px; }
+  .detail-formula { color:var(--text); font-size:13px; line-height:1.55; }
+  .weakness-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .weakness-chip { border:1px solid rgba(248,113,113,.3); color:var(--red); border-radius:999px; padding:3px 8px; font-size:11px; font-weight:800; }
+  .attr-grid { display:grid; grid-template-columns:repeat(3,minmax(260px,1fr)); gap:18px; }
+  .attr-column h3, .attr-subhead { color:#d7d8e8; font-size:18px; font-weight:850; padding:0 0 8px 10px; border-bottom:2px solid rgba(215,216,232,.35); margin-bottom:8px; }
+  .attr-subhead { margin-top:14px; font-size:15px; }
+  .attr-stack { display:grid; gap:5px; }
+  .fm-attr { display:grid; grid-template-columns:5px minmax(0,1fr) auto 54px; gap:8px; align-items:center; min-height:36px; padding:0 8px 0 0; border-radius:5px; border:1px solid rgba(255,255,255,.055); }
+  .role-mark { width:5px; align-self:stretch; border-radius:5px 0 0 5px; background:transparent; }
+  .attr-name { color:#d8d9e4; font-size:15px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .attr-value { justify-self:end; min-width:40px; text-align:center; border:1px solid rgba(255,255,255,.08); border-radius:6px; padding:3px 8px; color:#d8d9e4; background:rgba(255,255,255,.035); font:850 16px var(--font-mono); }
+  .fm-attr.good .attr-value { color:#facc15; }
+  .fm-attr.elite .attr-value { color:var(--accent); }
+  .fm-attr.weak .attr-value { opacity:.78; }
+  .attr-weight { color:var(--muted); font:800 10px var(--font-mono); letter-spacing:.08em; text-transform:uppercase; }
+  .fm-attr.role-key { background:rgba(74,222,128,.13); border-color:rgba(134,239,172,.28); }
+  .fm-attr.role-key .role-mark { background:#86efac; }
+  .fm-attr.role-preferred { background:rgba(96,165,250,.13); border-color:rgba(147,197,253,.26); }
+  .fm-attr.role-preferred .role-mark { background:#60a5fa; }
+  .fm-attr.role-weak { outline:1px solid rgba(248,113,113,.6); }
+  .fm-attr.role-weak .attr-value { color:var(--red); opacity:1; }
+  @media (max-width:1200px) { .role-explorer-grid, .role-detail { grid-template-columns:1fr; } .role-list { max-height:360px; } }
+  @media (max-width:900px) { .wrap { padding:18px 12px 44px; } .role-toolbar, .attr-grid { grid-template-columns:1fr; } .role-score-strip { grid-template-columns:repeat(3,1fr); } }
+</style>
+<div class="section archetype-workbench"><div class="panel">
+  <div class="section-header"><h2>Role Explorer</h2></div>
+  <p class="section-note">Choose a role to see the exact attributes behind its score. Green rows are key attributes; blue rows are preferred attributes. Low role-relevant attributes are outlined red.</p>
+  <div class="role-toolbar">
+    <div class="role-select-wrap"><label for="role-select">Selected Role</label><select id="role-select"><optgroup label="In Possession">
+<option value="ip::Attacking Midfielder" selected>Attacking Midfielder - 12.00</option>
+<option value="ip::Inside Forward">Inside Forward - 12.00</option>
+<option value="ip::Wide Forward">Wide Forward - 11.98</option>
+<option value="ip::Second Striker">Second Striker - 11.96</option>
+<option value="ip::Free Role">Free Role - 11.94</option>
+<option value="ip::Inside Winger">Inside Winger - 11.84</option>
+<option value="ip::Winger">Winger - 11.80</option>
+<option value="ip::Playmaking Winger">Playmaking Winger - 11.78</option>
+<option value="ip::Channel Midfielder">Channel Midfielder - 11.74</option>
+<option value="ip::Advanced Playmaker">Advanced Playmaker - 11.70</option>
+<option value="ip::False Nine">False Nine - 11.56</option>
+<option value="ip::Channel Forward">Channel Forward - 11.48</option>
+<option value="ip::Wide Midfielder">Wide Midfielder - 11.45</option>
+<option value="ip::Advanced Wing-Back">Advanced Wing-Back - 11.44</option>
+<option value="ip::Midfield Playmaker">Midfield Playmaker - 11.40</option>
+<option value="ip::Box-to-Box Playmaker">Box-to-Box Playmaker - 11.16</option>
+<option value="ip::Poacher">Poacher - 11.13</option>
+<option value="ip::Deep-Lying Playmaker">Deep-Lying Playmaker - 11.10</option>
+<option value="ip::Playmaking Wing-Back">Playmaking Wing-Back - 10.97</option>
+<option value="ip::Inside Wing-Back">Inside Wing-Back - 10.88</option>
+<option value="ip::Deep-Lying Forward">Deep-Lying Forward - 10.65</option>
+<option value="ip::Wing-Back">Wing-Back - 10.64</option>
+<option value="ip::Wide Central Midfielder">Wide Central Midfielder - 10.64</option>
+<option value="ip::Central Midfielder">Central Midfielder - 10.59</option>
+<option value="ip::Centre Forward">Centre Forward - 10.48</option>
+<option value="ip::Full-Back">Full-Back - 10.47</option>
+<option value="ip::Box-to-Box Midfielder">Box-to-Box Midfielder - 10.45</option>
+<option value="ip::Defensive Midfielder">Defensive Midfielder - 10.11</option>
+<option value="ip::Advanced Centre-Back">Advanced Centre-Back - 9.68</option>
+<option value="ip::Overlapping Centre-Back">Overlapping Centre-Back - 9.55</option>
+<option value="ip::Target Forward">Target Forward - 9.41</option>
+<option value="ip::Ball-Playing Centre-Back">Ball-Playing Centre-Back - 9.08</option>
+<option value="ip::Half-Back">Half-Back - 8.94</option>
+<option value="ip::Inside Full-Back">Inside Full-Back - 8.65</option>
+<option value="ip::Wide Centre-Back">Wide Centre-Back - 8.42</option>
+<option value="ip::Centre-Back">Centre-Back - 8.39</option>
+<option value="ip::No-Nonsense Centre-Back">No-Nonsense Centre-Back - 8.36</option>
+</optgroup><optgroup label="Out of Possession">
+<option value="oop::Wide Outlet Wide Midfielder">Wide Outlet Wide Midfielder - 12.00</option>
+<option value="oop::Central Outlet Attacking Midfielder">Central Outlet Attacking Midfielder - 12.00</option>
+<option value="oop::Splitting Outlet Attacking Midfielder">Splitting Outlet Attacking Midfielder - 12.00</option>
+<option value="oop::Inside Outlet Winger">Inside Outlet Winger - 12.00</option>
+<option value="oop::Wide Outlet Winger">Wide Outlet Winger - 12.00</option>
+<option value="oop::Central Outlet Centre Forward">Central Outlet Centre Forward - 12.00</option>
+<option value="oop::Splitting Outlet Centre Forward">Splitting Outlet Centre Forward - 12.00</option>
+<option value="oop::Pressing Full-Back">Pressing Full-Back - 11.33</option>
+<option value="oop::Pressing Wing-Back">Pressing Wing-Back - 11.33</option>
+<option value="oop::Pressing Defensive Midfielder">Pressing Defensive Midfielder - 11.33</option>
+<option value="oop::Pressing Central Midfielder">Pressing Central Midfielder - 11.33</option>
+<option value="oop::Dropping Defensive Midfielder">Dropping Defensive Midfielder - 11.00</option>
+<option value="oop::Wide Covering Defensive Midfielder">Wide Covering Defensive Midfielder - 11.00</option>
+<option value="oop::Wide Covering Central Midfielder">Wide Covering Central Midfielder - 11.00</option>
+<option value="oop::Covering Centre-Back">Covering Centre-Back - 10.67</option>
+<option value="oop::Covering Wide Centre-Back">Covering Wide Centre-Back - 10.67</option>
+<option value="oop::Tracking Wide Midfielder">Tracking Wide Midfielder - 10.00</option>
+<option value="oop::Tracking Attacking Midfielder">Tracking Attacking Midfielder - 10.00</option>
+<option value="oop::Tracking Winger">Tracking Winger - 10.00</option>
+<option value="oop::Tracking Centre Forward">Tracking Centre Forward - 10.00</option>
+<option value="oop::Holding Full-Back">Holding Full-Back - 9.67</option>
+<option value="oop::Holding Wing-Back">Holding Wing-Back - 9.67</option>
+<option value="oop::Screening Defensive Midfielder">Screening Defensive Midfielder - 9.67</option>
+<option value="oop::Screening Central Midfielder">Screening Central Midfielder - 9.67</option>
+<option value="oop::Stopping Centre-Back">Stopping Centre-Back - 8.33</option>
+<option value="oop::Stopping Wide Centre-Back">Stopping Wide Centre-Back - 8.33</option>
+</optgroup></select></div>
+    <div class="role-score-strip">
+      <div class="role-score-card"><span>Total</span><strong id="role-total-score">-</strong></div>
+      <div class="role-score-card"><span>Key Avg</span><strong id="role-key-score">-</strong></div>
+      <div class="role-score-card"><span>Preferred</span><strong id="role-pref-score">-</strong></div>
+    </div>
+  </div>
+  <div class="role-explorer-grid">
+    <aside class="role-list">
+      <div class="role-list-title">In Possession</div><button class="role-choice active" type="button" data-role-id="ip::Attacking Midfielder"><span class="role-choice-main"><span>Attacking Midfielder</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="ip::Inside Forward"><span class="role-choice-main"><span>Inside Forward</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="ip::Wide Forward"><span class="role-choice-main"><span>Wide Forward</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.98</span></button><button class="role-choice" type="button" data-role-id="ip::Second Striker"><span class="role-choice-main"><span>Second Striker</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.96</span></button><button class="role-choice" type="button" data-role-id="ip::Free Role"><span class="role-choice-main"><span>Free Role</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.94</span></button><button class="role-choice" type="button" data-role-id="ip::Inside Winger"><span class="role-choice-main"><span>Inside Winger</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.84</span></button><button class="role-choice" type="button" data-role-id="ip::Winger"><span class="role-choice-main"><span>Winger</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.80</span></button><button class="role-choice" type="button" data-role-id="ip::Playmaking Winger"><span class="role-choice-main"><span>Playmaking Winger</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.78</span></button><button class="role-choice" type="button" data-role-id="ip::Channel Midfielder"><span class="role-choice-main"><span>Channel Midfielder</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.74</span></button><button class="role-choice" type="button" data-role-id="ip::Advanced Playmaker"><span class="role-choice-main"><span>Advanced Playmaker</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.70</span></button><button class="role-choice" type="button" data-role-id="ip::False Nine"><span class="role-choice-main"><span>False Nine</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.56</span></button><button class="role-choice" type="button" data-role-id="ip::Channel Forward"><span class="role-choice-main"><span>Channel Forward</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.48</span></button><button class="role-choice" type="button" data-role-id="ip::Wide Midfielder"><span class="role-choice-main"><span>Wide Midfielder</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.45</span></button><button class="role-choice" type="button" data-role-id="ip::Advanced Wing-Back"><span class="role-choice-main"><span>Advanced Wing-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">11.44</span></button><button class="role-choice" type="button" data-role-id="ip::Midfield Playmaker"><span class="role-choice-main"><span>Midfield Playmaker</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.40</span></button><button class="role-choice" type="button" data-role-id="ip::Box-to-Box Playmaker"><span class="role-choice-main"><span>Box-to-Box Playmaker</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.16</span></button><button class="role-choice" type="button" data-role-id="ip::Poacher"><span class="role-choice-main"><span>Poacher</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">11.13</span></button><button class="role-choice" type="button" data-role-id="ip::Deep-Lying Playmaker"><span class="role-choice-main"><span>Deep-Lying Playmaker</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">11.10</span></button><button class="role-choice" type="button" data-role-id="ip::Playmaking Wing-Back"><span class="role-choice-main"><span>Playmaking Wing-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">10.97</span></button><button class="role-choice" type="button" data-role-id="ip::Inside Wing-Back"><span class="role-choice-main"><span>Inside Wing-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">10.88</span></button><button class="role-choice" type="button" data-role-id="ip::Deep-Lying Forward"><span class="role-choice-main"><span>Deep-Lying Forward</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">10.65</span></button><button class="role-choice" type="button" data-role-id="ip::Wing-Back"><span class="role-choice-main"><span>Wing-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">10.64</span></button><button class="role-choice" type="button" data-role-id="ip::Wide Central Midfielder"><span class="role-choice-main"><span>Wide Central Midfielder</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">10.64</span></button><button class="role-choice" type="button" data-role-id="ip::Central Midfielder"><span class="role-choice-main"><span>Central Midfielder</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">10.59</span></button><button class="role-choice" type="button" data-role-id="ip::Centre Forward"><span class="role-choice-main"><span>Centre Forward</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">10.48</span></button><button class="role-choice" type="button" data-role-id="ip::Full-Back"><span class="role-choice-main"><span>Full-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">10.47</span></button><button class="role-choice" type="button" data-role-id="ip::Box-to-Box Midfielder"><span class="role-choice-main"><span>Box-to-Box Midfielder</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">10.45</span></button><button class="role-choice" type="button" data-role-id="ip::Defensive Midfielder"><span class="role-choice-main"><span>Defensive Midfielder</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">10.11</span></button><button class="role-choice" type="button" data-role-id="ip::Advanced Centre-Back"><span class="role-choice-main"><span>Advanced Centre-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">9.68</span></button><button class="role-choice" type="button" data-role-id="ip::Overlapping Centre-Back"><span class="role-choice-main"><span>Overlapping Centre-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">9.55</span></button><button class="role-choice" type="button" data-role-id="ip::Target Forward"><span class="role-choice-main"><span>Target Forward</span><span class="role-choice-meta">In Possession / Attacking</span></span><span class="role-choice-score">9.41</span></button><button class="role-choice" type="button" data-role-id="ip::Ball-Playing Centre-Back"><span class="role-choice-main"><span>Ball-Playing Centre-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">9.08</span></button><button class="role-choice" type="button" data-role-id="ip::Half-Back"><span class="role-choice-main"><span>Half-Back</span><span class="role-choice-meta">In Possession / Midfield</span></span><span class="role-choice-score">8.94</span></button><button class="role-choice" type="button" data-role-id="ip::Inside Full-Back"><span class="role-choice-main"><span>Inside Full-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">8.65</span></button><button class="role-choice" type="button" data-role-id="ip::Wide Centre-Back"><span class="role-choice-main"><span>Wide Centre-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">8.42</span></button><button class="role-choice" type="button" data-role-id="ip::Centre-Back"><span class="role-choice-main"><span>Centre-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">8.39</span></button><button class="role-choice" type="button" data-role-id="ip::No-Nonsense Centre-Back"><span class="role-choice-main"><span>No-Nonsense Centre-Back</span><span class="role-choice-meta">In Possession / Defensive</span></span><span class="role-choice-score">8.36</span></button>
+      <div class="role-list-title">Out of Possession</div><button class="role-choice" type="button" data-role-id="oop::Wide Outlet Wide Midfielder"><span class="role-choice-main"><span>Wide Outlet Wide Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Central Outlet Attacking Midfielder"><span class="role-choice-main"><span>Central Outlet Attacking Midfielder</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Splitting Outlet Attacking Midfielder"><span class="role-choice-main"><span>Splitting Outlet Attacking Midfielder</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Inside Outlet Winger"><span class="role-choice-main"><span>Inside Outlet Winger</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Wide Outlet Winger"><span class="role-choice-main"><span>Wide Outlet Winger</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Central Outlet Centre Forward"><span class="role-choice-main"><span>Central Outlet Centre Forward</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Splitting Outlet Centre Forward"><span class="role-choice-main"><span>Splitting Outlet Centre Forward</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">12.00</span></button><button class="role-choice" type="button" data-role-id="oop::Pressing Full-Back"><span class="role-choice-main"><span>Pressing Full-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">11.33</span></button><button class="role-choice" type="button" data-role-id="oop::Pressing Wing-Back"><span class="role-choice-main"><span>Pressing Wing-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">11.33</span></button><button class="role-choice" type="button" data-role-id="oop::Pressing Defensive Midfielder"><span class="role-choice-main"><span>Pressing Defensive Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">11.33</span></button><button class="role-choice" type="button" data-role-id="oop::Pressing Central Midfielder"><span class="role-choice-main"><span>Pressing Central Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">11.33</span></button><button class="role-choice" type="button" data-role-id="oop::Dropping Defensive Midfielder"><span class="role-choice-main"><span>Dropping Defensive Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">11.00</span></button><button class="role-choice" type="button" data-role-id="oop::Wide Covering Defensive Midfielder"><span class="role-choice-main"><span>Wide Covering Defensive Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">11.00</span></button><button class="role-choice" type="button" data-role-id="oop::Wide Covering Central Midfielder"><span class="role-choice-main"><span>Wide Covering Central Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">11.00</span></button><button class="role-choice" type="button" data-role-id="oop::Covering Centre-Back"><span class="role-choice-main"><span>Covering Centre-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">10.67</span></button><button class="role-choice" type="button" data-role-id="oop::Covering Wide Centre-Back"><span class="role-choice-main"><span>Covering Wide Centre-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">10.67</span></button><button class="role-choice" type="button" data-role-id="oop::Tracking Wide Midfielder"><span class="role-choice-main"><span>Tracking Wide Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">10.00</span></button><button class="role-choice" type="button" data-role-id="oop::Tracking Attacking Midfielder"><span class="role-choice-main"><span>Tracking Attacking Midfielder</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">10.00</span></button><button class="role-choice" type="button" data-role-id="oop::Tracking Winger"><span class="role-choice-main"><span>Tracking Winger</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">10.00</span></button><button class="role-choice" type="button" data-role-id="oop::Tracking Centre Forward"><span class="role-choice-main"><span>Tracking Centre Forward</span><span class="role-choice-meta">Out of Possession / Attacking</span></span><span class="role-choice-score">10.00</span></button><button class="role-choice" type="button" data-role-id="oop::Holding Full-Back"><span class="role-choice-main"><span>Holding Full-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">9.67</span></button><button class="role-choice" type="button" data-role-id="oop::Holding Wing-Back"><span class="role-choice-main"><span>Holding Wing-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">9.67</span></button><button class="role-choice" type="button" data-role-id="oop::Screening Defensive Midfielder"><span class="role-choice-main"><span>Screening Defensive Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">9.67</span></button><button class="role-choice" type="button" data-role-id="oop::Screening Central Midfielder"><span class="role-choice-main"><span>Screening Central Midfielder</span><span class="role-choice-meta">Out of Possession / Midfield</span></span><span class="role-choice-score">9.67</span></button><button class="role-choice" type="button" data-role-id="oop::Stopping Centre-Back"><span class="role-choice-main"><span>Stopping Centre-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">8.33</span></button><button class="role-choice" type="button" data-role-id="oop::Stopping Wide Centre-Back"><span class="role-choice-main"><span>Stopping Wide Centre-Back</span><span class="role-choice-meta">Out of Possession / Defensive</span></span><span class="role-choice-score">8.33</span></button>
+    </aside>
+    <div>
+      <div class="role-detail">
+        <div class="detail-box"><h3>Role</h3><div class="detail-title" id="role-detail-title">-</div><div class="detail-meta" id="role-detail-meta">-</div></div>
+        <div class="detail-box"><h3>Formula Drivers</h3><div class="detail-formula" id="role-detail-formula">-</div><div class="weakness-list" id="role-weaknesses"></div></div>
+      </div>
+      <div class="attr-grid">
+        <div class="attr-column"><h3>Technical</h3><div class="attr-stack"><div class="fm-attr good" data-attr="Crossing"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Crossing</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Dribbling"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Dribbling</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Finishing"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Finishing</span><span class="attr-weight"></span><span class="attr-value">11</span></div><div class="fm-attr good" data-attr="First Touch"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">First Touch</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr weak" data-attr="Heading"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Heading</span><span class="attr-weight"></span><span class="attr-value">7</span></div><div class="fm-attr good" data-attr="Long Shots"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Long Shots</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr weak" data-attr="Marking"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Marking</span><span class="attr-weight"></span><span class="attr-value">8</span></div><div class="fm-attr good" data-attr="Passing"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Passing</span><span class="attr-weight"></span><span class="attr-value">11</span></div><div class="fm-attr weak" data-attr="Tackling"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Tackling</span><span class="attr-weight"></span><span class="attr-value">7</span></div><div class="fm-attr good" data-attr="Technique"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Technique</span><span class="attr-weight"></span><span class="attr-value">12</span></div><h3 class="attr-subhead">Set Pieces</h3><div class="fm-attr good" data-attr="Corners"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Corners</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Free Kick Taking"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Free Kick Taking</span><span class="attr-weight"></span><span class="attr-value">11</span></div><div class="fm-attr weak" data-attr="Long Throws"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Long Throws</span><span class="attr-weight"></span><span class="attr-value">6</span></div><div class="fm-attr plain" data-attr="Penalty Taking"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Penalty Taking</span><span class="attr-weight"></span><span class="attr-value">10</span></div></div></div>
+        <div class="attr-column"><h3>Mental</h3><div class="attr-stack"><div class="fm-attr good" data-attr="Aggression"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Aggression</span><span class="attr-weight"></span><span class="attr-value">13</span></div><div class="fm-attr good" data-attr="Anticipation"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Anticipation</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr plain" data-attr="Bravery"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Bravery</span><span class="attr-weight"></span><span class="attr-value">9</span></div><div class="fm-attr good" data-attr="Composure"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Composure</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Concentration"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Concentration</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Decisions"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Decisions</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Determination"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Determination</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Flair"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Flair</span><span class="attr-weight"></span><span class="attr-value">13</span></div><div class="fm-attr plain" data-attr="Leadership"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Leadership</span><span class="attr-weight"></span><span class="attr-value">9</span></div><div class="fm-attr good" data-attr="Off The Ball"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Off The Ball</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr plain" data-attr="Positioning"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Positioning</span><span class="attr-weight"></span><span class="attr-value">9</span></div><div class="fm-attr plain" data-attr="Team Work"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Team Work</span><span class="attr-weight"></span><span class="attr-value">10</span></div><div class="fm-attr good" data-attr="Vision"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Vision</span><span class="attr-weight"></span><span class="attr-value">11</span></div><div class="fm-attr plain" data-attr="Work Rate"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Work Rate</span><span class="attr-weight"></span><span class="attr-value">9</span></div></div></div>
+        <div class="attr-column"><h3>Physical</h3><div class="attr-stack"><div class="fm-attr good" data-attr="Acceleration"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Acceleration</span><span class="attr-weight"></span><span class="attr-value">13</span></div><div class="fm-attr good" data-attr="Agility"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Agility</span><span class="attr-weight"></span><span class="attr-value">13</span></div><div class="fm-attr weak" data-attr="Balance"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Balance</span><span class="attr-weight"></span><span class="attr-value">6</span></div><div class="fm-attr weak" data-attr="Jumping Reach"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Jumping Reach</span><span class="attr-weight"></span><span class="attr-value">5</span></div><div class="fm-attr weak" data-attr="Natural Fitness"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Natural Fitness</span><span class="attr-weight"></span><span class="attr-value">5</span></div><div class="fm-attr good" data-attr="Pace"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Pace</span><span class="attr-weight"></span><span class="attr-value">12</span></div><div class="fm-attr good" data-attr="Stamina"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Stamina</span><span class="attr-weight"></span><span class="attr-value">13</span></div><div class="fm-attr weak" data-attr="Strength"><span class="role-mark" aria-hidden="true"></span><span class="attr-name">Strength</span><span class="attr-weight"></span><span class="attr-value">5</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+<script>
+(function() {
+  const roles = [{"id": "ip::Attacking Midfielder", "phase": "In Possession", "rank": 1, "role": "Attacking Midfielder", "area": "Attacking", "score": 12.0, "keyAttrs": ["First Touch", "Long Shots", "Passing", "Technique", "Composure", "Flair", "Off The Ball"], "preferredAttrs": ["Crossing", "Dribbling", "Finishing", "Anticipation", "Decisions", "Vision", "Acceleration", "Agility"], "keyScore": 12.0, "preferredScore": 12.0}, {"id": "ip::Inside Forward", "phase": "In Possession", "rank": 2, "role": "Inside Forward", "area": "Attacking", "score": 12.0, "keyAttrs": ["Dribbling", "First Touch", "Technique", "Anticipation", "Composure", "Off The Ball", "Acceleration", "Agility"], "preferredAttrs": ["Crossing", "Finishing", "Long Shots", "Passing", "Flair", "Vision", "Work Rate", "Balance", "Pace", "Stamina"], "keyScore": 12.25, "preferredScore": 11.0}, {"id": "ip::Wide Forward", "phase": "In Possession", "rank": 3, "role": "Wide Forward", "area": "Attacking", "score": 11.98, "keyAttrs": ["Dribbling", "First Touch", "Technique", "Anticipation", "Off The Ball", "Acceleration", "Agility", "Pace"], "preferredAttrs": ["Crossing", "Finishing", "Passing", "Composure", "Flair", "Work Rate", "Balance", "Stamina"], "keyScore": 12.25, "preferredScore": 10.88}, {"id": "ip::Second Striker", "phase": "In Possession", "rank": 4, "role": "Second Striker", "area": "Attacking", "score": 11.96, "keyAttrs": ["Finishing", "First Touch", "Anticipation", "Composure", "Off The Ball", "Acceleration"], "preferredAttrs": ["Dribbling", "Long Shots", "Passing", "Technique", "Concentration", "Decisions", "Work Rate", "Agility", "Pace", "Stamina"], "keyScore": 12.0, "preferredScore": 11.8}, {"id": "ip::Free Role", "phase": "In Possession", "rank": 5, "role": "Free Role", "area": "Attacking", "score": 11.94, "keyAttrs": ["Dribbling", "First Touch", "Long Shots", "Passing", "Technique", "Composure", "Flair", "Off The Ball", "Vision"], "preferredAttrs": ["Crossing", "Finishing", "Anticipation", "Decisions", "Acceleration", "Agility"], "keyScore": 11.89, "preferredScore": 12.17}, {"id": "ip::Inside Winger", "phase": "In Possession", "rank": 6, "role": "Inside Winger", "area": "Midfield", "score": 11.84, "keyAttrs": ["Dribbling", "First Touch", "Technique", "Composure", "Team Work", "Acceleration", "Agility"], "preferredAttrs": ["Crossing", "Long Shots", "Passing", "Anticipation", "Flair", "Off The Ball", "Vision", "Work Rate", "Balance", "Pace", "Stamina"], "keyScore": 12.0, "preferredScore": 11.18}, {"id": "ip::Winger", "phase": "In Possession", "rank": 7, "role": "Winger", "area": "Midfield", "score": 11.8, "keyAttrs": ["Crossing", "Dribbling", "Technique", "Team Work", "Acceleration", "Agility", "Pace"], "preferredAttrs": ["First Touch", "Passing", "Anticipation", "Flair", "Off The Ball", "Work Rate", "Balance", "Stamina"], "keyScore": 12.0, "preferredScore": 11.0}, {"id": "ip::Playmaking Winger", "phase": "In Possession", "rank": 8, "role": "Playmaking Winger", "area": "Midfield", "score": 11.78, "keyAttrs": ["Crossing", "Dribbling", "First Touch", "Passing", "Technique", "Composure", "Decisions", "Off The Ball", "Team Work", "Vision", "Acceleration"], "preferredAttrs": ["Anticipation", "Flair", "Work Rate", "Agility", "Pace", "Stamina"], "keyScore": 11.73, "preferredScore": 12.0}, {"id": "ip::Channel Midfielder", "phase": "In Possession", "rank": 9, "role": "Channel Midfielder", "area": "Attacking", "score": 11.74, "keyAttrs": ["Crossing", "First Touch", "Passing", "Technique", "Composure", "Off The Ball", "Work Rate", "Acceleration"], "preferredAttrs": ["Dribbling", "Long Shots", "Anticipation", "Decisions", "Flair", "Vision", "Agility", "Pace", "Stamina"], "keyScore": 11.62, "preferredScore": 12.22}, {"id": "ip::Advanced Playmaker", "phase": "In Possession", "rank": 10, "role": "Advanced Playmaker", "area": "Midfield", "score": 11.7, "keyAttrs": ["First Touch", "Passing", "Technique", "Composure", "Decisions", "Off The Ball", "Team Work", "Vision"], "preferredAttrs": ["Crossing", "Dribbling", "Anticipation", "Flair", "Acceleration", "Agility"], "keyScore": 11.5, "preferredScore": 12.5}, {"id": "ip::False Nine", "phase": "In Possession", "rank": 11, "role": "False Nine", "area": "Attacking", "score": 11.56, "keyAttrs": ["Dribbling", "First Touch", "Passing", "Technique", "Composure", "Decisions", "Off The Ball", "Team Work", "Vision", "Acceleration"], "preferredAttrs": ["Finishing", "Anticipation", "Flair", "Agility", "Balance"], "keyScore": 11.7, "preferredScore": 11.0}, {"id": "ip::Channel Forward", "phase": "In Possession", "rank": 12, "role": "Channel Forward", "area": "Attacking", "score": 11.48, "keyAttrs": ["Dribbling", "Finishing", "First Touch", "Technique", "Composure", "Off The Ball", "Work Rate", "Acceleration"], "preferredAttrs": ["Crossing", "Heading", "Passing", "Anticipation", "Decisions", "Agility", "Balance", "Pace", "Stamina"], "keyScore": 11.62, "preferredScore": 10.89}, {"id": "ip::Wide Midfielder", "phase": "In Possession", "rank": 13, "role": "Wide Midfielder", "area": "Midfield", "score": 11.45, "keyAttrs": ["Crossing", "Passing", "Technique", "Team Work", "Work Rate", "Pace", "Stamina"], "preferredAttrs": ["Dribbling", "First Touch", "Anticipation", "Composure", "Off The Ball", "Vision", "Acceleration", "Agility"], "keyScore": 11.29, "preferredScore": 12.12}, {"id": "ip::Advanced Wing-Back", "phase": "In Possession", "rank": 14, "role": "Advanced Wing-Back", "area": "Defensive", "score": 11.44, "keyAttrs": ["Crossing", "Dribbling", "Technique", "Off The Ball", "Team Work", "Work Rate", "Acceleration", "Agility", "Pace", "Stamina"], "preferredAttrs": ["First Touch", "Marking", "Passing", "Tackling", "Anticipation", "Decisions", "Flair", "Positioning", "Balance"], "keyScore": 11.8, "preferredScore": 10.0}, {"id": "ip::Midfield Playmaker", "phase": "In Possession", "rank": 15, "role": "Midfield Playmaker", "area": "Midfield", "score": 11.4, "keyAttrs": ["First Touch", "Passing", "Technique", "Composure", "Decisions", "Off The Ball", "Team Work", "Vision"], "preferredAttrs": ["Dribbling", "Tackling", "Anticipation", "Flair", "Positioning", "Work Rate", "Agility", "Stamina"], "keyScore": 11.5, "preferredScore": 11.0}, {"id": "ip::Box-to-Box Playmaker", "phase": "In Possession", "rank": 16, "role": "Box-to-Box Playmaker", "area": "Midfield", "score": 11.16, "keyAttrs": ["First Touch", "Passing", "Technique", "Composure", "Decisions", "Off The Ball", "Team Work", "Vision", "Work Rate", "Stamina"], "preferredAttrs": ["Dribbling", "Marking", "Tackling", "Anticipation", "Positioning", "Acceleration", "Agility", "Balance", "Pace"], "keyScore": 11.4, "preferredScore": 10.22}, {"id": "ip::Poacher", "phase": "In Possession", "rank": 17, "role": "Poacher", "area": "Attacking", "score": 11.13, "keyAttrs": ["Finishing", "Heading", "Anticipation", "Composure", "Concentration", "Off The Ball", "Acceleration"], "preferredAttrs": ["First Touch", "Technique", "Decisions", "Balance"], "keyScore": 11.29, "preferredScore": 10.5}, {"id": "ip::Deep-Lying Playmaker", "phase": "In Possession", "rank": 18, "role": "Deep-Lying Playmaker", "area": "Midfield", "score": 11.1, "keyAttrs": ["First Touch", "Passing", "Technique", "Composure", "Decisions", "Off The Ball", "Team Work", "Vision"], "preferredAttrs": ["Marking", "Tackling", "Anticipation", "Concentration", "Positioning", "Work Rate", "Balance", "Stamina"], "keyScore": 11.5, "preferredScore": 9.5}, {"id": "ip::Playmaking Wing-Back", "phase": "In Possession", "rank": 19, "role": "Playmaking Wing-Back", "area": "Defensive", "score": 10.97, "keyAttrs": ["First Touch", "Passing", "Tackling", "Technique", "Composure", "Decisions", "Positioning", "Team Work", "Vision", "Acceleration"], "preferredAttrs": ["Crossing", "Dribbling", "Marking", "Anticipation", "Concentration", "Off The Ball", "Positioning", "Work Rate", "Agility", "Pace", "Stamina"], "keyScore": 10.9, "preferredScore": 11.27}, {"id": "ip::Inside Wing-Back", "phase": "In Possession", "rank": 20, "role": "Inside Wing-Back", "area": "Defensive", "score": 10.88, "keyAttrs": ["Passing", "Tackling", "Anticipation", "Composure", "Decisions", "Positioning", "Team Work", "Acceleration"], "preferredAttrs": ["First Touch", "Marking", "Technique", "Concentration", "Work Rate", "Agility", "Pace", "Stamina"], "keyScore": 10.75, "preferredScore": 11.38}, {"id": "ip::Deep-Lying Forward", "phase": "In Possession", "rank": 21, "role": "Deep-Lying Forward", "area": "Attacking", "score": 10.65, "keyAttrs": ["Finishing", "First Touch", "Technique", "Composure", "Off The Ball", "Strength"], "preferredAttrs": ["Dribbling", "Passing", "Anticipation", "Decisions", "Team Work", "Vision", "Balance"], "keyScore": 10.67, "preferredScore": 10.57}, {"id": "ip::Wing-Back", "phase": "In Possession", "rank": 22, "role": "Wing-Back", "area": "Defensive", "score": 10.64, "keyAttrs": ["Crossing", "Marking", "Tackling", "Team Work", "Work Rate", "Acceleration", "Pace", "Stamina"], "preferredAttrs": ["Dribbling", "First Touch", "Passing", "Technique", "Anticipation", "Concentration", "Decisions", "Off The Ball", "Positioning", "Agility", "Balance"], "keyScore": 10.5, "preferredScore": 11.18}, {"id": "ip::Wide Central Midfielder", "phase": "In Possession", "rank": 23, "role": "Wide Central Midfielder", "area": "Midfield", "score": 10.64, "keyAttrs": ["First Touch", "Passing", "Tackling", "Decisions", "Team Work"], "preferredAttrs": ["Crossing", "Dribbling", "Technique", "Anticipation", "Composure", "Concentration", "Off The Ball", "Positioning", "Vision", "Work Rate", "Agility", "Stamina"], "keyScore": 10.4, "preferredScore": 11.58}, {"id": "ip::Central Midfielder", "phase": "In Possession", "rank": 24, "role": "Central Midfielder", "area": "Midfield", "score": 10.59, "keyAttrs": ["First Touch", "Passing", "Tackling", "Decisions", "Team Work"], "preferredAttrs": ["Technique", "Anticipation", "Composure", "Concentration", "Off The Ball", "Positioning", "Vision", "Work Rate", "Stamina"], "keyScore": 10.4, "preferredScore": 11.33}, {"id": "ip::Centre Forward", "phase": "In Possession", "rank": 25, "role": "Centre Forward", "area": "Attacking", "score": 10.48, "keyAttrs": ["Finishing", "First Touch", "Heading", "Technique", "Composure", "Off The Ball", "Acceleration", "Strength"], "preferredAttrs": ["Dribbling", "Passing", "Anticipation", "Decisions", "Agility", "Balance", "Jumping Reach", "Pace"], "keyScore": 10.5, "preferredScore": 10.38}, {"id": "ip::Full-Back", "phase": "In Possession", "rank": 26, "role": "Full-Back", "area": "Defensive", "score": 10.47, "keyAttrs": ["Marking", "Tackling", "Anticipation", "Concentration", "Positioning", "Team Work", "Acceleration"], "preferredAttrs": ["Crossing", "Dribbling", "Passing", "Technique", "Decisions", "Work Rate", "Agility", "Pace", "Stamina"], "keyScore": 10.14, "preferredScore": 11.78}, {"id": "ip::Box-to-Box Midfielder", "phase": "In Possession", "rank": 27, "role": "Box-to-Box Midfielder", "area": "Midfield", "score": 10.45, "keyAttrs": ["Passing", "Tackling", "Off The Ball", "Team Work", "Work Rate", "Stamina"], "preferredAttrs": ["Dribbling", "Finishing", "First Touch", "Long Shots", "Technique", "Aggression", "Anticipation", "Composure", "Decisions", "Positioning", "Acceleration", "Balance", "Pace", "Strength"], "keyScore": 10.33, "preferredScore": 10.93}, {"id": "ip::Defensive Midfielder", "phase": "In Possession", "rank": 28, "role": "Defensive Midfielder", "area": "Midfield", "score": 10.11, "keyAttrs": ["Tackling", "Anticipation", "Concentration", "Positioning", "Team Work"], "preferredAttrs": ["First Touch", "Marking", "Passing", "Aggression", "Composure", "Decisions", "Work Rate", "Stamina", "Strength"], "keyScore": 10.0, "preferredScore": 10.56}, {"id": "ip::Advanced Centre-Back", "phase": "In Possession", "rank": 29, "role": "Advanced Centre-Back", "area": "Defensive", "score": 9.68, "keyAttrs": ["Heading", "Marking", "Passing", "Tackling", "Technique", "Anticipation", "Composure", "Decisions", "Positioning", "Team Work", "Jumping Reach", "Strength"], "preferredAttrs": ["Dribbling", "First Touch", "Aggression", "Bravery", "Concentration", "Vision", "Pace", "Stamina"], "keyScore": 9.17, "preferredScore": 11.75}, {"id": "ip::Overlapping Centre-Back", "phase": "In Possession", "rank": 30, "role": "Overlapping Centre-Back", "area": "Defensive", "score": 9.55, "keyAttrs": ["Crossing", "Heading", "Marking", "Tackling", "Anticipation", "Work Rate", "Jumping Reach", "Pace", "Stamina", "Strength"], "preferredAttrs": ["Dribbling", "Technique", "Aggression", "Bravery", "Composure", "Concentration", "Decisions", "Off The Ball", "Positioning", "Acceleration", "Agility"], "keyScore": 9.0, "preferredScore": 11.73}, {"id": "ip::Target Forward", "phase": "In Possession", "rank": 31, "role": "Target Forward", "area": "Attacking", "score": 9.41, "keyAttrs": ["Finishing", "Heading", "Aggression", "Bravery", "Composure", "Off The Ball", "Balance", "Jumping Reach", "Strength"], "preferredAttrs": ["First Touch", "Anticipation", "Decisions", "Team Work"], "keyScore": 8.89, "preferredScore": 11.5}, {"id": "ip::Ball-Playing Centre-Back", "phase": "In Possession", "rank": 32, "role": "Ball-Playing Centre-Back", "area": "Defensive", "score": 9.08, "keyAttrs": ["Heading", "Marking", "Passing", "Tackling", "Anticipation", "Composure", "Positioning", "Jumping Reach", "Strength"], "preferredAttrs": ["First Touch", "Technique", "Aggression", "Bravery", "Concentration", "Decisions", "Vision", "Pace"], "keyScore": 8.44, "preferredScore": 11.62}, {"id": "ip::Half-Back", "phase": "In Possession", "rank": 33, "role": "Half-Back", "area": "Midfield", "score": 8.94, "keyAttrs": ["Heading", "Marking", "Tackling", "Anticipation", "Concentration", "Positioning", "Team Work", "Jumping Reach", "Strength"], "preferredAttrs": ["First Touch", "Passing", "Aggression", "Bravery", "Composure", "Decisions", "Work Rate", "Stamina"], "keyScore": 8.33, "preferredScore": 11.38}, {"id": "ip::Inside Full-Back", "phase": "In Possession", "rank": 34, "role": "Inside Full-Back", "area": "Defensive", "score": 8.65, "keyAttrs": ["Heading", "Marking", "Tackling", "Anticipation", "Positioning", "Strength"], "preferredAttrs": ["Dribbling", "Aggression", "Bravery", "Composure", "Concentration", "Decisions", "Work Rate", "Acceleration", "Agility", "Jumping Reach", "Pace", "Stamina"], "keyScore": 8.0, "preferredScore": 11.25}, {"id": "ip::Wide Centre-Back", "phase": "In Possession", "rank": 35, "role": "Wide Centre-Back", "area": "Defensive", "score": 8.42, "keyAttrs": ["Heading", "Marking", "Tackling", "Anticipation", "Positioning", "Jumping Reach", "Strength"], "preferredAttrs": ["Dribbling", "Aggression", "Bravery", "Composure", "Concentration", "Decisions", "Work Rate", "Acceleration", "Agility", "Pace", "Stamina"], "keyScore": 7.57, "preferredScore": 11.82}, {"id": "ip::Centre-Back", "phase": "In Possession", "rank": 36, "role": "Centre-Back", "area": "Defensive", "score": 8.39, "keyAttrs": ["Heading", "Marking", "Tackling", "Anticipation", "Positioning", "Jumping Reach", "Strength"], "preferredAttrs": ["Aggression", "Bravery", "Composure", "Concentration", "Decisions", "Pace"], "keyScore": 7.57, "preferredScore": 11.67}, {"id": "ip::No-Nonsense Centre-Back", "phase": "In Possession", "rank": 37, "role": "No-Nonsense Centre-Back", "area": "Defensive", "score": 8.36, "keyAttrs": ["Heading", "Marking", "Tackling", "Anticipation", "Positioning", "Jumping Reach", "Strength"], "preferredAttrs": ["Aggression", "Bravery", "Concentration", "Pace"], "keyScore": 7.57, "preferredScore": 11.5}, {"id": "oop::Wide Outlet Wide Midfielder", "phase": "Out of Possession", "rank": 1, "role": "Wide Outlet Wide Midfielder", "area": "Midfield", "score": 12.0, "keyAttrs": ["Off The Ball", "Pace", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Central Outlet Attacking Midfielder", "phase": "Out of Possession", "rank": 2, "role": "Central Outlet Attacking Midfielder", "area": "Attacking", "score": 12.0, "keyAttrs": ["Off The Ball", "Decisions", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Splitting Outlet Attacking Midfielder", "phase": "Out of Possession", "rank": 3, "role": "Splitting Outlet Attacking Midfielder", "area": "Attacking", "score": 12.0, "keyAttrs": ["Off The Ball", "Pace", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Inside Outlet Winger", "phase": "Out of Possession", "rank": 4, "role": "Inside Outlet Winger", "area": "Attacking", "score": 12.0, "keyAttrs": ["Off The Ball", "Decisions", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Wide Outlet Winger", "phase": "Out of Possession", "rank": 5, "role": "Wide Outlet Winger", "area": "Attacking", "score": 12.0, "keyAttrs": ["Off The Ball", "Pace", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Central Outlet Centre Forward", "phase": "Out of Possession", "rank": 6, "role": "Central Outlet Centre Forward", "area": "Attacking", "score": 12.0, "keyAttrs": ["Off The Ball", "Decisions", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Splitting Outlet Centre Forward", "phase": "Out of Possession", "rank": 7, "role": "Splitting Outlet Centre Forward", "area": "Attacking", "score": 12.0, "keyAttrs": ["Off The Ball", "Pace", "Anticipation"], "preferredAttrs": [], "keyScore": 12.0, "preferredScore": null}, {"id": "oop::Pressing Full-Back", "phase": "Out of Possession", "rank": 8, "role": "Pressing Full-Back", "area": "Defensive", "score": 11.33, "keyAttrs": ["Aggression", "Work Rate", "Anticipation"], "preferredAttrs": [], "keyScore": 11.33, "preferredScore": null}, {"id": "oop::Pressing Wing-Back", "phase": "Out of Possession", "rank": 9, "role": "Pressing Wing-Back", "area": "Defensive", "score": 11.33, "keyAttrs": ["Aggression", "Work Rate", "Anticipation"], "preferredAttrs": [], "keyScore": 11.33, "preferredScore": null}, {"id": "oop::Pressing Defensive Midfielder", "phase": "Out of Possession", "rank": 10, "role": "Pressing Defensive Midfielder", "area": "Midfield", "score": 11.33, "keyAttrs": ["Aggression", "Work Rate", "Anticipation"], "preferredAttrs": [], "keyScore": 11.33, "preferredScore": null}, {"id": "oop::Pressing Central Midfielder", "phase": "Out of Possession", "rank": 11, "role": "Pressing Central Midfielder", "area": "Midfield", "score": 11.33, "keyAttrs": ["Aggression", "Work Rate", "Anticipation"], "preferredAttrs": [], "keyScore": 11.33, "preferredScore": null}, {"id": "oop::Dropping Defensive Midfielder", "phase": "Out of Possession", "rank": 12, "role": "Dropping Defensive Midfielder", "area": "Midfield", "score": 11.0, "keyAttrs": ["Positioning", "Decisions", "Anticipation"], "preferredAttrs": [], "keyScore": 11.0, "preferredScore": null}, {"id": "oop::Wide Covering Defensive Midfielder", "phase": "Out of Possession", "rank": 13, "role": "Wide Covering Defensive Midfielder", "area": "Midfield", "score": 11.0, "keyAttrs": ["Anticipation", "Pace", "Work Rate"], "preferredAttrs": [], "keyScore": 11.0, "preferredScore": null}, {"id": "oop::Wide Covering Central Midfielder", "phase": "Out of Possession", "rank": 14, "role": "Wide Covering Central Midfielder", "area": "Midfield", "score": 11.0, "keyAttrs": ["Anticipation", "Pace", "Work Rate"], "preferredAttrs": [], "keyScore": 11.0, "preferredScore": null}, {"id": "oop::Covering Centre-Back", "phase": "Out of Possession", "rank": 15, "role": "Covering Centre-Back", "area": "Defensive", "score": 10.67, "keyAttrs": ["Anticipation", "Pace", "Marking"], "preferredAttrs": [], "keyScore": 10.67, "preferredScore": null}, {"id": "oop::Covering Wide Centre-Back", "phase": "Out of Possession", "rank": 16, "role": "Covering Wide Centre-Back", "area": "Defensive", "score": 10.67, "keyAttrs": ["Anticipation", "Pace", "Marking"], "preferredAttrs": [], "keyScore": 10.67, "preferredScore": null}, {"id": "oop::Tracking Wide Midfielder", "phase": "Out of Possession", "rank": 17, "role": "Tracking Wide Midfielder", "area": "Midfield", "score": 10.0, "keyAttrs": ["Marking", "Work Rate", "Stamina"], "preferredAttrs": [], "keyScore": 10.0, "preferredScore": null}, {"id": "oop::Tracking Attacking Midfielder", "phase": "Out of Possession", "rank": 18, "role": "Tracking Attacking Midfielder", "area": "Attacking", "score": 10.0, "keyAttrs": ["Marking", "Work Rate", "Stamina"], "preferredAttrs": [], "keyScore": 10.0, "preferredScore": null}, {"id": "oop::Tracking Winger", "phase": "Out of Possession", "rank": 19, "role": "Tracking Winger", "area": "Attacking", "score": 10.0, "keyAttrs": ["Marking", "Work Rate", "Stamina"], "preferredAttrs": [], "keyScore": 10.0, "preferredScore": null}, {"id": "oop::Tracking Centre Forward", "phase": "Out of Possession", "rank": 20, "role": "Tracking Centre Forward", "area": "Attacking", "score": 10.0, "keyAttrs": ["Marking", "Work Rate", "Stamina"], "preferredAttrs": [], "keyScore": 10.0, "preferredScore": null}, {"id": "oop::Holding Full-Back", "phase": "Out of Possession", "rank": 21, "role": "Holding Full-Back", "area": "Defensive", "score": 9.67, "keyAttrs": ["Positioning", "Concentration", "Marking"], "preferredAttrs": [], "keyScore": 9.67, "preferredScore": null}, {"id": "oop::Holding Wing-Back", "phase": "Out of Possession", "rank": 22, "role": "Holding Wing-Back", "area": "Defensive", "score": 9.67, "keyAttrs": ["Positioning", "Concentration", "Marking"], "preferredAttrs": [], "keyScore": 9.67, "preferredScore": null}, {"id": "oop::Screening Defensive Midfielder", "phase": "Out of Possession", "rank": 23, "role": "Screening Defensive Midfielder", "area": "Midfield", "score": 9.67, "keyAttrs": ["Positioning", "Concentration", "Marking"], "preferredAttrs": [], "keyScore": 9.67, "preferredScore": null}, {"id": "oop::Screening Central Midfielder", "phase": "Out of Possession", "rank": 24, "role": "Screening Central Midfielder", "area": "Midfield", "score": 9.67, "keyAttrs": ["Positioning", "Concentration", "Marking"], "preferredAttrs": [], "keyScore": 9.67, "preferredScore": null}, {"id": "oop::Stopping Centre-Back", "phase": "Out of Possession", "rank": 25, "role": "Stopping Centre-Back", "area": "Defensive", "score": 8.33, "keyAttrs": ["Aggression", "Tackling", "Strength"], "preferredAttrs": [], "keyScore": 8.33, "preferredScore": null}, {"id": "oop::Stopping Wide Centre-Back", "phase": "Out of Possession", "rank": 26, "role": "Stopping Wide Centre-Back", "area": "Defensive", "score": 8.33, "keyAttrs": ["Aggression", "Tackling", "Strength"], "preferredAttrs": [], "keyScore": 8.33, "preferredScore": null}];
+  const roleById = new Map(roles.map(role => [role.id, role]));
+  const select = document.getElementById('role-select');
+  const buttons = Array.from(document.querySelectorAll('.role-choice'));
+  const attrRows = Array.from(document.querySelectorAll('.fm-attr[data-attr]'));
+  const totalEl = document.getElementById('role-total-score');
+  const keyEl = document.getElementById('role-key-score');
+  const prefEl = document.getElementById('role-pref-score');
+  const titleEl = document.getElementById('role-detail-title');
+  const metaEl = document.getElementById('role-detail-meta');
+  const formulaEl = document.getElementById('role-detail-formula');
+  const weaknessesEl = document.getElementById('role-weaknesses');
+
+  function attrValues(names) {
+    return names.map(name => {
+      const row = attrRows.find(item => item.dataset.attr === name);
+      const value = row ? Number(row.querySelector('.attr-value').textContent) : null;
+      return { name, value };
+    }).filter(item => item.value !== null);
+  }
+  function setRole(roleId) {
+    const role = roleById.get(roleId) || roles[0];
+    select.value = role.id;
+    buttons.forEach(button => button.classList.toggle('active', button.dataset.roleId === role.id));
+    totalEl.textContent = role.score.toFixed(2);
+    keyEl.textContent = role.keyScore.toFixed(2);
+    prefEl.textContent = role.preferredScore === null ? '-' : role.preferredScore.toFixed(2);
+    titleEl.textContent = role.role;
+    metaEl.textContent = `${role.phase} / ${role.area} / rank ${role.rank}`;
+    const keyList = role.keyAttrs.join(', ');
+    const prefList = role.preferredAttrs.length ? role.preferredAttrs.join(', ') : 'None';
+    formulaEl.textContent = role.phase === 'In Possession'
+      ? `Score = key average x 0.8 + preferred average x 0.2. Key: ${keyList}. Preferred: ${prefList}.`
+      : `Score = key attribute average. Key: ${keyList}.`;
+    const keySet = new Set(role.keyAttrs);
+    const prefSet = new Set(role.preferredAttrs);
+    attrRows.forEach(row => {
+      const name = row.dataset.attr;
+      const value = Number(row.querySelector('.attr-value').textContent);
+      const weight = row.querySelector('.attr-weight');
+      row.classList.remove('role-key', 'role-preferred', 'role-weak');
+      weight.textContent = '';
+      if (keySet.has(name)) {
+        row.classList.add('role-key');
+        weight.textContent = 'Key';
+        if (value <= 10) row.classList.add('role-weak');
+      } else if (prefSet.has(name)) {
+        row.classList.add('role-preferred');
+        weight.textContent = 'Pref';
+        if (value <= 10) row.classList.add('role-weak');
+      }
+    });
+    const weak = attrValues([...role.keyAttrs, ...role.preferredAttrs])
+      .filter(item => item.value <= 10)
+      .sort((a, b) => a.value - b.value || a.name.localeCompare(b.name))
+      .slice(0, 8);
+    weaknessesEl.innerHTML = weak.length
+      ? weak.map(item => `<span class="weakness-chip">${item.name} ${item.value}</span>`).join('')
+      : '<span class="detail-meta">No role-relevant attribute at 10 or below.</span>';
+  }
+  select.addEventListener('change', event => setRole(event.target.value));
+  buttons.forEach(button => button.addEventListener('click', () => setRole(button.dataset.roleId)));
+  setRole("ip::Attacking Midfielder");
+})();
+</script>
+
+
+<div class="section archetype-profile">
+  <div class="panel">
+    <div class="section-header"><h2>Archetype Profile</h2></div>
+    <p class="section-note">Left: relative archetype shape. Right: raw archetype averages out of 20.</p>
+    <div class="archetype-profile-grid">
+    <div class="chart-panel archetype-chart-panel">
+      <div class="chart-title">Archetype Profile — relative strengths</div>
+      <div class="percbar-wrap"><canvas id="archetype-radar"></canvas></div>
+    </div>
+    <div class="table-wrap archetype-table-wrap">
+      <table>
+        <thead><tr><th>Archetype</th><th class="num">Score / 20</th><th>Bar</th></tr></thead>
+        <tbody><tr><td style="color:#1d4278;font-weight:600">Creator ★</td><td class="num" style="color:#1d4278">11.67</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:58.3%;height:100%;background:#1d4278;border-radius:3px"></div></div></td></tr>
+<tr><td>Runner</td><td class="num">11.60</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:58.0%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr>
+<tr><td style="color:#1d4278;font-weight:600">Linker ★</td><td class="num" style="color:#1d4278">11.60</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:58.0%;height:100%;background:#1d4278;border-radius:3px"></div></div></td></tr>
+<tr><td>Ball Carrier</td><td class="num">11.50</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:57.5%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr>
+<tr><td>Presser</td><td class="num">11.33</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:56.7%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr>
+<tr><td>Finisher</td><td class="num">10.67</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:53.3%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr>
+<tr><td>Engine</td><td class="num">9.80</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:49.0%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr>
+<tr><td>Anchor</td><td class="num">8.83</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:44.2%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr>
+<tr><td>Target</td><td class="num">8.00</td><td><div style="height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:40.0%;height:100%;background:rgba(255,255,255,0.18);border-radius:3px"></div></div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+window.__initCharts = function() {
+  Charts.percBar('archetype-radar', {
+    axes: ['Creator', 'Finisher', 'Ball Carrier', 'Runner', 'Presser', 'Anchor', 'Engine', 'Target', 'Linker'],
+    series: [{
+      label: 'Isak Skotheim',
+      values: [1.0, 0.7273, 0.9545, 0.9818, 0.9091, 0.2273, 0.4909, 0.0, 0.9818],
+      color: '#1d4278'
+    }]
+  });
+};
+</script>
+
+    <!-- ═══ FOOTER ════════════════════════════════════════════════ -->
+    <footer>
+      <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+DQo8c3ZnIGlkPSJzdmc3NSIgaGVpZ2h0PSIzNTYuNDg4OTgiIHZpZXdCb3g9IjAgMCAyMDEuNzUwMDEgMjY3LjM2Njc0IiB3aWR0aD0iMjY5IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPg0KICAgPGcgaWQ9InN1cmZhY2U0MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTI5OS4xMjUgLTE2Ni4zMTY2MykiPg0KICAgICAgPHBhdGggaWQ9InBhdGgyIiBkPSJtMzAwLjYyNSAxNjcuODE2NjNoMTk4Ljc1djE2NC45OTQ2NmMwIDU0LjcwNTkzLTQ0LjY2OTA2IDk5LjM3MjA4LTk5LjM3NSA5OS4zNzIwOC01NC43MDU5NCAwLTk5LjM3NS00NC42NjYxNS05OS4zNzUtOTkuMzcyMDh6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0IiBkPSJtMzA0LjYyNjMxIDE3MS44NTMwMXYxNjAuOTU4MjhjMCA1Mi41MjI2IDQyLjg0ODE2IDk1LjM3MDc3IDk1LjM3MzY5IDk1LjM3MDc3IDUyLjUyNTUzIDAgOTUuMzczNjktNDIuODQ4MTcgOTUuMzczNjktOTUuMzcwNzd2LTE2MC45NTgyOHptMCAwIiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDYiIGQ9Im00MjYuMDA3MDIgMjE0Ljg4NTMxYy0xNi40NzU3OSAwLTMxLjM1MjgxIDYuNjkwMjgtNDIuMTU4MzggMTcuNDk1ODUtMTAuODM3NzIgMTAuODM3NzItMTcuNTMwOTIgMjUuNzUyNzMtMTcuNTMwOTIgNDIuMTkzNDUgMCAzMi44ODQzNiAyNi44MDc4NyA1OS42OTIyMiA1OS42ODkzIDU5LjY5MjIyIDMyLjg4MTQzIDAgNTkuNjg5My0yNi44MDc4NiA1OS42ODkzLTU5LjY5MjIyIDAtMTYuNDQwNzItNi42OTMxOS0zMS4zNTU3My0xNy40OTI5Mi00Mi4xOTM0NS0xMC44NDA2NC0xMC44MDU1Ny0yNS43NTU2Ni0xNy40OTU4NS00Mi4xOTYzOC0xNy40OTU4NSIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg4IiBkPSJtMzk2LjYxODMzIDMyMi42NjA0M2MtMi4yOTQ0LTEuNDE3NTctNC41MTI4LTIuOTgxMjYtNi41ODUwNi00LjcyNjE3di0zOC40NDkzNWgtNy4zNDc5MXYzMS4xMzY1MmMtMi41MTA2Ny0zLjAxOTI0LTQuNzI5MDgtNi4yOTI3Ny02LjU4MjEyLTkuODIwNTl2LTUyLjQ1MjQ2YzEuODUzMDQtMy41Mjc4MSA0LjA3MTQ1LTYuODAxMzQgNi41ODIxMi05LjgyMDU5djM0LjMzNjk5aDcuMzQ3OTF2LTQxLjY4NDg5YzIuMDcyMjYtMS43MDk4NCA0LjI5MDY2LTMuMjczNTMgNi41ODUwNi00LjY5MTA4em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTAiIGQ9Im00MTguMTE1NDggMzE5Ljg5ODM4YzAgMS40NTI2My0uMTQ2MTUgMy43NDcwMi0zLjg5MzE3IDMuMjAwNDYtLjExMTA2IDAtLjIxNjI4LS4wMzgtLjMyNzM1LS4wMzgtLjU0MzY0LS4xMDgxNC0xLjA5MzEzLS4zMjczNS0xLjYzNjc2LS40NzA1Ny0xLjkyNjEzLS41MDg1Ni0yLjU0NTc1LTEuOTI5MDQtMi41NDU3NS00LjE0NzQ0di03NS40NDAyM2MwLTIuMjE4NC42MTk2Mi0zLjYzODg4IDIuNTQ1NzUtNC4xODI1Mi41NDM2My0uMTQ2MTQgMS4wOTMxMi0uMzI3MzUgMS42MzY3Ni0uNDM4NDEuMTExMDctLjAzNTEuMjE2MjktLjAzNTEuMzI3MzUtLjA3MzEgMy43NDcwMi0uNTQzNjMgMy44OTMxNyAxLjc0Nzg0IDMuODkzMTcgMy4yMDA0NnptLS4xNDYxNS04OC44NjQ2M2MtMS4zODI0Ny4xODEyMS0yLjcyOTg4LjQzODQyLTQuMDc0MzcuNzI3NzctMS41OTg3Ny4zNjI0My0zLjE2MjQ2Ljc2Mjg1LTQuNzI5MDggMS4yMzYzNC01LjQ5MTkyIDEuNzA5ODQtNi4wMzg0OSA1LjY3NjA3LTYuMDM4NDkgOS40NTgxN3Y3Ni40OTUzNmMwIDMuNzgyMS41NDY1NyA3Ljc0ODMzIDYuMDM4NDkgOS40NTgxNyAxLjU2NjYyLjQ3MzQ5IDMuMTMwMzEuOTA4OTkgNC43MjkwOCAxLjIzNjM0IDEuMzQ0NDkuMzI3MzUgMi42OTE5LjU0NjU2IDQuMDc0MzcuNzYyODUgMi41ODM3Ni4zMjczNSA2LjcyODI4LS44MDA4NSA2LjcyODI4LTYuNjIwMTN2LTg2LjE2OTgxYzAtNS44MTkyOS00LjE0NDUyLTYuOTQ3NDktNi43MjgyOC02LjU4NTA2IiBmaWxsPSIjZmZmIi8+DQogICAgICA8cGF0aCBpZD0icGF0aDEyIiBkPSJtNDI0LjY5NzYxIDIyNC42MzI4M2MtMi4yNTYzOS4wMzgtNC40MzY4LjI1NDI4LTYuNTg1MDYuNTgxNjR2LTYuNTExOTljMi4xNDgyNi0uMjg5MzUgNC4zMjg2Ny0uNDcwNTcgNi41ODUwNi0uNTA4NTZ6bTAgMCIgZmlsbD0iI2ZmZiIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgxNCIgZD0ibTQxMC45ODM4NiAyMjYuOTI0M2MtMi41MDc3Ni44MzU5Mi00LjcyNjE2IDEuNzQ0OTEtNi41ODIxMyAyLjQ3MjY4di02LjgwMTM0YzIuMTgwNC0uODM1OTIgNC4xNDQ1Mi0xLjcwOTg0IDYuNTgyMTMtMi4yMTg0em0wIDAiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTYiIGQ9Im00NjkuNDc0ODIgMjk0LjgzNTQzYzAgMi41MTA2Ny0uMjE2MjkgNC45ODMzNS0xLjkyNjEzIDcuMzgyOTctLjQzODQxLjY1NDctLjg3MzkxIDEuMjc0MzQtMS4zMDk0MSAxLjg5MTA1LTEuMDU1MTIgMS4zODI0OC0yLjExMDI1IDIuNzI5ODgtMy4yNzM1MyA0LjAwMTN2LTY3LjExMDI3YzEuMTYzMjggMS4zMDk0MSAyLjI1MzQ4IDIuNjU2ODIgMy4yNzM1MyA0LjAzOTMuNTQzNjUuNzYyODUgMS4wOTAyIDEuNTI1NyAxLjU5ODc3IDIuMjkxNDcgMS40MjA0OCAyLjEwNzMzIDEuNjM2NzcgMy4zMDg2IDEuNjM2NzcgNi4wMzU1N3ptNi41ODUwNS0xLjAxNzE0di00MC41OTQ2OWMwLTMuMjM4NDUtLjQzODQxLTUuNjM4MDctMS45NjQxMi04LjA3NTY3LTIuMjU2MzktMy42MDA4OS00LjkxMzIxLTYuOTgyNTctNy44NTY0Ny0xMC4wMDE4MS0yLjk4NDE3LTMuMDU3MjQtNi4yOTI3Ny01Ljc0OTE0LTkuODU4NTgtOC4wNDA2MXY5NC45MzgyMWMzLjU2NTgxLTIuMjkxNDggNi44NzQ0MS00Ljk4MzM3IDkuODU4NTgtOC4wMDI2MiAyLjM2NDU0LTIuNDM3NjEgNC41MDY5NS01LjA1NjQzIDYuNDM2LTcuODU2NDcgMi41NDg2OC0zLjc0NzAyIDMuMzg0NTktNi45ODU0NyAzLjQxOTY3LTExLjAyMTg1di0uNDczNWMwLS4yODkzNiAwLS41ODE2My0uMDM1MS0uODcwOTkiIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMTgiIGQ9Im00NDQuNTkzMDcgMzE2LjczM2MwIDMuMjAwNDUtLjY4OTc4IDQuNTQ0OTQtMy4xMjczOSA1LjM0NTc5LS4xNDYxNC4wMzgtLjI1NDI5LjA3MzEtLjQwMDQyLjExMTA2LTEuMTYzMjguMzYyNDMtMi4zMjY1NC42ODk3OC0zLjUyNzgxLjk4MjA2di05Ny4yMjk2N2MxLjIzOTI2LjMyNzM2IDIuMzY0NTMuNjE2NzEgMy41Mjc4MSAxLjAxNzEzLjE4NDE0LjAzOC4zNjUzNC4xMTEwNy41MTE0OS4xODQxNCAxLjk2NDEyLjY1NDcxIDIuOTQ2MTggMi42NTM5IDMuMDE2MzIgNC4yNTU1OXptLjExMTA2LTk1LjM3MzdjLTEuMjAxMjctLjQwMDQyLTIuNDAyNTMtLjgwMDg1LTMuNjM4ODctMS4xMjgyLTMuMjczNTMtLjkwODk5LTYuNjU1MjEtMS41Mjg2Mi0xMC4xMDk5NS0xLjg1MzA1djExMi4zNTgwNWMzLjQ1NDc0LS4yODkzNSA2LjgzNjQyLS45MDg5OSAxMC4xMDk5NS0xLjgxNzk3IDEuMzQ3NC0uMzYyNDMgMi42OTQ4MS0uODAwODUgMy45NjYyMy0xLjI3MTQyIDQuODAyMTUtMS43MDk4NCA2LjE0NjY0LTQuMjU4NTEgNi4xNDY2NC05Ljk2Njczdi04Ni4yMDc4MWMwLTQuODM3MjMtMS44MTc5OC04LjQ3NjEtNi40NzQtMTAuMTEyODciIGZpbGw9IiNmZmYiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjAiIGQ9Im00MjYuMzM0MzcgMzQyLjc0MDAyYy0uOTgyMDYgMS4zMDk0MS0xLjUyNTY5IDIuOTQ2MTctMi4xODA0IDQuNjk0MDFsMS4yNzE0MiAxLjY3MTg0IDkuNDkzMjMtNC4wMzkzMS0zLjg1NTE3LTQuMzI4NjZ6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyMiIgZD0ibTM4MS4zMDI4OSAyMDYuMDA4NzhjLjkwODk4IDAgMS42MzY3Ni41MTE1IDEuNjM2NzYgMS4yNzQzNSAwIC43Mjc3Ny0uNzI3NzggMS4yMzYzMy0xLjYzNjc2IDEuMjM2MzMtLjkwOSAwLTEuNjcxODUtLjUwODU2LTEuNjcxODUtMS4yMzYzMyAwLS43NjI4NS43NjI4NS0xLjI3NDM1IDEuNjcxODUtMS4yNzQzNW0tNDEuMTAzMjYgMTA5Ljk2MTM3YzIuMjIxMzItLjY5MjcgNC40NzQ4LTEuNDkzNTUgNi42NTgxMi0yLjMyOTQ3LjkwOS0uMzI3MzUgMS44NTU5OC0uNjg5NzggMi43NjQ5Ny0xLjA1NTEzIDEuNDE3NTYtLjU4MTYzIDIuODAwMDMtMS4xNjMyNyA0LjE4MjUyLTEuNzgyOSAxLjEyODItLjU0NjU3IDIuMjUzNDctMS4wNTIyMSAzLjM4MTY3LTEuNTk4NzcgMS4xNjYxOS0uNTgxNjQgMi4zMjk0Ny0xLjE2NjE5IDMuNDE5NjctMS43ODI5IDEuODE3OTgtLjk4MjA2IDMuNTI3ODItMi4wMDIxMiA1LjEyOTUtMy4wNTcyNSAxLjE5ODM1LS43OTc5MiAyLjMyNjU1LTEuNTk4NzcgMy4zODE2OC0yLjQzNzYxLTEuMzA5NDItMi43NjIwNC0yLjQ3MjY5LTUuNjM1MTQtMy4zODE2OC04LjU4MTMyLS4xODEyMS0uNTg0NTYtLjM2NTM1LTEuMjAxMjctLjUxMTQ4LTEuNzgyOWwtMjQuOTg2OTcgOS44OTM2NS0uMDM4LS4wMzUxLTE0LjE0OTI0LTE0LjM2ODQ2di0yOC45OTExOWwxNC40NzY1OS0xMC43Mjk1OSAyMy41MzQzNSAxNS4wMjMxN2MuNDM4NDItMi4yMTg0IDEuMDIwMDUtNC40MDE3MyAxLjY3NDc2LTYuNTQ5OTkgMy4wNTQzMS05LjgyMDU4IDguNDczMTgtMTguNTg2MDQgMTUuNTY2OC0yNS43MTQ3My4wMzgtLjAzNTEuMDczLS4wNzMxLjExMTA3LS4xMTEwNyAyLjMyNjU0LTIuMzYxNjIgNC44NzIyOS00LjUwOTg4IDcuNTI5MTItNi40NzM5OWw1LjUyNjk5LTguODM4NTMuMjE5MjEtMTEuMjc2MTQtMTcuNDk1ODQtMjIuODA2NTctMTEuNzQ5NjMtLjE0NjEzLTEyLjgwMTg0IDEyLjAzODk4djI4LjczNjkxbDE1LjE2NjM4LjY1NDcxLjQwMDQyLTIxLjc1MTQzIDE4LjMzMTc3LjgwMDg0IDMuNzg1MDEgMTEuNjc2NTdjLjI4OTM2Ljc5NzkyLjU0MzY0IDEuNjM2NzYtMS4wOTMxMiAyLjE0NTMzLTEuNjM2NzcuNTQ2NTYtMS44OTEwNS0uMjkyMjgtMi4xNDUzMy0xLjA5MDJsLTMuMDkyMzItOS4zODUxLTEyLjQwNDM0LS41ODE2My0uMzk3NSAyMS43ODY1LTI3Ljk3NDA2LTEuMDU1MTIuMDM4IDYuMDc2NDkgMTUuNDU4NjYgOC45MTE2Yy43NjI4NS4zOTc1IDEuNDkwNjMuODM1OTIuNjU0NzEgMi4zMjY1NC0uODAwODUgMS4zODI0OC0xLjQ5MDYzIDEuMTI4Mi0yLjE4MzMzLjcyNzc4LS4wNzMxLS4wMzgtLjEwODE0LS4wNzMxLS4xODEyMi0uMDczMWwtMTUuMzEyNTEtOC44MDA1My0yNC4zMDAxMSAyMC4zNjg5NSAzLjg5MzE2IDQ4LjA4NTgyIDExLjQyMjI4IDE2LjExMzM2YzEuOTk5MTktLjUwODU3IDQuMDAxMy0xLjA5MDIgNi4wNzM1Ni0xLjcwOTgzLjQ3MzUtLjE4MTIyLjk0NDA2LS4zMjczNiAxLjQxNzU2LS40NzA1OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyNCIgZD0ibTMzNy43MjY5NSAzNzAuODIyMjJoNS43NDYyMWwtNy40MTgwNS0xMi45ODU5N2MuMTQzMjIgMy42NzM5NS41NDM2NCA3LjYzNzI2IDEuMzA5NDEgMTEuMzExMjEuMTA4MTQuNTgxNjQuMjU0MjkgMS4xMjgyLjM2MjQzIDEuNjc0NzYiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMjYiIGQ9Im0zMzQuMDE3OTIgMzY5Ljg0MDE2Yy0xLjEyODItNS41Mjk5Mi0xLjUyODYyLTExLjU2ODQxLTEuNDIwNDctMTYuNTg2ODVsLTguOTg0NjctNS4wNTY0NGMtMS4xMjUyOC0uNjE5NjItMi4xNDUzNC0uOTQ0MDYtMi45ODEyNi0uOTQ0MDYtLjYxOTYyLS4wMzgtMS4xMjgxOS4xMDgxNC0xLjUyODYyLjM2MjQzLS40MzU0OS4yNTQyOC0uODM1OTIuNjg5NzgtMS4xNjMyNyAxLjIzNjM0LS41ODE2NCAxLjAxNzE0LS45MDg5OSAyLjQ3MjY5LS45NDY5OCA0LjI5MzU4LS4xMDgxNSA0LjA3MTQ2IDIuMTEwMjUgMTEuMjM4MTUgNC4zNjY2NSAxOC42MjExMy41MDg1NiAxLjcwOTgzIDEuMDE3MTMgMy4zODQ1OSAxLjEyODIgMy42Mzg4Ny40MzU0OSAxLjQ5MDYzIDEuMDkwMiAzLjc0NDExIDIuMjkxNDcgNS44MTkyOSAxLjE2MzI3IDEuOTY0MTIgMi44NzMxIDMuODU1MTYgNS41NjUgNC44MzcyMi40NzM0OS4xODQxNCAxLjIzNjM0LjE4NDE0IDIuMTgzMzMuMDM1MSAxLjQ5MDYyLS4yMTYzIDMuMjM1NTMtLjc2Mjg2IDQuNjkxMDgtMS40OTA2M2gtLjAzOGMuODAwODUtLjQwMDQzIDEuNDU1NTUtLjgzNTkyIDEuODkzOTctMS4yMzYzNS4xNDMyMS0uMTA4MTQuMjU0MjgtLjI1NDI4LjM2MjQyLS4zNjI0Mi0uMTA4MTQtLjE4NDEzLS4yNTQyOC0uMzI3MzUtLjM2MjQyLS40NzM0OS0yLjQzNzYxLTMuMTY1MzktNC4wNzQzNy03Ljc0ODMzLTUuMDU2NDMtMTIuNjkzNyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgyOCIgZD0ibTM2Ni44MjYyOCAzNTcuMzI0NzZjLTIuNjE4ODIgMS43NDc4My01LjA1NjQzIDMuNDkyNzQtNy4zNDc5IDUuMjc1NjQtMS40MTc1NSAxLjEyODItMi43NjQ5NiAyLjIxODQxLTQuMDAxMzEgMy4zNDY2MSAxLjM4MjQ5IDIuMjkxNDcgMi43Mjk5IDQuNzY0MTUgNC4wMDEzMSA3LjIzNjgzLjQzODQyLjg3MzkyLjgzNTkyIDEuNzA5ODQgMS4yMzYzNCAyLjU4Mzc1IDEuODU1OTggMy45MjgyNCAzLjQxOTY4IDcuODIxNCA0LjU0Nzg3IDExLjI3NjE0IDEuMDU1MTMgMy4zMTE1MyAxLjU2MzY5IDYuMDAwNSAxLjYzNjc3IDguNjk1MzEuMDczIDEuNzA2OTEtLjAzNTEgMy4zODE2OC0uMjE5MjEgNS4yMzc2NSAyLjAzNzE5LjkwODk5IDQuNjU2MDEgMS40NTI2MyA3LjI3NDgzIDEuNzA2OTEgNC4yOTM1OS40Mzg0MiA4LjQ0MTAzLS4wMzUxIDEwLjE0Nzk1LTEuNDE3NTVsNy45MzI0Ni02LjQzODkyLjA3MDEtNTIuMDE0MDRjLTkuMzQ3MSA0LjgzNzIyLTE3LjkzMTM1IDkuNjA0My0yNS4yNzkyNSAxNC41MTE2NyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMCIgZD0ibTM1Mi44OTYyNSAzNjguMzExNTRjLS44Mzg4NC44MDA4NS0xLjYzOTY5IDEuNjM2NzctMi40Mzc2MSAyLjUxMDY4bDMuODU1MTctLjAzOGMtLjQ3MzUtLjgzNTkyLS45NDY5OS0xLjY3MTgzLTEuNDE3NTYtMi40NzI2OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzMiIgZD0ibTM2MS45ODkwNiAzODguMDk4ODZjLS4xNDYxMy0uNDM1NDktLjI1NDI4LS44MzU5Mi0uNDAwNDItMS4yNzE0MWwtOS4xMzA4MS43OTc5MS41NDY1NyAyLjQzNzYyIDEwLjQwMjIyIDguODM4NTNjLjA3MzEtMS4wNTUxMy4xMTEwNy0yLjAzNzE5LjA3MzEtMy4wMTkyNS0uMTA4MTUtMi40Mzc2MS0uNTQ2NTYtNC44MDIxNS0xLjQ5MDYzLTcuNzgzNCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGgzNCIgZD0ibTMzOC43MDkwMSAzNzQuMjc2OTdjLjEwODE0LjMyNzM1LjIxOTIxLjY5MjcuMzY1MzUgMS4wMTcxMy44NzA5OSAyLjM2NDU0IDEuOTY0MTEgNC40MDE3MyAzLjMwODYgNS44NTcyOGwuMDM1MS0uMDM1MSA0LjIyMDUxIDMuNTYyODggMS41NjM3LS4xNDYxNC0yLjA3MjI2LTEwLjI1NjA5em0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoMzYiIGQ9Im0zNjAuMzUyMyAzODMuNDgwODRjLS4yOTIyOC0uNjkyNy0uNTgxNjQtMS4zODI0Ny0uODczOTItMi4xMTAyNS0uNTgxNjMtMS4zNDc0MS0xLjIwMTI3LTIuNzY0OTYtMS44NTU5Ny00LjE0NzQ1LS40MzU1LS45NDY5OC0uOTA4OTktMS44OTEwNC0xLjQxNzU2LTIuODczMWgtNi41NDcwNmwxLjk5OTE5IDkuODkzNjUgNy44MjE0LS42ODk3N3ptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDM4IiBkPSJtMzUzLjgwNTI0IDMyMy42MDc0MWMuMTgxMjEtLjEwODE1LjM2MjQyLS4xODEyMi41NDM2NC0uMjU0MjhsLS41NDM2NC0uOTA5LTMuNzExOTUtNi4zNjU4NGMtMS4wOTAyLjQzNTUtMi4xNDUzMy44MzU5Mi0zLjIzNTU0IDEuMjM2MzQtLjIxOTIxLjA3MzEtLjQzODQyLjE0NjE0LS42NTQ3LjI1NDI5bC42NTQ3IDEuMTYzMjcgMy41NjI4OSA2LjMzMDc3YzEuMTY2MTktLjQ3MzQ5IDIuMjkxNDctLjk4MjA2IDMuMzg0Ni0xLjQ1NTU1IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDQwIiBkPSJtNDQ3LjQ2OTEgMzYxLjc2NDQ4Yy4xNDMyMS0uNTgxNjMuMjkyMjgtMS4xNjYxOS40MzU1LTEuNjcxODNsLS40MzU1LS41MTE0OS0xLjM4MjQ4LTEuNzA5ODQtMS43NDc4My43Mjc3OC0yLjM2NDU0Ljk0Njk4LTQuOTgzMzcgMi4wNzIyNi0uMzYyNDMuMTQ2MTQuMzYyNDMuNDAwNDMgNC45ODMzNyA1LjYzODA3IDEuNjc0NzYgMS44OTEwNS42ODk3OC0uNDAwNDMgMS42MDE2OS0uODczOTFjLjM2MjQyLTEuOTk5MTkuOTgyMDYtNC40NzE4OCAxLjUyODYyLTYuNjU1MjEiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDIiIGQ9Im00MjYuMDQyMSAzNjYuMjM5MjhsNy42NzgxOCA4LjgwMDU0IDYuODM2NDEtMy42NzM5NS03LjIzNjg0LTguMTgzODN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NCIgZD0ibTQzNy44NjQ4IDM0My43NTcxNWw5LjYwNDMtNC4xNDQ1MiA5Ljc0NzUyLTQuMTg1NDQuMDM1MS4wNzYgNy42MDIxOS00LjIyMDUyLTMuOTI4MjMtNC4xNDc0NGMtNC4xODI1MiAyLjc2NDk3LTguNjU3MzIgNS4wNTY0NC0xMy40NTY1NCA2LjgwMTM0LTEuMDIwMDcuMzY1MzUtMi4wNzUxOS43MzA3LTMuMTMwMzIgMS4wNTUxMy0uNzYyODUuMjE5MjEtMS41NjM2OS40MzU1LTIuMzY0NTQuNjU0Ny0uMTA4MTUuMDM4LS4yMTYyOS4wNzMxLS4zMjQ0My4wNzMxbC03LjY3NTI2IDMuNTMwNzN6bTAgMCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg0NiIgZD0ibTQ0My43MjIwNyAzNTUuMTQ0MzZsLTYuMzMwNzYtNy4yMzk3Ni05LjU2MzM4IDMuODkzMTYgNi40MDA5MSA3LjIzNjg0LjIxOTIxLS4wNzMxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNDgiIGQ9Im00NDAuNTIxNjIgMzgyLjUzMzg2Yy40NzM0OS0uMjkyMjggMy4wNTQzMi0xLjg1NTk3IDMuODIwMDktMi4zNjQ1NC4xNDYxNC0uMTA4MTQuMzI0NDMtLjIxOTIxLjQ3MDU3LS4yOTIyOCAwLS4xMDgxNS4wMzUxLS4yMTYyOS4wMzUxLS4yODkzNS4xMTEwNy0xLjAyMDA2LjIxOTIxLTIuMDM3MTkuMzMwMjgtMy4wMTkyNWwtMi4yOTE0Ny0yLjU4Mzc1LTYuNzY2MjcgMy42Mzg4OHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUwIiBkPSJtMzQyLjg5MTUyIDMxOC42OTcxMWMtLjg3MDk5LjI5MjI5LTEuNzgyOS41ODE2NC0yLjY5MTg5Ljg3MzkyLS4xODEyMS4wNzMxLS4zNjI0Mi4xMDgxNC0uNTQzNjQuMTgxMjFsLjU0MzY0Ljk0NDA3IDMuODU4MDkgNi44MDQyNmMuOTQ0MDYtLjMyNzM1IDEuODkxMDUtLjY5MjcxIDIuODAwMDMtMS4wNTUxMy4xMDgxNS0uMDM4LjI1NDI5LS4wNzMxLjM2MjQ0LS4xMDgxNGwtLjM2MjQ0LS42MTk2NHptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDUyIiBkPSJtNDU0LjcwNTk0IDM0MC4yMzIyNmwtMTQuNDc2NjEgNi4yNTQ3OCA2LjMyNzg2IDcuMjM2ODQgMy44OTMxNi0xLjY3MTg0YzEuMjM5MjYtMy45MjgyMyAyLjY1NjgyLTcuODU2NDcgNC4yNTU1OS0xMS44MTk3OCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg1NCIgZD0ibTQzMC45OTAzOSAzNzYuNDk1MzZsLTcuODkxNTUtOC44NzM1OS0uMjkyMjguMTA4MTRjLjI1NDI4IDEuMzQ0NDkuNTgxNjQgMi42OTE4OS45ODIwNiA0LjA3NDM3LjY1NDcxIDIuMjkxNDcgMS41Mjg2MiA0LjY5MTA4IDIuNjE4ODMgNy4xNjM3N2wuMjkyMjctLjE4MTIxem0wIDAiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNTYiIGQ9Im00MzAuOTIwMjQgMzYwLjQ5MDE1bC02LjQwMzg1LTcuMjM2ODQtMi4xNDgyNS44MDA4NWMtLjM5NzUgMy4zMDg2LS41NDM2NCA2Ljg3NDQxLS4xNDMyMiAxMC4xODMwMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDU4IiBkPSJtNDM2LjU1NTM5IDM4NC43NTIyNmMuMTQ2MTQtLjA3MzEuMjkyMjctLjE0NjE0LjQzODQyLS4yNTQyOC4yODkzNS0uMTQ2MTQuNTgxNjMtLjI5MjI4Ljg3MDk5LS40NzM1bC00LjQwMTczLTQuOTgzMzYtNS41NjIwOCAyLjk4NDE4Yy4xODEyMi40MzU0OS40MzU1LjgzNTkyLjY1MTc5IDEuMjcxNDEuNjE5NjMgMS4xNjMyOCAxLjMwOTQxIDIuMzI5NDcgMi4wNzUxOCAzLjQ5Mjc0LjEwODE0LjIxOTIxLjIxNjI5LjQzODQxLjI5MjI4LjY1NDcxIDEuMDkwMi0uNDM1NSAyLjI4ODU1LS45ODIwNiAzLjUyNzgxLTEuNjAxNy42ODk3OC0uMzYyNDIgMS4zNzk1Ni0uNzI3NzcgMi4xMDczNC0xLjA5MDIiIGZpbGw9IiMxZDQyNzgiLz4NCiAgICAgIDxwYXRoIGlkPSJwYXRoNjAiIGQ9Im00NDEuOTc0MjUgMzg5LjI2MjEzYy0uNDcwNTctLjk4MjA2LS45NDQwNi0xLjg5MTA1LTEuNDE3NTYtMi44MDAwMy0uODAwODUuNDczNDktMS41OTg3Ni45MDg5OC0yLjM5OTYyIDEuMzA5NDEtLjQwMDQxLjIxOTIxLS43NjU3Ni40Mzg0MS0xLjE2MzI2LjYxOTYzLS44NzM5Mi40MzU0OS0xLjcwOTg0Ljg3MDk5LTIuNTQ4NjggMS4yMzYzNS0xLjEyNTI4LjU0MzYzLTIuMTgwNDEuOTgyMDUtMy4xMjczOSAxLjM3OTU1LS4wMzUxLjUxMTQ5LS4wMzUxIDEuMDU1MTMtLjA3MzEgMS42MDE2OS0uMDczIDEuNDU1NTUtLjE0MzIxIDMuMDU3MjUtLjAzNTEgNC4zMjg2Ni4xODEyIDEuNzA5ODMuNjU0NyAyLjQ3NTYxIDEuMzgyNDcgMi42NTY4Mi41MDg1Ny4xMDgxNCAxLjEyODIxLjA3MyAxLjg1MzA2LS4wMzguNzY1NzctLjEwODE0IDEuNjAxNjktLjMyNzM1IDIuNTQ4NjgtLjYxNjcxLjE4MTItLjAzOC4zNjI0Mi0uMTExMDcuNTQzNjMtLjE0NjE0IDEuMzQ3NDEtLjQwMDQyIDIuODM4MDQtLjk0NDA2IDQuNDM2ODEtMS41Mjg2Mi43NjU3Ni0uMjg5MzYgMS41NjY2MS0uNjE5NjQgMi4zNjQ1My0uOTQ0MDYuMTExMDctLjAzOC4yMTkyMS0uMTExMDcuMzMwMjgtLjE0NjE0LS4xMTEwNy0uMzI3MzUtLjIxOTIxLS42NTQ3MS0uMzMwMjgtMS4wMjAwNi0uNjg5NzctMi4wMzcxOS0xLjQ5MDYyLTQuMDM2MzgtMi4zNjQ1My01Ljg5MjM2IiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDYyIiBkPSJtNDYzLjQ3NDMyIDM4MS4wNzgzMWMtLjUxMTQ5LS4yMTYyOS0xLjIzNjM0LS4yODkzNS0yLjI5NDQtLjI1NDI4LTEuODE1MDUuMDczMS00LjIxNzU4LjYxNjcxLTYuNDczOTggMS4xMjgxOS0yLjgwMDA0LjY1NDcxLTUuNDkxOTMgMS4yNzE0Mi03LjIzNjg0IDEuMDU1MTMtLjEwODE1LS4wMzgtLjIxOTIxLS4wMzgtLjMyNzM1LS4wNzMxLS4xODEyMi0uMDM4LS4zNjI0My0uMDczLS41NDY1Ni0uMTQ2MTQtLjcyNzc4LjQ3MzQ5LTEuNDkzNTYuOTgyMDYtMi4yNTM0OCAxLjQ1NTU1LS4yNTQyOS4xNDYxNS0uNTQ2NTYuMzI3MzYtLjgzODg1LjUwODU3LjI5MjI5LjQ3MzQ5LjU4NDU2IDEuMDE3MTQuODM4ODUgMS41NjM2OSAxLjE2MzI3IDIuMjU2NCAyLjI1MzQ4IDQuODAyMTUgMy4xMjczOSA3LjQyMDk4LjE0NjE0LjM2MjQzLjI1NDI4LjcyNzc4LjM2MjQzIDEuMDkzMTMgMS4zMDk0MS0uNTg0NTYgMi41ODM3NS0xLjE2NjIgMy44NTgwOC0xLjc0Nzg0IDUuMzEwNzItMi41NDU3NSA5LjcwOTUyLTQuOTQ1MzYgMTAuMjU2MDktNS42NzMxNC45ODIwNi0xLjMwOTQxIDEuODE3OTgtMi44MDI5NiAyLjE0NTMzLTQuMTEyMzcuMTQ2MTQtLjYxNjcxLjIxOTIxLTEuMTk4MzQuMDczMS0xLjU5ODc3LS4wNzMxLS4yNTcyLS4yOTIyOC0uNDczNDktLjY4OTc4LS42MTk2MyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg2NCIgZD0ibTQyNi42OTY4IDMzOC43NzY3MWwxLjg1NTk4LS44MzU5Mi42OTI3LS4zMzAyOGMtLjIxOTIxLjAzOC0uNDczNS4wMzgtLjY5MjcuMDM4LS42MTY3MS4wMzUxLTEuMjM2MzUuMDM1MS0xLjg1NTk4LjA3M2gtLjY4OTc4Yy0xNy40NjA3NyAwLTMzLjI4MTg2LTcuMTY2NjktNDQuNzA0MTMtMTguNjYyMDQtMS42MzY3Ny0xLjYzNjc2LTMuMjAwNDctMy4zODE2OC00LjYxODAyLTUuMTk5NjUtMi41ODM3NSAyLjM2NDU0LTYuNzMxMTkgNC45ODMzNi0xMC45NDg3OSA3LjQxODA1LTEuMDkzMTIuNjE5NjMtMi4xODMzMiAxLjIzOTI3LTMuMjczNTMgMS44NTU5OC0uNjE5NjIuMzI3MzUtMS4yMzYzNC42NTQ3LTEuODU1OTcuOTgyMDYtMS4xMjgyLjU4MTYzLTIuMjU2MzkgMS4xNjYxOS0zLjQxOTY3IDEuNzA5ODMtMS4xMjgyLjUxMTQ5LTIuMjUzNDcgMS4wMjAwNi0zLjM4MTY3IDEuNTI4NjItLjk0Njk5LjQwMDQyLTEuOTI5MDUuODM1OTItMi45MTExMSAxLjIwMTI3LTEuMzQ0NDguNTQzNjMtMi42OTE4OSAxLjA1NTEzLTQuMDM2MzggMS41NjM3LTIuMjE4MzkuODAwODQtNC40Mzk3MiAxLjU2MzY5LTYuNjU4MTIgMi4yNTM0Ni0uNDAwNDIuMTExMDctLjc2Mjg1LjI1NDI5LTEuMTYzMjcuMzY1MzZsLTIuMjU2NCAxOS40OTUwMyAxMC4wMzk4IDE3LjUzMzg1LjAzOC0uMDM4YzIuMDM3MTktMi4zNjQ1NSA0LjM2MzczLTQuNjU2MDIgNi45NDc0OC02LjkwOTQ5IDEuMDkwMjEtLjkwODk5IDIuMjE4NC0xLjg1NTk4IDMuMzgxNjgtMi43NjQ5NiAxLjA5MzEyLS44NzM5MiAyLjI1NjM5LTEuNzA5ODQgMy40MTk2Ni0yLjU4Mzc2IDEuNDE3NTYtMS4wMTcxMiAyLjgzODA0LTEuOTk5MTggNC4zMjg2Ni0yLjk4MTI0LjI1NDI4LS4xODEyMi41NDY1Ny0uMzY1MzUuODAwODUtLjU0NjU3IDQuNzY0MTUtMy4xMjczOSAxMC4wMDE4LTYuMjE5NyAxNS41NjY4LTkuMjc0MDIgMy43NDcwMi0yLjA3NTE5IDcuNjc1MjYtNC4xMDk0NSAxMS43NDk2My02LjE4NDY0bDIuNDcyNjktMS4yNzQzM3Y1LjYwMjk5YzUuMjc1NjQtMS4zNDQ0OSA5Ljg1ODU4LTIuMzI5NDYgMTQuMzMwNDUtMi45MTExIDQuOTEzMjItLjYxNjcxIDkuNjM5MzgtLjcyNzc3IDE0Ljg0MTk1LS4xODEyMXptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY2IiBkPSJtMzY1LjczNjA4IDMxNy4yMDY0OWMzLjM0NjYxLTEuOTY3MDQgNi4zNjU4NS0zLjYzODg4IDguNzY1NDYtNS45NjU0Mi0xLjIwMTI2LTEuNjc0NzYtMi43NjQ5Ni00LjQzOTczLTMuNzgyMDktNi4yMTk3MS0xLjUyODYyIDEuMTYzMjctMy4yMDA0NiAyLjI4ODU1LTQuOTgzMzcgMy4zODE2Ny0xLjYzNjc2IDEuMDE3MTMtMy4zNDY2IDEuOTY0MTItNS4xMjk1IDIuOTA4MTktLjE0NjE0LjA3Ni0uMjg5MzYuMTQ2MTMtLjQzNTUuMjE5MjFsLjQzNTUuNzY1NzYgMy40MTk2NyA1Ljk2MjVjLjU4MTY0LS4zNjI0MiAxLjEyODItLjcyNDg1IDEuNzA5ODMtMS4wNTIyIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDY4IiBkPSJtMzU3LjQ0MTE5IDMyMS44NjI1YzEuMDkzMTMtLjUxMTQ5IDIuMTQ1MzMtMS4wOTMxMyAzLjE2NTM5LTEuNjM2NzYuMTQ2MTQtLjA3MzEuMjkyMjgtLjE4NDE0LjQzNTQ5LS4yNTQyOGwtLjQzNTQ5LS43NjU3OC0zLjQxOTY3LTYuMDM4NDktLjA3MzEtLjEwODE1Yy0xLjA5MDIuNTA4NTctMi4xODA0Ljk4MjA2LTMuMzA4NiAxLjQ5MDYzLS4xODEyMi4wNzMxLS4zNjUzNS4xNDYxNC0uNTA4NTcuMjE5MjFsLjUwODU3LjkwODk4IDMuMzgxNjcgNS43NDYyMnptMCAwIiBmaWxsPSIjMWQ0Mjc4Ii8+DQogICAgICA8cGF0aCBpZD0icGF0aDcwIiBkPSJtMzUyLjE2ODQ3IDI4MC43MjEyNWwxMi4wNzY5OSA2Ljk4NTQ4Yy0uOTExOTItNC4yMjA1Mi0xLjM4NTQxLTguNjIyMjUtMS4zODU0MS0xMy4xMzIxMiAwLTIuODczMS4yMTkyMS01Ljc0NjIxLjU4NDU2LTguNTExMTdsLTIyLjgwNjU2LTE0LjU0OTY3LTExLjE2OCA4LjI1Njg5djI1LjcxNzY3bDExLjYwMzQ5IDExLjkyNzkyIDE5LjUzMzA0LTcuNzQ1NDEuMTQ2MTQtLjAzOC0uMTQ2MTQtLjA3MzEtMTAuMTQ3OTQtNS44OTIzNWMtMi44MDAwNC0xLjU5ODc2LTEuMDkwMi00LjU4Mjk0IDEuNzA5ODMtMi45NDYxOCIgZmlsbD0iIzFkNDI3OCIvPg0KICAgICAgPHBhdGggaWQ9InBhdGg3MiIgZD0ibTMzOC43ODIwNyAzMjkuMjQ1NDhjLjQ3MzUtLjE0NjE1Ljk0Njk5LS4zMjczNSAxLjQxNzU2LS40NzM1LjE4NDE0LS4wMzUxLjM2NTM1LS4xMDgxNC41NDY1Ni0uMTgxMjFsLS41NDY1Ni0uOTQ2OTgtMS40MTc1Ni0yLjUwNzc2LTIuNTEwNjgtNC40MDE3M2MtLjUwODU2LjE0NjE0LTEuMDE3MTMuMjkyMjgtMS40OTA2Mi40MDA0MnYuMDM1MWwzLjQxOTY3IDguMjIxODJjLjIxOTIxLS4wMzguNDAwNDMtLjEwODE0LjU4MTYzLS4xNDYxMyIgZmlsbD0iIzFkNDI3OCIvPg0KICAgPC9nPg0KPC9zdmc+" alt="" aria-hidden="true" />
+      <p>Generated by report_archetype.py · FM26 data · IL Hødd 2026-04-20</p>
+    </footer>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CHART TOOLTIP (shared singleton)
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="chart-tooltip" id="chart-tooltip"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       JAVASCRIPT
+       - Tab switching
+       - Filter buttons
+       - Table search + sort
+       - Charts: hbar, radar, scatter, hist, agecurve
+  ═══════════════════════════════════════════════════════════ -->
+  <script>
+  'use strict';
+
+  /* ─── Design constants (mirrors CSS tokens) ────────────────── */
+  const C = {
+    accent:   '#F6E216',
+    accentDim:'rgba(246,226,22,0.18)',
+    white:    '#ffffff',
+    muted:    '#888070',
+    muted2:   '#5a5650',
+    text:     '#f0ede0',
+    panel2:   '#161616',
+    panel3:   '#1c1c1c',
+    grid:     'rgba(255,255,255,0.055)',
+    axis:     'rgba(255,255,255,0.10)',
+    red:      '#f87171',
+    green:    '#4ade80',
+    blue:     '#60a5fa',
+    fontMono: "'IBM Plex Mono', monospace",
+    fontBody: "'DM Sans', sans-serif",
+  };
+
+  /* ─── Tooltip ──────────────────────────────────────────────── */
+  const Tooltip = {
+    el: null,
+    init() { this.el = document.getElementById('chart-tooltip'); },
+    show(html, x, y) {
+      if (!this.el) return;
+      this.el.innerHTML = html;
+      this.el.classList.add('visible');
+      this.move(x, y);
+    },
+    move(x, y) {
+      if (!this.el) return;
+      const pad = 14;
+      const w = this.el.offsetWidth, h = this.el.offsetHeight;
+      let left = x + pad, top = y - h / 2;
+      if (left + w > window.innerWidth - 8) left = x - w - pad;
+      if (top < 8) top = 8;
+      if (top + h > window.innerHeight - 8) top = window.innerHeight - h - 8;
+      this.el.style.left = left + 'px';
+      this.el.style.top  = top + 'px';
+    },
+    hide() {
+      if (!this.el) return;
+      this.el.classList.remove('visible');
+    },
+  };
+
+  /* ─── Tabs ─────────────────────────────────────────────────── */
+  function initTabs(wrapper) {
+    const btns   = wrapper.querySelectorAll('.tab-btn');
+    const panels = wrapper.querySelectorAll('.tab-panel');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        btns.forEach(b => b.classList.toggle('active', b === btn));
+        panels.forEach(p => p.classList.toggle('active', p.id === target));
+      });
+    });
+    if (btns.length) btns[0].click();
+  }
+
+  /* ─── Filter buttons ───────────────────────────────────────── */
+  function initFilters(wrapper) {
+    const btns   = wrapper.querySelectorAll('.filter-btn');
+    const table  = wrapper.querySelector('table');
+    if (!table) return;
+
+    function applyFilters() {
+      const active = [...btns]
+        .filter(b => b.classList.contains('active') && b.dataset.filter !== 'all')
+        .map(b => ({ col: +b.dataset.col, val: b.dataset.filter }));
+
+      const searchInput = wrapper.querySelector('.search-input');
+      const searchTerm  = searchInput ? searchInput.value.toLowerCase() : '';
+
+      table.querySelectorAll('tbody tr:not(.group-header)').forEach(row => {
+        let show = true;
+
+        if (active.length) {
+          show = active.some(f => {
+            const cell = row.cells[f.col];
+            return cell && cell.textContent.trim().toLowerCase().includes(f.val.toLowerCase());
+          });
+        }
+
+        if (show && searchTerm) {
+          show = [...row.cells].some(c => c.textContent.toLowerCase().includes(searchTerm));
+        }
+
+        row.classList.toggle('filtered-out', !show);
+      });
+    }
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.filter === 'all') {
+          btns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+        } else {
+          wrapper.querySelectorAll('.filter-btn[data-filter="all"]').forEach(b => b.classList.remove('active'));
+          btn.classList.toggle('active');
+          if (![...btns].some(b => b.classList.contains('active'))) {
+            const allBtn = wrapper.querySelector('.filter-btn[data-filter="all"]');
+            if (allBtn) allBtn.classList.add('active');
+          }
+        }
+        applyFilters();
+      });
+    });
+
+    const searchInput = wrapper.querySelector('.search-input');
+    if (searchInput) searchInput.addEventListener('input', applyFilters);
+
+    const allBtn = wrapper.querySelector('.filter-btn[data-filter="all"]');
+    if (allBtn) allBtn.classList.add('active');
+  }
+
+  /* ─── Table sort ───────────────────────────────────────────── */
+  function initSort(table) {
+    const headers = table.querySelectorAll('th.sortable');
+    let currentCol = -1, ascending = true;
+
+    headers.forEach((th, i) => {
+      th.addEventListener('click', () => {
+        const colIdx = [...th.parentElement.children].indexOf(th);
+        if (currentCol === colIdx) {
+          ascending = !ascending;
+        } else {
+          ascending = false;
+          currentCol = colIdx;
+        }
+
+        headers.forEach(h => { h.classList.remove('sort-asc', 'sort-desc'); });
+        th.classList.add(ascending ? 'sort-asc' : 'sort-desc');
+
+        const tbody  = table.querySelector('tbody');
+        const rows   = [...tbody.querySelectorAll('tr:not(.group-header)')];
+        const isNum  = th.classList.contains('num');
+
+        rows.sort((a, b) => {
+          const av = a.cells[colIdx] ? a.cells[colIdx].dataset.sort || a.cells[colIdx].textContent.trim() : '';
+          const bv = b.cells[colIdx] ? b.cells[colIdx].dataset.sort || b.cells[colIdx].textContent.trim() : '';
+          let cmp;
+          if (isNum) {
+            cmp = (parseFloat(av.replace(/[^0-9.\-]/g, '')) || 0) - (parseFloat(bv.replace(/[^0-9.\-]/g, '')) || 0);
+          } else {
+            cmp = av.localeCompare(bv);
+          }
+          return ascending ? cmp : -cmp;
+        });
+
+        rows.forEach(r => tbody.appendChild(r));
+      });
+    });
+  }
+
+  /* ─── Canvas helpers ───────────────────────────────────────── */
+  function dpr() { return Math.min(window.devicePixelRatio || 1, 2); }
+
+  function setupCanvas(canvas, w, h) {
+    const r = dpr();
+    canvas.width  = w * r;
+    canvas.height = h * r;
+    canvas.style.width  = w + 'px';
+    canvas.style.height = h + 'px';
+    const ctx = canvas.getContext('2d');
+    ctx.scale(r, r);
+    return ctx;
+  }
+
+  /* ─── Charts namespace ─────────────────────────────────────── */
+  const Charts = {
+
+    /* ── Horizontal bar chart ──────────────────────────────────
+       data: [{ label, value, sub?, color? }]
+       opts: { title, unit, maxValue, height, barH, color }
+    ──────────────────────────────────────────────────────────── */
+    hbar(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const barH    = opts.barH    || 28;
+      const gap     = opts.gap     || 10;
+      const labelW  = opts.labelW  || 160;
+      const valW    = opts.valW    || 52;
+      const padX    = opts.padX    || 16;
+      const padTop  = opts.padTop  || 12;
+      const padBot  = opts.padBot  || 12;
+
+      const totalH  = padTop + data.length * (barH + gap) - gap + padBot;
+      const totalW  = canvas.parentElement.offsetWidth || 600;
+      const barMax  = totalW - labelW - valW - padX * 2;
+      const maxVal  = opts.maxValue || Math.max(...data.map(d => d.value || 0));
+
+      const ctx = setupCanvas(canvas, totalW, totalH);
+      ctx.clearRect(0, 0, totalW, totalH);
+
+      data.forEach((d, i) => {
+        const y   = padTop + i * (barH + gap);
+        const pct = maxVal > 0 ? Math.min(1, (d.value || 0) / maxVal) : 0;
+        const bw  = pct * barMax;
+        const x0  = padX + labelW;
+
+        /* label */
+        ctx.font = `500 12px ${C.fontBody}`;
+        ctx.fillStyle = C.text;
+        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'right';
+        ctx.fillText(d.label, padX + labelW - 8, y + barH / 2);
+
+        /* sub label */
+        if (d.sub) {
+          ctx.font = `11px ${C.fontMono}`;
+          ctx.fillStyle = C.muted;
+          ctx.fillText(d.sub, padX + labelW - 8, y + barH / 2 + 13);
+        }
+
+        /* track */
+        ctx.beginPath();
+        ctx.roundRect(x0, y + (barH - 6) / 2, barMax, 6, 3);
+        ctx.fillStyle = 'rgba(246,226,22,0.10)';
+        ctx.fill();
+
+        /* bar */
+        if (bw > 0) {
+          const grad = ctx.createLinearGradient(x0, 0, x0 + bw, 0);
+          grad.addColorStop(0, d.color || C.accent);
+          grad.addColorStop(1, '#fffba0');
+          ctx.beginPath();
+          ctx.roundRect(x0, y + (barH - 6) / 2, bw, 6, 3);
+          ctx.fillStyle = grad;
+          ctx.fill();
+        }
+
+        /* value */
+        const unit = opts.unit || '';
+        const display = typeof d.display !== 'undefined' ? d.display
+          : (Number.isInteger(d.value) ? d.value : (d.value || 0).toFixed(2));
+        ctx.font = `600 12px ${C.fontMono}`;
+        ctx.fillStyle = d.color || C.accent;
+        ctx.textAlign = 'left';
+        ctx.fillText(display + unit, x0 + barMax + 8, y + barH / 2);
+      });
+    },
+
+    /* ── Grouped percentile bar chart ─────────────────────────
+       Replaces radar. Same data contract as radar:
+         data: {
+           axes: ['Tackles','Intercpt',...],
+           series: [
+             { label, values: [0-1,...], color? },
+           ]
+         }
+         opts: { labelW, rowH, barH, barGap, gap, padX, padTop, padBot }
+    ──────────────────────────────────────────────────────────── */
+    percBar(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.axes || !data.series) return;
+
+      const labelW  = opts.labelW  || 88;
+      const rowH    = opts.rowH    || 22;
+      const barH    = opts.barH    || 8;
+      const barGap  = opts.barGap  || 2;
+      const gap     = opts.gap     || 10;
+      const padX    = opts.padX    || 16;
+      const padTop  = opts.padTop  || 20;
+      const padBot  = opts.padBot  || 12;
+
+      const nSeries = data.series.length;
+      const groupH  = nSeries * barH + Math.max(0, nSeries - 1) * barGap;
+      const effectiveRowH = Math.max(rowH, groupH + 6);
+
+      const W      = canvas.parentElement.offsetWidth || 500;
+      const trackW = W - labelW - padX * 2;
+      const totalH = padTop + data.axes.length * (effectiveRowH + gap) - gap + padBot;
+
+      const ctx = setupCanvas(canvas, W, totalH);
+      ctx.clearRect(0, 0, W, totalH);
+
+      /* grid lines at 25 / 50 / 75 % */
+      [0.25, 0.5, 0.75].forEach(frac => {
+        const x = padX + labelW + frac * trackW;
+        ctx.beginPath();
+        ctx.moveTo(x, padTop - 6);
+        ctx.lineTo(x, totalH - padBot + 4);
+        ctx.strokeStyle = frac === 0.5 ? C.axis : C.grid;
+        ctx.lineWidth   = frac === 0.5 ? 0.8   : 0.4;
+        ctx.stroke();
+      });
+
+      /* tick labels at 25 / 50 / 75 */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted;
+      ctx.textBaseline = 'bottom';
+      [0.25, 0.5, 0.75].forEach(frac => {
+        const x = padX + labelW + frac * trackW;
+        ctx.textAlign = frac === 0.5 ? 'center' : frac < 0.5 ? 'center' : 'center';
+        ctx.fillText(`${Math.round(frac * 100)}`, x, padTop - 2);
+      });
+
+      data.axes.forEach((axis, ai) => {
+        const rowY  = padTop + ai * (effectiveRowH + gap);
+        const grpY  = rowY + (effectiveRowH - groupH) / 2;
+
+        /* axis label */
+        ctx.font = `11px ${C.fontMono}`;
+        ctx.fillStyle = C.muted;
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(axis, padX + labelW - 6, rowY + effectiveRowH / 2);
+
+        /* row background track */
+        ctx.beginPath();
+        ctx.roundRect(padX + labelW, grpY, trackW, groupH, 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.05)';
+        ctx.fill();
+
+        /* series bars */
+        data.series.forEach((s, si) => {
+          const val = Math.max(0, Math.min(1, (s.values && s.values[ai]) || 0));
+          const bw  = val * trackW;
+          const by  = grpY + si * (barH + barGap);
+          if (bw > 0) {
+            ctx.beginPath();
+            ctx.roundRect(padX + labelW, by, bw, barH, 2);
+            ctx.fillStyle = s.color || C.accent;
+            ctx.fill();
+          }
+        });
+      });
+
+      /* legend — same pattern as radar */
+      const parent = canvas.parentElement;
+      if (parent) {
+        const existing = parent.parentElement && parent.parentElement.querySelector(`.legend[data-for="${canvasId}"]`);
+        if (existing) existing.remove();
+        const legend = document.createElement('div');
+        legend.className = 'legend';
+        legend.dataset.for = canvasId;
+        data.series.forEach(s => {
+          const item = document.createElement('span');
+          item.className = 'legend-item';
+          item.style.color = s.color || C.accent;
+          const dot = document.createElement('span');
+          dot.className = 'legend-dot';
+          dot.style.background = s.color || C.accent;
+          const lbl = document.createElement('b');
+          lbl.textContent = s.label || '';
+          item.appendChild(dot);
+          item.appendChild(lbl);
+          legend.appendChild(item);
+        });
+        parent.insertAdjacentElement('afterend', legend);
+      }
+    },
+
+    /* ── Radar / spider chart ──────────────────────────────────
+       data: {
+         axes: ['Shooting','Passing',...],
+         series: [
+           { label, values: [0-1,...], color?, fill? },
+         ]
+       }
+       opts: { size, levels }
+    ──────────────────────────────────────────────────────────── */
+    radar(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data) return;
+
+      const size    = opts.size || Math.min(canvas.parentElement.offsetWidth || 420, 420);
+      const levels  = opts.levels || 5;
+      const cx = size / 2, cy = size / 2;
+      const r  = size * 0.31;
+      const n  = data.axes.length;
+
+      const ctx = setupCanvas(canvas, size, size);
+      ctx.clearRect(0, 0, size, size);
+
+      function angle(i) { return (Math.PI * 2 * i / n) - Math.PI / 2; }
+      function pt(i, frac) {
+        return { x: cx + Math.cos(angle(i)) * r * frac, y: cy + Math.sin(angle(i)) * r * frac };
+      }
+
+      /* grid rings */
+      for (let l = 1; l <= levels; l++) {
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) {
+          const p = pt(i, l / levels);
+          i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = l === levels ? C.axis : C.grid;
+        ctx.lineWidth = l === levels ? 1 : 0.5;
+        ctx.stroke();
+      }
+
+      /* spokes */
+      for (let i = 0; i < n; i++) {
+        const p = pt(i, 1);
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(p.x, p.y);
+        ctx.strokeStyle = C.grid;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+
+      /* series */
+      data.series.forEach(s => {
+        const vals = s.values;
+        ctx.beginPath();
+        vals.forEach((v, i) => {
+          const p = pt(i, Math.max(0, Math.min(1, v)));
+          i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+        });
+        ctx.closePath();
+        const col = s.color || C.accent;
+        if (s.fill !== false) {
+          ctx.fillStyle = col.startsWith('#') ? col + '28' : col;
+          ctx.fill();
+        }
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        /* dots */
+        vals.forEach((v, i) => {
+          const p = pt(i, Math.max(0, Math.min(1, v)));
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = col;
+          ctx.fill();
+        });
+      });
+
+      /* axis labels */
+      ctx.font = `11px ${C.fontMono}`;
+      ctx.fillStyle = C.muted;
+      ctx.textBaseline = 'middle';
+      data.axes.forEach((label, i) => {
+        const p = pt(i, 1.16);
+        ctx.textAlign = p.x < cx - 2 ? 'right' : p.x > cx + 2 ? 'left' : 'center';
+        ctx.fillText(label, p.x, p.y);
+      });
+
+      /* legend */
+      const parent = canvas.parentElement;
+      if (parent) {
+        const existing = parent.parentElement?.querySelector(`.legend[data-for="${canvasId}"]`);
+        if (existing) existing.remove();
+
+        const legend = document.createElement('div');
+        legend.className = 'legend';
+        legend.dataset.for = canvasId;
+        data.series.forEach(s => {
+          const item = document.createElement('span');
+          item.className = 'legend-item';
+          item.style.color = s.color || C.accent;
+
+          const dot = document.createElement('span');
+          dot.className = 'legend-dot';
+          dot.style.background = s.color || C.accent;
+
+          const label = document.createElement('b');
+          label.textContent = s.label || '';
+
+          item.appendChild(dot);
+          item.appendChild(label);
+          legend.appendChild(item);
+        });
+
+        parent.insertAdjacentElement('afterend', legend);
+      }
+    },
+
+    /* ── Scatter plot ──────────────────────────────────────────
+       data: [{ x, y, label, team?, aachen? }]
+       opts: { xLabel, yLabel, xUnit, yUnit, height, aachenColor }
+    ──────────────────────────────────────────────────────────── */
+    scatter(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const W      = canvas.parentElement.offsetWidth || 700;
+      const H      = opts.height || 380;
+      const padL   = opts.padL || 52;
+      const padR   = opts.padR || 20;
+      const padT   = opts.padT || 20;
+      const padB   = opts.padB || 44;
+      const plotW  = W - padL - padR;
+      const plotH  = H - padT - padB;
+
+      const xs = data.map(d => d.x), ys = data.map(d => d.y);
+      const xMin = opts.xMin ?? Math.min(...xs), xMax = opts.xMax ?? Math.max(...xs);
+      const yMin = opts.yMin ?? Math.min(...ys), yMax = opts.yMax ?? Math.max(...ys);
+      const xRange = xMax - xMin || 1, yRange = yMax - yMin || 1;
+
+      const toX = v => padL + ((v - xMin) / xRange) * plotW;
+      const toY = v => padT + plotH - ((v - yMin) / yRange) * plotH;
+
+      const ctx = setupCanvas(canvas, W, H);
+      ctx.clearRect(0, 0, W, H);
+
+      /* grid */
+      ctx.strokeStyle = C.grid;
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 5; i++) {
+        const gy = padT + (i / 5) * plotH;
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke();
+        const gx = padL + (i / 5) * plotW;
+        ctx.beginPath(); ctx.moveTo(gx, padT); ctx.lineTo(gx, padT + plotH); ctx.stroke();
+      }
+
+      /* axes */
+      ctx.strokeStyle = C.axis;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+      /* axis labels */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted2;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      if (opts.xLabel) ctx.fillText(opts.xLabel, padL + plotW / 2, padT + plotH + 28);
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      if (opts.yLabel) {
+        ctx.save();
+        ctx.translate(14, padT + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(opts.yLabel, 0, 0);
+        ctx.restore();
+      }
+
+      /* tick labels */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted2;
+      for (let i = 0; i <= 4; i++) {
+        const xv = xMin + (i / 4) * xRange;
+        const yv = yMin + (i / 4) * yRange;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(xv.toFixed(1), toX(xv), padT + plotH + 6);
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(yv.toFixed(1), padL - 5, toY(yv));
+      }
+
+      /* dots — non-Aachen first, then Aachen on top */
+      const dotR = opts.dotR || 4.5;
+      [false, true].forEach(isAachen => {
+        data.filter(d => !!d.aachen === isAachen).forEach(d => {
+          const x = toX(d.x), y = toY(d.y);
+          ctx.beginPath();
+          ctx.arc(x, y, dotR, 0, Math.PI * 2);
+          ctx.fillStyle = d.aachen ? (opts.aachenColor || C.accent)
+            : d.color || 'rgba(255,255,255,0.28)';
+          ctx.fill();
+          if (d.aachen) {
+            ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        });
+      });
+
+      /* hover interaction */
+      canvas._scatterData = data;
+      canvas._scatterMap  = { toX, toY, xMin, xRange, yMin, yRange, plotW, plotH, padL, padT, dotR, xLabel: opts.xLabel || 'x', yLabel: opts.yLabel || 'y' };
+      canvas.style.cursor = 'crosshair';
+    },
+
+    /* ── Histogram / distribution ──────────────────────────────
+       data: number[]
+       opts: { bins, xLabel, height, highlight? }
+    ──────────────────────────────────────────────────────────── */
+    hist(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const bins   = opts.bins || 12;
+      const W      = canvas.parentElement.offsetWidth || 500;
+      const H      = opts.height || 200;
+      const padL   = 42, padR = 16, padT = 16, padB = 36;
+      const plotW  = W - padL - padR;
+      const plotH  = H - padT - padB;
+
+      const mn = Math.min(...data), mx = Math.max(...data);
+      const range = mx - mn || 1;
+      const bw = range / bins;
+
+      const counts = Array(bins).fill(0);
+      data.forEach(v => {
+        const i = Math.min(bins - 1, Math.floor((v - mn) / bw));
+        counts[i]++;
+      });
+      const maxCount = Math.max(...counts) || 1;
+
+      const ctx = setupCanvas(canvas, W, H);
+      ctx.clearRect(0, 0, W, H);
+
+      /* bars */
+      counts.forEach((cnt, i) => {
+        const bx = padL + (i / bins) * plotW;
+        const bw2 = plotW / bins;
+        const bh = (cnt / maxCount) * plotH;
+        const by = padT + plotH - bh;
+
+        const binCenter = mn + (i + 0.5) * bw;
+        const isHighlight = opts.highlight !== undefined && Math.abs(binCenter - opts.highlight) < bw;
+
+        const grad = ctx.createLinearGradient(0, by, 0, by + bh);
+        grad.addColorStop(0, isHighlight ? C.white : C.accent);
+        grad.addColorStop(1, isHighlight ? 'rgba(255,255,255,0.3)' : 'rgba(246,226,22,0.3)');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(bx + 1, by, bw2 - 2, bh);
+      });
+
+      /* axis */
+      ctx.strokeStyle = C.axis;
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+      /* x tick labels */
+      ctx.font = `10px ${C.fontMono}`;
+      ctx.fillStyle = C.muted2;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      for (let i = 0; i <= 4; i++) {
+        const v = mn + (i / 4) * range;
+        const x = padL + (i / 4) * plotW;
+        ctx.fillText(v.toFixed(1), x, padT + plotH + 6);
+      }
+
+      if (opts.xLabel) {
+        ctx.fillStyle = C.muted;
+        ctx.fillText(opts.xLabel, padL + plotW / 2, padT + plotH + 22);
+      }
+    },
+
+    /* ── Age curve (bubble) ────────────────────────────────────
+       data: [{ age, value, name, minutes? }]
+       opts: { xLabel, yLabel, height }
+    ──────────────────────────────────────────────────────────── */
+    agecurve(canvasId, data, opts = {}) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas || !data || !data.length) return;
+
+      const W      = canvas.parentElement.offsetWidth || 700;
+      const H      = opts.height || 300;
+      const padL   = 44, padR = 20, padT = 20, padB = 44;
+      const plotW  = W - padL - padR;
+      const plotH  = H - padT - padB;
+
+      const ages  = data.map(d => d.age);
+      const vals  = data.map(d => d.value);
+      const mins  = data.map(d => d.minutes || 1);
+      const ageMin = Math.min(...ages) - 1, ageMax = Math.max(...ages) + 1;
+      const vMin = Math.min(...vals), vMax = Math.max(...vals);
+      const mMax = Math.max(...mins);
+
+      const toX = a => padL + ((a - ageMin) / (ageMax - ageMin)) * plotW;
+      const toY = v => padT + plotH - ((v - vMin) / (vMax - vMin || 1)) * plotH;
+      const toR = m => 4 + (m / mMax) * 10;
+
+      const ctx = setupCanvas(canvas, W, H);
+      ctx.clearRect(0, 0, W, H);
+
+      /* grid */
+      ctx.strokeStyle = C.grid; ctx.lineWidth = 0.5;
+      for (let i = 0; i <= 4; i++) {
+        const gy = padT + (i / 4) * plotH;
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(padL + plotW, gy); ctx.stroke();
+      }
+
+      /* prime age band (23-29) */
+      const primeX1 = toX(23), primeX2 = toX(29);
+      if (primeX1 < padL + plotW && primeX2 > padL) {
+        ctx.fillStyle = 'rgba(246,226,22,0.04)';
+        ctx.fillRect(Math.max(padL, primeX1), padT, Math.min(padL + plotW, primeX2) - Math.max(padL, primeX1), plotH);
+      }
+
+      /* axes */
+      ctx.strokeStyle = C.axis; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + plotH); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+
+      /* bubbles */
+      data.forEach(d => {
+        const x = toX(d.age), y = toY(d.value), r = toR(d.minutes || 1);
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fillStyle = d.aachen ? 'rgba(246,226,22,0.8)' : 'rgba(255,255,255,0.22)';
+        ctx.fill();
+        if (d.aachen) {
+          ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      });
+
+      /* axis labels */
+      ctx.font = `10px ${C.fontMono}`; ctx.fillStyle = C.muted2;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (let age = Math.ceil(ageMin); age <= Math.floor(ageMax); age++) {
+        if (age % 2 === 0) ctx.fillText(age, toX(age), padT + plotH + 6);
+      }
+      if (opts.xLabel) ctx.fillText(opts.xLabel, padL + plotW / 2, padT + plotH + 22);
+      ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+      for (let i = 0; i <= 4; i++) {
+        const v = vMin + (i / 4) * (vMax - vMin);
+        ctx.fillText(v.toFixed(1), padL - 5, toY(v));
+      }
+      if (opts.yLabel) {
+        ctx.save();
+        ctx.translate(12, padT + plotH / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText(opts.yLabel, 0, 0);
+        ctx.restore();
+      }
+    },
+  };
+
+  /* ─── Scatter hover ────────────────────────────────────────── */
+  document.addEventListener('mousemove', e => {
+    const canvas = e.target.closest('canvas');
+    if (!canvas || !canvas._scatterData) { Tooltip.hide(); return; }
+    const m  = canvas._scatterMap;
+    const r  = canvas.getBoundingClientRect();
+    const mx = e.clientX - r.left, my = e.clientY - r.top;
+
+    let hit = null, best = Infinity;
+    canvas._scatterData.forEach(d => {
+      const dx = m.toX(d.x) - mx, dy = m.toY(d.y) - my;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < best && dist < 16) { best = dist; hit = d; }
+    });
+
+    if (hit) {
+      Tooltip.show(
+        `<strong>${hit.label || ''}</strong>${hit.team ? '<br>' + hit.team : ''}<div style="display:flex;justify-content:space-between;gap:16px;margin-top:4px"><span>${m.xLabel}</span><span>${hit.x}</span></div><div style="display:flex;justify-content:space-between;gap:16px"><span>${m.yLabel}</span><span>${hit.y}</span></div>`,
+        e.clientX, e.clientY
+      );
+    } else {
+      Tooltip.hide();
+    }
+  });
+
+  document.addEventListener('mouseleave', () => Tooltip.hide(), true);
+
+  /* ─── Auto-init on load ────────────────────────────────────── */
+  document.addEventListener('DOMContentLoaded', () => {
+    Tooltip.init();
+
+    /* tabs */
+    document.querySelectorAll('.tabs').forEach(initTabs);
+
+    /* filter bars */
+    document.querySelectorAll('[data-filterable]').forEach(initFilters);
+
+    /* sortable tables */
+    document.querySelectorAll('table[data-sortable]').forEach(initSort);
+
+    /* resize-redraw charts — each report script should call Charts.* in a
+       window.__initCharts function, which we call here and on resize */
+    if (typeof window.__initCharts === 'function') {
+      window.__initCharts();
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(window.__initCharts, 120);
+      });
+    }
+  });
+  </script>
+</body>
+</html>

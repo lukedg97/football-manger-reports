@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Archetype Index — Alemannia Aachen</title>
+  <style>
+    :root {
+      --bg: #070707; --panel: #111111; --panel-2: #161616;
+      --text: #f0ede0; --muted: #888070; --muted-2: #5a5650;
+      --accent: #F6E216; --accent-dim: rgba(246,226,22,0.14);
+      --red: #f87171; --green: #4ade80; --line: rgba(246,226,22,0.10);
+      --line-hard: rgba(246,226,22,0.22);
+      --font-body: 'DM Sans', sans-serif; --font-mono: 'IBM Plex Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body);
+           font-size: 14px; line-height: 1.6; padding: 32px 24px; }
+    h1 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+    .controls { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    .filter-input {
+      background: var(--panel); border: 1px solid var(--line-hard); border-radius: 8px;
+      color: var(--text); font-size: 13px; padding: 6px 12px; outline: none; width: 200px;
+    }
+    .filter-input::placeholder { color: var(--muted); }
+    .count { color: var(--muted); font-size: 13px; }
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      background: var(--panel-2); color: var(--muted); font-size: 11px; font-weight: 600;
+      letter-spacing: .05em; text-transform: uppercase; padding: 10px 12px;
+      cursor: pointer; white-space: nowrap; user-select: none; text-align: left;
+      border-bottom: 1px solid var(--line);
+      position: sticky; top: 0; z-index: 1;
+    }
+    thead th:hover { color: var(--text); }
+    thead th.sorted-asc::after { content: ' ▲'; color: var(--accent); }
+    thead th.sorted-desc::after { content: ' ▼'; color: var(--accent); }
+    tbody tr { border-bottom: 1px solid var(--line); transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--panel); }
+    td { padding: 9px 12px; white-space: nowrap; }
+    td.num { font-family: var(--font-mono); font-size: 13px; text-align: right; }
+    td.name-cell a { color: var(--text); text-decoration: none; font-weight: 500; }
+    td.name-cell a:hover { color: var(--accent); }
+    td.name-cell span.no-report { color: var(--muted); }
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .03em;
+      padding: 2px 7px; border-radius: 4px; border: 1px solid var(--line-hard);
+      color: var(--muted); background: var(--panel-2);
+    }
+    .tag.primary { color: var(--accent); border-color: var(--accent); background: var(--accent-dim); }
+    .bar-cell { min-width: 80px; }
+    .mini-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; margin-top: 3px; }
+    .mini-bar-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <h1>Archetype Index</h1>
+  <p class="sub">Alemannia Aachen · 2026-11-23 · <span id="count-label"></span></p>
+
+  <div class="controls">
+    <input class="filter-input" id="search" type="text" placeholder="Filter players…" />
+    <span class="count" id="row-count"></span>
+  </div>
+
+  <div class="table-wrap">
+    <table id="arch-table">
+      <thead id="arch-thead"></thead>
+      <tbody id="arch-tbody"></tbody>
+    </table>
+  </div>
+
+<script>
+const ROWS = [{"name": "Albin Baliqi", "slug": "Albin_Baliqi", "position": "AM (L), ST (C)", "pos_group": "Winger", "age": "16", "primary": "Ball Carrier", "fit": 11.5, "scores": {"Creator": 9.17, "Finisher": 10.17, "Ball Carrier": 11.5, "Runner": 10.4, "Presser": 8.33, "Anchor": 5.33, "Engine": 9.6, "Target": 7.33, "Linker": 9.0}, "secondaries": [], "report_file": "Albin_Baliqi_archetype.html", "has_report": true}, {"name": "Ben Mertens", "slug": "Ben_Mertens", "position": "DM, M (C)", "pos_group": "DM", "age": "18", "primary": "Runner", "fit": 11.4, "scores": {"Creator": 8.5, "Finisher": 9.33, "Ball Carrier": 11.0, "Runner": 11.4, "Presser": 11.0, "Anchor": 8.0, "Engine": 10.6, "Target": 8.67, "Linker": 8.6}, "secondaries": [], "report_file": "Ben_Mertens_archetype.html", "has_report": true}, {"name": "Benjamin Goller", "slug": "Benjamin_Goller", "position": "M/AM (RL)", "pos_group": "Winger", "age": "27", "primary": "Ball Carrier", "fit": 13.0, "scores": {"Creator": 9.67, "Finisher": 9.83, "Ball Carrier": 13.0, "Runner": 12.6, "Presser": 12.5, "Anchor": 8.17, "Engine": 12.2, "Target": 9.83, "Linker": 9.8}, "secondaries": ["Runner", "Presser", "Engine"], "report_file": "Benjamin_Goller_archetype.html", "has_report": true}, {"name": "Danilo Wiebe", "slug": "Danilo_Wiebe", "position": "D (RC), DM", "pos_group": "FB/WB", "age": "32", "primary": "Presser", "fit": 14.0, "scores": {"Creator": 9.5, "Finisher": 10.17, "Ball Carrier": 9.67, "Runner": 11.8, "Presser": 14.0, "Anchor": 12.0, "Engine": 14.0, "Target": 13.0, "Linker": 9.8}, "secondaries": ["Engine", "Target"], "report_file": "Danilo_Wiebe_archetype.html", "has_report": true}, {"name": "Darnell Keumo", "slug": "Darnell_Keumo", "position": "D/WB (L)", "pos_group": "FB/WB", "age": "19", "primary": "Ball Carrier", "fit": 13.67, "scores": {"Creator": 10.0, "Finisher": 10.33, "Ball Carrier": 13.67, "Runner": 12.8, "Presser": 12.33, "Anchor": 9.33, "Engine": 12.4, "Target": 9.0, "Linker": 10.4}, "secondaries": ["Runner", "Engine", "Presser"], "report_file": "Darnell_Keumo_archetype.html", "has_report": true}, {"name": "David Nieland", "slug": "David_Nieland", "position": "AM (LC), ST (C)", "pos_group": "Winger", "age": "27", "primary": "Finisher", "fit": 12.17, "scores": {"Creator": 9.83, "Finisher": 12.17, "Ball Carrier": 9.83, "Runner": 11.8, "Presser": 11.83, "Anchor": 8.5, "Engine": 12.0, "Target": 11.5, "Linker": 10.2}, "secondaries": ["Engine"], "report_file": "David_Nieland_archetype.html", "has_report": true}, {"name": "Devin Angleberger", "slug": "Devin_Angleberger", "position": "DM, M (C)", "pos_group": "DM", "age": "23", "primary": "Creator / Linker", "fit": 12.0, "scores": {"Creator": 12.0, "Finisher": 10.33, "Ball Carrier": 11.5, "Runner": 11.4, "Presser": 12.17, "Anchor": 10.83, "Engine": 12.2, "Target": 10.83, "Linker": 12.0}, "secondaries": ["Engine", "Presser"], "report_file": "Devin_Angleberger_archetype.html", "has_report": true}, {"name": "Emre Türksever", "slug": "Emre_Türksever", "position": "AM (C), ST (C)", "pos_group": "AM", "age": "18", "primary": "Ball Carrier", "fit": 11.17, "scores": {"Creator": 9.5, "Finisher": 7.83, "Ball Carrier": 11.17, "Runner": 9.8, "Presser": 8.67, "Anchor": 4.33, "Engine": 9.8, "Target": 7.17, "Linker": 10.4}, "secondaries": [], "report_file": "Emre_Türksever_archetype.html", "has_report": true}, {"name": "Erik Herrmann", "slug": "Erik_Herrmann", "position": "GK", "pos_group": "GK", "age": "22", "primary": "Target", "fit": 11.5, "scores": {"Creator": 8.67, "Finisher": 8.0, "Ball Carrier": 7.67, "Runner": 8.4, "Presser": 9.5, "Anchor": 8.5, "Engine": 9.4, "Target": 11.5, "Linker": 7.4}, "secondaries": [], "report_file": "Erik_Herrmann_archetype.html", "has_report": true}, {"name": "Florian Heister", "slug": "Florian_Heister", "position": "D (R), WB (RL)", "pos_group": "FB/WB", "age": "29", "primary": "Engine", "fit": 12.2, "scores": {"Creator": 11.0, "Finisher": 10.0, "Ball Carrier": 11.17, "Runner": 11.0, "Presser": 10.83, "Anchor": 9.5, "Engine": 12.2, "Target": 10.0, "Linker": 10.6}, "secondaries": [], "report_file": "Florian_Heister_archetype.html", "has_report": true}, {"name": "Florian Schock", "slug": "Florian_Schock", "position": "GK", "pos_group": "GK", "age": "25", "primary": "Target", "fit": 11.5, "scores": {"Creator": 8.17, "Finisher": 7.5, "Ball Carrier": 7.33, "Runner": 8.0, "Presser": 9.67, "Anchor": 8.5, "Engine": 11.0, "Target": 11.5, "Linker": 7.2}, "secondaries": [], "report_file": "Florian_Schock_archetype.html", "has_report": true}, {"name": "George Didoss", "slug": "George_Didoss", "position": "M (R), AM (RLC)", "pos_group": "Winger", "age": "21", "primary": "Engine", "fit": 12.4, "scores": {"Creator": 9.0, "Finisher": 7.83, "Ball Carrier": 10.67, "Runner": 10.0, "Presser": 10.5, "Anchor": 6.0, "Engine": 12.4, "Target": 6.5, "Linker": 10.2}, "secondaries": [], "report_file": "George_Didoss_archetype.html", "has_report": true}, {"name": "Gianluca Gaudino", "slug": "Gianluca_Gaudino", "position": "DM, M (LC), AM (C)", "pos_group": "DM", "age": "30", "primary": "Creator / Linker", "fit": 13.25, "scores": {"Creator": 13.5, "Finisher": 10.0, "Ball Carrier": 10.83, "Runner": 10.0, "Presser": 9.83, "Anchor": 8.83, "Engine": 11.4, "Target": 9.5, "Linker": 13.0}, "secondaries": [], "report_file": "Gianluca_Gaudino_archetype.html", "has_report": true}, {"name": "Isaac Owusu", "slug": "Isaac_Owusu", "position": "M/AM (L)", "pos_group": "Winger", "age": "16", "primary": "Ball Carrier", "fit": 12.17, "scores": {"Creator": 7.67, "Finisher": 6.5, "Ball Carrier": 12.17, "Runner": 8.6, "Presser": 10.0, "Anchor": 4.5, "Engine": 11.2, "Target": 7.17, "Linker": 6.8}, "secondaries": [], "report_file": "Isaac_Owusu_archetype.html", "has_report": true}, {"name": "Jacob Danquah", "slug": "Jacob_Danquah", "position": "D (C)", "pos_group": "CB", "age": "21", "primary": "Anchor", "fit": 11.17, "scores": {"Creator": 8.0, "Finisher": 8.17, "Ball Carrier": 7.67, "Runner": 9.8, "Presser": 10.0, "Anchor": 11.17, "Engine": 7.8, "Target": 9.5, "Linker": 7.8}, "secondaries": [], "report_file": "Jacob_Danquah_archetype.html", "has_report": true}, {"name": "Jaden Asamoah", "slug": "Jaden_Asamoah", "position": "AM (C)", "pos_group": "AM", "age": "19", "primary": "Creator / Linker", "fit": 10.63, "scores": {"Creator": 10.67, "Finisher": 9.67, "Ball Carrier": 10.33, "Runner": 9.6, "Presser": 7.67, "Anchor": 5.67, "Engine": 9.6, "Target": 5.83, "Linker": 10.6}, "secondaries": [], "report_file": "Jaden_Asamoah_archetype.html", "has_report": true}, {"name": "Jarun Theißen", "slug": "Jarun_Theißen", "position": "GK", "pos_group": "GK", "age": "18", "primary": "Ball Carrier", "fit": 8.5, "scores": {"Creator": 5.5, "Finisher": 6.17, "Ball Carrier": 8.5, "Runner": 7.8, "Presser": 7.17, "Anchor": 6.0, "Engine": 5.8, "Target": 6.83, "Linker": 5.8}, "secondaries": [], "report_file": "Jarun_Theißen_archetype.html", "has_report": true}, {"name": "Joel da Silva Kiala", "slug": "Joel_da_Silva_Kiala", "position": "D (C)", "pos_group": "CB", "age": "22", "primary": "Anchor", "fit": 12.5, "scores": {"Creator": 10.5, "Finisher": 10.17, "Ball Carrier": 10.0, "Runner": 12.0, "Presser": 12.0, "Anchor": 12.5, "Engine": 11.6, "Target": 11.67, "Linker": 11.0}, "secondaries": ["Runner", "Presser"], "report_file": "Joel_da_Silva_Kiala_archetype.html", "has_report": true}, {"name": "Jonas Schneider", "slug": "Jonas_Schneider", "position": "M (R), AM (RC)", "pos_group": "Winger", "age": "16", "primary": "Engine", "fit": 10.2, "scores": {"Creator": 7.83, "Finisher": 5.5, "Ball Carrier": 10.0, "Runner": 7.2, "Presser": 8.67, "Anchor": 4.0, "Engine": 10.2, "Target": 6.17, "Linker": 7.4}, "secondaries": [], "report_file": "Jonas_Schneider_archetype.html", "has_report": true}, {"name": "Lars Bloch", "slug": "Lars_Bloch", "position": "DM, M (RC)", "pos_group": "DM", "age": "16", "primary": "Presser", "fit": 11.0, "scores": {"Creator": 9.83, "Finisher": 7.67, "Ball Carrier": 9.33, "Runner": 9.8, "Presser": 11.0, "Anchor": 5.67, "Engine": 9.4, "Target": 8.17, "Linker": 9.0}, "secondaries": [], "report_file": "Lars_Bloch_archetype.html", "has_report": true}, {"name": "Leon Pantic", "slug": "Leon_Pantic", "position": "D (C)", "pos_group": "CB", "age": "17", "primary": "Anchor", "fit": 9.67, "scores": {"Creator": 5.67, "Finisher": 6.83, "Ball Carrier": 8.67, "Runner": 8.4, "Presser": 8.17, "Anchor": 9.67, "Engine": 7.2, "Target": 8.5, "Linker": 5.4}, "secondaries": [], "report_file": "Leon_Pantic_archetype.html", "has_report": true}, {"name": "Lucas Maciel", "slug": "Lucas_Maciel", "position": "M/AM (R)", "pos_group": "Winger", "age": "16", "primary": "Engine", "fit": 10.2, "scores": {"Creator": 5.17, "Finisher": 6.33, "Ball Carrier": 10.17, "Runner": 8.8, "Presser": 8.83, "Anchor": 2.0, "Engine": 10.2, "Target": 4.5, "Linker": 5.2}, "secondaries": [], "report_file": "Lucas_Maciel_archetype.html", "has_report": true}, {"name": "Luis Busch", "slug": "Luis_Busch", "position": "AM (RL), ST (C)", "pos_group": "Winger", "age": "19", "primary": "Engine", "fit": 11.4, "scores": {"Creator": 7.0, "Finisher": 10.0, "Ball Carrier": 9.0, "Runner": 10.4, "Presser": 10.33, "Anchor": 7.33, "Engine": 11.4, "Target": 9.83, "Linker": 8.6}, "secondaries": [], "report_file": "Luis_Busch_archetype.html", "has_report": true}, {"name": "Lukas Lämmel", "slug": "Lukas_Lämmel", "position": "D (C), DM, M/AM (C)", "pos_group": "CB", "age": "29", "primary": "Engine", "fit": 12.6, "scores": {"Creator": 10.83, "Finisher": 10.17, "Ball Carrier": 10.17, "Runner": 10.8, "Presser": 11.5, "Anchor": 9.67, "Engine": 12.6, "Target": 9.5, "Linker": 10.6}, "secondaries": [], "report_file": "Lukas_Lämmel_archetype.html", "has_report": true}, {"name": "Lukas Schellenberg", "slug": "Lukas_Schellenberg", "position": "GK", "pos_group": "GK", "age": "26", "primary": "Runner", "fit": 10.6, "scores": {"Creator": 7.17, "Finisher": 7.17, "Ball Carrier": 8.33, "Runner": 10.6, "Presser": 9.83, "Anchor": 7.17, "Engine": 8.8, "Target": 7.17, "Linker": 6.0}, "secondaries": [], "report_file": "Lukas_Schellenberg_archetype.html", "has_report": true}, {"name": "Marc Richter", "slug": "Marc_Richter", "position": "M (C), AM (RLC)", "pos_group": "Winger", "age": "24", "primary": "Creator / Linker", "fit": 14.1, "scores": {"Creator": 14.0, "Finisher": 11.17, "Ball Carrier": 11.5, "Runner": 10.2, "Presser": 9.17, "Anchor": 9.5, "Engine": 9.8, "Target": 8.67, "Linker": 14.2}, "secondaries": [], "report_file": "Marc_Richter_archetype.html", "has_report": true}, {"name": "Marius Wegmann", "slug": "Marius_Wegmann", "position": "D (C)", "pos_group": "CB", "age": "28", "primary": "Runner", "fit": 11.6, "scores": {"Creator": 6.67, "Finisher": 9.17, "Ball Carrier": 9.83, "Runner": 11.6, "Presser": 10.5, "Anchor": 11.5, "Engine": 9.8, "Target": 11.0, "Linker": 7.2}, "secondaries": [], "report_file": "Marius_Wegmann_archetype.html", "has_report": true}, {"name": "Mehdi Loune", "slug": "Mehdi_Loune", "position": "M/AM (LC)", "pos_group": "Winger", "age": "22", "primary": "Ball Carrier", "fit": 12.5, "scores": {"Creator": 11.33, "Finisher": 9.5, "Ball Carrier": 12.5, "Runner": 10.4, "Presser": 11.0, "Anchor": 7.67, "Engine": 9.6, "Target": 8.0, "Linker": 11.0}, "secondaries": [], "report_file": "Mehdi_Loune_archetype.html", "has_report": true}, {"name": "Mika Hanraths", "slug": "Mika_Hanraths", "position": "D (C)", "pos_group": "CB", "age": "27", "primary": "Presser", "fit": 12.83, "scores": {"Creator": 9.33, "Finisher": 10.5, "Ball Carrier": 10.67, "Runner": 11.8, "Presser": 12.83, "Anchor": 12.33, "Engine": 12.2, "Target": 12.33, "Linker": 9.2}, "secondaries": ["Anchor", "Target", "Engine"], "report_file": "Mika_Hanraths_archetype.html", "has_report": true}, {"name": "Mika Pobric", "slug": "Mika_Pobric", "position": "DM, M (C)", "pos_group": "DM", "age": "19", "primary": "Creator / Linker", "fit": 12.25, "scores": {"Creator": 12.5, "Finisher": 8.17, "Ball Carrier": 11.0, "Runner": 8.6, "Presser": 9.0, "Anchor": 9.17, "Engine": 10.8, "Target": 9.0, "Linker": 12.0}, "secondaries": [], "report_file": "Mika_Pobric_archetype.html", "has_report": true}, {"name": "Milivoj Duduković", "slug": "Milivoj_Duduković", "position": "D (RC), DM", "pos_group": "FB/WB", "age": "16", "primary": "Target", "fit": 10.67, "scores": {"Creator": 9.67, "Finisher": 6.67, "Ball Carrier": 6.83, "Runner": 8.4, "Presser": 8.5, "Anchor": 9.5, "Engine": 10.6, "Target": 10.67, "Linker": 9.2}, "secondaries": [], "report_file": "Milivoj_Duduković_archetype.html", "has_report": true}, {"name": "Musa Tuncel", "slug": "Musa_Tuncel", "position": "GK", "pos_group": "GK", "age": "16", "primary": "Engine", "fit": 10.0, "scores": {"Creator": 6.0, "Finisher": 4.17, "Ball Carrier": 6.0, "Runner": 6.6, "Presser": 8.5, "Anchor": 6.33, "Engine": 10.0, "Target": 6.5, "Linker": 6.6}, "secondaries": [], "report_file": "Musa_Tuncel_archetype.html", "has_report": true}, {"name": "Nikita Drube", "slug": "Nikita_Drube", "position": "M/AM (C), ST (C)", "pos_group": "AM", "age": "16", "primary": "Creator / Linker", "fit": 9.98, "scores": {"Creator": 10.17, "Finisher": 9.0, "Ball Carrier": 10.0, "Runner": 8.8, "Presser": 8.33, "Anchor": 5.83, "Engine": 10.8, "Target": 7.5, "Linker": 9.8}, "secondaries": [], "report_file": "Nikita_Drube_archetype.html", "has_report": true}, {"name": "Noah Valley", "slug": "Noah_Valley", "position": "D/WB (L)", "pos_group": "FB/WB", "age": "18", "primary": "Ball Carrier", "fit": 11.67, "scores": {"Creator": 7.83, "Finisher": 10.0, "Ball Carrier": 11.67, "Runner": 11.2, "Presser": 10.67, "Anchor": 10.17, "Engine": 9.4, "Target": 10.0, "Linker": 8.4}, "secondaries": [], "report_file": "Noah_Valley_archetype.html", "has_report": true}, {"name": "Philipp Scholz", "slug": "Philipp_Scholz", "position": "D (LC)", "pos_group": "FB/WB", "age": "16", "primary": "Engine", "fit": 10.2, "scores": {"Creator": 8.0, "Finisher": 6.17, "Ball Carrier": 4.83, "Runner": 7.2, "Presser": 8.33, "Anchor": 8.5, "Engine": 10.2, "Target": 7.67, "Linker": 7.4}, "secondaries": [], "report_file": "Philipp_Scholz_archetype.html", "has_report": true}, {"name": "Rene Kriwak", "slug": "Rene_Kriwak", "position": "ST (C)", "pos_group": "ST", "age": "27", "primary": "Target", "fit": 14.17, "scores": {"Creator": 10.33, "Finisher": 12.67, "Ball Carrier": 9.33, "Runner": 12.0, "Presser": 10.5, "Anchor": 8.17, "Engine": 11.2, "Target": 14.17, "Linker": 11.2}, "secondaries": [], "report_file": "Rene_Kriwak_archetype.html", "has_report": true}, {"name": "Roko Darojković", "slug": "Roko_Darojković", "position": "M (C), AM (R), ST (C)", "pos_group": "Winger", "age": "16", "primary": "Ball Carrier", "fit": 11.33, "scores": {"Creator": 9.0, "Finisher": 8.67, "Ball Carrier": 11.33, "Runner": 10.8, "Presser": 10.0, "Anchor": 5.0, "Engine": 10.0, "Target": 9.83, "Linker": 9.0}, "secondaries": [], "report_file": "Roko_Darojković_archetype.html", "has_report": true}, {"name": "Sidar Topal", "slug": "Sidar_Topal", "position": "DM, M (C)", "pos_group": "DM", "age": "18", "primary": "Creator / Linker", "fit": 10.02, "scores": {"Creator": 9.83, "Finisher": 7.83, "Ball Carrier": 8.5, "Runner": 9.6, "Presser": 9.5, "Anchor": 8.5, "Engine": 10.0, "Target": 9.0, "Linker": 10.2}, "secondaries": [], "report_file": "Sidar_Topal_archetype.html", "has_report": true}, {"name": "Sion Havertz", "slug": "Sion_Havertz", "position": "D (RLC)", "pos_group": "FB/WB", "age": "16", "primary": "Engine", "fit": 10.4, "scores": {"Creator": 6.5, "Finisher": 7.33, "Ball Carrier": 7.67, "Runner": 8.8, "Presser": 9.83, "Anchor": 9.5, "Engine": 10.4, "Target": 9.33, "Linker": 6.2}, "secondaries": [], "report_file": "Sion_Havertz_archetype.html", "has_report": true}, {"name": "Tim Maciejewski", "slug": "Tim_Maciejewski", "position": "M (RL), AM (RLC)", "pos_group": "Winger", "age": "25", "primary": "Engine", "fit": 11.8, "scores": {"Creator": 9.33, "Finisher": 9.83, "Ball Carrier": 11.67, "Runner": 10.8, "Presser": 10.17, "Anchor": 7.17, "Engine": 11.8, "Target": 9.0, "Linker": 9.6}, "secondaries": [], "report_file": "Tim_Maciejewski_archetype.html", "has_report": true}, {"name": "Tobias Just", "slug": "Tobias_Just", "position": "AM (RLC)", "pos_group": "Winger", "age": "16", "primary": "Engine", "fit": 12.2, "scores": {"Creator": 6.5, "Finisher": 6.5, "Ball Carrier": 11.33, "Runner": 9.0, "Presser": 8.17, "Anchor": 3.83, "Engine": 12.2, "Target": 6.0, "Linker": 6.6}, "secondaries": [], "report_file": "Tobias_Just_archetype.html", "has_report": true}, {"name": "Tom Wagener", "slug": "Tom_Wagener", "position": "AM (LC), ST (C)", "pos_group": "Winger", "age": "16", "primary": "Engine", "fit": 11.6, "scores": {"Creator": 9.83, "Finisher": 7.17, "Ball Carrier": 10.83, "Runner": 9.2, "Presser": 9.33, "Anchor": 3.83, "Engine": 11.6, "Target": 8.0, "Linker": 9.4}, "secondaries": [], "report_file": "Tom_Wagener_archetype.html", "has_report": true}, {"name": "Valmir Sulejmani", "slug": "Valmir_Sulejmani", "position": "M (RL), AM (RLC), ST (C)", "pos_group": "Winger", "age": "30", "primary": "Creator / Linker", "fit": 11.47, "scores": {"Creator": 11.33, "Finisher": 11.33, "Ball Carrier": 11.67, "Runner": 11.4, "Presser": 11.83, "Anchor": 8.17, "Engine": 11.4, "Target": 10.5, "Linker": 11.6}, "secondaries": [], "report_file": "Valmir_Sulejmani_archetype.html", "has_report": true}, {"name": "Yanis Chahid", "slug": "Yanis_Chahid", "position": "DM, M/AM (C)", "pos_group": "DM", "age": "22", "primary": "Creator / Linker", "fit": 13.12, "scores": {"Creator": 12.83, "Finisher": 11.0, "Ball Carrier": 11.17, "Runner": 12.0, "Presser": 11.17, "Anchor": 10.67, "Engine": 11.0, "Target": 9.33, "Linker": 13.4}, "secondaries": ["Runner"], "report_file": "Yanis_Chahid_archetype.html", "has_report": true}, {"name": "Yannik Möker", "slug": "Yannik_Möker", "position": "DM, M/AM (C)", "pos_group": "DM", "age": "27", "primary": "Creator / Linker", "fit": 12.08, "scores": {"Creator": 12.17, "Finisher": 11.17, "Ball Carrier": 11.67, "Runner": 11.6, "Presser": 12.0, "Anchor": 10.67, "Engine": 11.2, "Target": 11.0, "Linker": 12.0}, "secondaries": ["Presser"], "report_file": "Yannik_Möker_archetype.html", "has_report": true}];
+const ARCH_ORDER = ["Creator", "Linker", "Finisher", "Ball Carrier", "Runner", "Presser", "Anchor", "Engine", "Target"];
+const POS_ORDER = ["GK", "CB", "FB/WB", "DM", "CM", "Winger", "AM", "ST", "Other"];
+const ACCENT = '#F6E216';
+
+// Column definitions: [key, label, type]  type: name|pos|tag|num|bar
+const COLS = [
+  ['name',    'Player',      'name'],
+  ['pos_group','Position',   'pos'],
+  ['age',     'Age',         'num'],
+  ['primary', 'Primary',     'tag'],
+  ['fit',     'Primary Fit Score', 'bar'],
+  ...ARCH_ORDER.map(a => [a, a, 'bar']),
+];
+
+let sortCol = 'fit', sortDir = -1;  // default: fit score descending
+
+function getVal(row, key) {
+  if (key === 'fit') return row.fit;
+  if (ARCH_ORDER.includes(key)) return row.scores[key] ?? 0;
+  if (key === 'pos_group') return POS_ORDER.indexOf(row.pos_group);
+  if (key === 'primary') return ARCH_ORDER.indexOf(row.primary.split(' / ')[0]);
+  if (key === 'age') return parseInt(row.age) || 0;
+  return (row[key] || '').toString().toLowerCase();
+}
+
+function sortRows(rows) {
+  return [...rows].sort((a, b) => {
+    const av = getVal(a, sortCol), bv = getVal(b, sortCol);
+    return typeof av === 'number'
+      ? (av - bv) * sortDir
+      : av.localeCompare(bv) * sortDir;
+  });
+}
+
+function renderBar(val) {
+  const pct = Math.round((val / 20) * 100);
+  return `<td class="num bar-cell"><span>${val.toFixed(2)}</span>
+    <div class="mini-bar"><div class="mini-bar-fill" style="width:${pct}%"></div></div></td>`;
+}
+
+function renderRow(row) {
+  const nameCell = row.has_report
+    ? `<a href="${row.report_file}" target="_blank">${row.name}</a>`
+    : `<span class="no-report">${row.name}</span>`;
+  const secs = row.secondaries.length
+    ? row.secondaries.map(s => `<span class="tag" style="margin-left:4px">${s}</span>`).join('')
+    : '';
+  let cells = `<td class="name-cell">${nameCell}</td>`;
+  cells += `<td><span class="tag">${row.pos_group}</span></td>`;
+  cells += `<td class="num">${row.age}</td>`;
+  cells += `<td><span class="tag primary">${row.primary}</span>${secs}</td>`;
+  cells += renderBar(row.fit);
+  for (const arch of ARCH_ORDER) {
+    cells += renderBar(row.scores[arch] ?? 0);
+  }
+  return `<tr>${cells}</tr>`;
+}
+
+function render() {
+  const query = document.getElementById('search').value.toLowerCase();
+  const filtered = ROWS.filter(r =>
+    r.name.toLowerCase().includes(query) ||
+    r.primary.toLowerCase().includes(query) ||
+    r.pos_group.toLowerCase().includes(query)
+  );
+  const sorted = sortRows(filtered);
+  document.getElementById('arch-tbody').innerHTML = sorted.map(renderRow).join('');
+  document.getElementById('row-count').textContent = `${sorted.length} player${sorted.length !== 1 ? 's' : ''}`;
+}
+
+function buildHeader() {
+  const ths = COLS.map(([key, label]) => {
+    const cls = key === sortCol ? (sortDir === -1 ? 'sorted-desc' : 'sorted-asc') : '';
+    return `<th class="${cls}" data-key="${key}">${label}</th>`;
+  }).join('');
+  document.getElementById('arch-thead').innerHTML = `<tr>${ths}</tr>`;
+  document.querySelectorAll('#arch-thead th').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      if (key === sortCol) { sortDir *= -1; }
+      else { sortCol = key; sortDir = key === 'name' || key === 'pos_group' || key === 'primary' ? 1 : -1; }
+      buildHeader();
+      render();
+    });
+  });
+}
+
+document.getElementById('search').addEventListener('input', render);
+buildHeader();
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Football Manager Reports</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg:#08090b; --panel:#12151b; --line:#252b35; --text:#f4f0e8;
+      --muted:#9a948a; --accent:#e6c85c;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; padding:32px; background:var(--bg); color:var(--text);
+      font:14px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    header { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:26px; }
+    h1 { margin:0; font-size:28px; letter-spacing:.01em; }
+    .sub { margin:4px 0 0; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+    .card { border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:18px; }
+    .eyebrow { color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    h2 { margin:6px 0 16px; font-size:18px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; }
+    a {
+      display:inline-flex; align-items:center; min-height:34px; padding:7px 10px;
+      border:1px solid rgba(230,200,92,.45); border-radius:6px;
+      color:var(--text); text-decoration:none; font-weight:750;
+    }
+    a.secondary { border-color:var(--line); color:var(--muted); }
+    a:hover { border-color:var(--accent); color:var(--accent); }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Football Manager Reports</h1>
+      <p class="sub">Generated static report snapshots.</p>
+    </div>
+  </header>
+  <main class="grid">
+
+    <article class="card">
+      <div class="eyebrow">Snapshot</div>
+      <h2>Aachen 2026 09 - 12</h2>
+      <div class="actions">
+        <a href="aachen-2026-09-12/index.html">Report Hub</a>
+        <a class="secondary" href="aachen-2026-09-12/archetypes/index.html">Archetype Index</a>
+      </div>
+    </article>
+    <article class="card">
+      <div class="eyebrow">Snapshot</div>
+      <h2>Aachen 2026 11 - 23</h2>
+      <div class="actions">
+        <a href="aachen-2026-11-23/index.html">Report Hub</a>
+        <a class="secondary" href="aachen-2026-11-23/archetypes/index.html">Archetype Index</a>
+      </div>
+    </article>
+    <article class="card">
+      <div class="eyebrow">Snapshot</div>
+      <h2>Cosenza 2025 07 - 21</h2>
+      <div class="actions">
+        <a href="cosenza-2025-07-21/index.html">Report Hub</a>
+        <a class="secondary" href="cosenza-2025-07-21/archetypes/index.html">Archetype Index</a>
+      </div>
+    </article>
+    <article class="card">
+      <div class="eyebrow">Snapshot</div>
+      <h2>Hodd 2026 04 - 20</h2>
+      <div class="actions">
+        <a href="hodd-2026-04-20/index.html">Report Hub</a>
+        <a class="secondary" href="hodd-2026-04-20/archetypes/index.html">Archetype Index</a>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
