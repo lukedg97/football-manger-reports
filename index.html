@@ -4,75 +4,188 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Football Manager Reports</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
   <style>
     :root {
       color-scheme: dark;
-      --bg:#08090b; --panel:#12151b; --line:#252b35; --text:#f4f0e8;
-      --muted:#9a948a; --accent:#e6c85c;
+      --bg:#070707; --panel:#111111; --panel-2:#171717;
+      --line:#222; --text:#f0ede0; --muted:#888070; --muted-2:#5a5650;
     }
-    * { box-sizing:border-box; }
+    * { box-sizing:border-box; margin:0; padding:0; }
     body {
-      margin:0; padding:32px; background:var(--bg); color:var(--text);
-      font:14px/1.5 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      background:var(--bg); color:var(--text);
+      font-family:'DM Sans', ui-sans-serif, system-ui, sans-serif;
+      font-size:14px; line-height:1.5; min-height:100vh;
     }
-    header { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:26px; }
-    h1 { margin:0; font-size:28px; letter-spacing:.01em; }
-    .sub { margin:4px 0 0; color:var(--muted); }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
-    .card { border:1px solid var(--line); background:var(--panel); border-radius:8px; padding:18px; }
-    .eyebrow { color:var(--muted); font-size:11px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-    h2 { margin:6px 0 16px; font-size:18px; }
+    .site-header {
+      max-width:1100px; margin:0 auto; padding:48px 40px 32px;
+      border-bottom:1px solid var(--line);
+    }
+    .site-header .kicker {
+      font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:500;
+      letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;
+    }
+    .site-header h1 {
+      font-family:'Bebas Neue', sans-serif; font-weight:400;
+      font-size:clamp(40px,6vw,64px); letter-spacing:.03em; line-height:1;
+    }
+    .site-header .sub { margin-top:10px; color:var(--muted); }
+
+    main {
+      max-width:1100px; margin:0 auto; padding:40px 40px 80px;
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:18px;
+    }
+
+    .card {
+      position:relative; background:var(--panel);
+      border:1px solid var(--line); border-radius:10px; padding:24px 24px 22px;
+      overflow:hidden; transition:border-color .15s, transform .15s;
+    }
+    .card::before {
+      content:""; position:absolute; inset:0 0 auto 0; height:3px;
+      background:linear-gradient(90deg, var(--accent) 0%, var(--accent) 50%, var(--accent2) 50%, var(--accent2) 100%);
+    }
+    .card:hover { border-color:rgba(var(--rgb),.55); transform:translateY(-2px); }
+
+    .card-head { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
+    .crest {
+      width:54px; height:54px; object-fit:contain; flex:0 0 auto;
+      filter:drop-shadow(0 2px 6px rgba(0,0,0,.5));
+    }
+    .crest--blank {
+      border-radius:8px; background:rgba(var(--rgb),.15);
+      border:1px solid rgba(var(--rgb),.3);
+    }
+    .eyebrow {
+      display:block; font-family:'IBM Plex Mono', monospace; font-size:10px;
+      font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--ink); margin-bottom:4px;
+    }
+    .card h2 {
+      font-family:'Bebas Neue', sans-serif; font-weight:400;
+      font-size:28px; letter-spacing:.03em; line-height:1;
+    }
+
+    .latest {
+      display:flex; align-items:baseline; gap:10px; margin-bottom:18px;
+      padding-bottom:18px; border-bottom:1px solid var(--line);
+    }
+    .latest-label {
+      font-family:'IBM Plex Mono', monospace; font-size:10px;
+      letter-spacing:.1em; text-transform:uppercase; color:var(--muted-2);
+    }
+    .latest-date { font-size:15px; font-weight:600; color:var(--text); }
+
+    .card-foot { display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap; }
     .actions { display:flex; flex-wrap:wrap; gap:8px; }
-    a {
-      display:inline-flex; align-items:center; min-height:34px; padding:7px 10px;
-      border:1px solid rgba(230,200,92,.45); border-radius:6px;
-      color:var(--text); text-decoration:none; font-weight:750;
+    .btn {
+      display:inline-flex; align-items:center; min-height:36px; padding:8px 16px;
+      border-radius:7px; text-decoration:none; font-weight:600; font-size:13px;
+      letter-spacing:.01em; transition:filter .15s, border-color .15s;
     }
-    a.secondary { border-color:var(--line); color:var(--muted); }
-    a:hover { border-color:var(--accent); color:var(--accent); }
+    .btn--solid { background:var(--accent); color:var(--on-accent); border:1px solid var(--accent); }
+    .btn--solid:hover { filter:brightness(1.08); }
+    .btn--ghost { background:transparent; color:var(--text); border:1px solid rgba(var(--rgb),.4); }
+    .btn--ghost:hover { border-color:var(--ink); color:var(--ink); }
+
+    /* Understated but discoverable — a quiet text control pinned bottom-right. */
+    .older {
+      position:absolute; right:16px; bottom:14px;
+      -webkit-appearance:none; appearance:none;
+      background:transparent; border:0; box-shadow:none; outline:none;
+      color:var(--muted-2);
+      font-family:'IBM Plex Mono', monospace; font-size:11px; line-height:1;
+      letter-spacing:.06em; padding:4px 2px;
+      cursor:pointer; text-align:right;
+      transition:color .2s;
+    }
+    .older:hover, .older:focus { color:var(--text); }
+    .older option {
+      background:var(--panel-2); color:var(--text);
+      font-size:12px; letter-spacing:0;
+    }
+
+    footer {
+      max-width:1100px; margin:0 auto; padding:24px 40px 40px;
+      border-top:1px solid var(--line);
+      font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted-2);
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div>
-      <h1>Football Manager Reports</h1>
-      <p class="sub">Generated static report snapshots.</p>
-    </div>
+  <header class="site-header">
+    <div class="kicker">Football Manager · Data Science</div>
+    <h1>Squad Reports</h1>
+    <p class="sub">Static report snapshots, organized by save. The latest in-game date is shown for each club.</p>
   </header>
-  <main class="grid">
+  <main>
 
-    <article class="card">
-      <div class="eyebrow">Snapshot</div>
-      <h2>Aachen 2026 09 - 12</h2>
-      <div class="actions">
-        <a href="aachen-2026-09-12/index.html">Report Hub</a>
-        <a class="secondary" href="aachen-2026-09-12/archetypes/index.html">Archetype Index</a>
+    <article class="card" style="--accent:#F6E216;--accent2:#F6E216;--ink:#F6E216;--rgb:246,226,22;--on-accent:#0a0a0a">
+      <div class="card-head">
+        <img class="crest" src="aachen-2026-11-23/Alemannia_Aachen_2010.svg.png" alt="Alemannia Aachen crest" />
+        <div class="card-id">
+          <span class="eyebrow">FM26 · Squad Reports</span>
+          <h2>Alemannia Aachen</h2>
+        </div>
+      </div>
+      <div class="latest">
+        <span class="latest-label">Latest snapshot</span>
+        <span class="latest-date">2026 Nov 23</span>
+      </div>
+      <div class="card-foot">
+        <div class="actions">
+          <a class="btn btn--solid" href="aachen-2026-11-23/index.html">Report Hub</a>
+          <a class="btn btn--ghost" href="aachen-2026-11-23/archetypes/index.html">Archetypes</a>
+        </div>
+        <select class="older" title="Older snapshots" aria-label="Older snapshots" onchange="if(this.value)window.location.href=this.value">
+          <option value="">Older ▾</option>
+<option value="aachen-2026-09-12/index.html">2026 Sep 12</option>
+        </select>
       </div>
     </article>
-    <article class="card">
-      <div class="eyebrow">Snapshot</div>
-      <h2>Aachen 2026 11 - 23</h2>
-      <div class="actions">
-        <a href="aachen-2026-11-23/index.html">Report Hub</a>
-        <a class="secondary" href="aachen-2026-11-23/archetypes/index.html">Archetype Index</a>
+    <article class="card" style="--accent:#3b6fc4;--accent2:#3b6fc4;--ink:#7fa6e0;--rgb:59,111,196;--on-accent:#ffffff">
+      <div class="card-head">
+        <img class="crest" src="hodd-2026-04-20/IL_Hodd_logo.svg" alt="IL Hødd crest" />
+        <div class="card-id">
+          <span class="eyebrow">FM26 · Squad Reports</span>
+          <h2>IL Hødd</h2>
+        </div>
+      </div>
+      <div class="latest">
+        <span class="latest-label">Latest snapshot</span>
+        <span class="latest-date">2026 Apr 20</span>
+      </div>
+      <div class="card-foot">
+        <div class="actions">
+          <a class="btn btn--solid" href="hodd-2026-04-20/index.html">Report Hub</a>
+          <a class="btn btn--ghost" href="hodd-2026-04-20/archetypes/index.html">Archetypes</a>
+        </div>
       </div>
     </article>
-    <article class="card">
-      <div class="eyebrow">Snapshot</div>
-      <h2>Cosenza 2025 07 - 21</h2>
-      <div class="actions">
-        <a href="cosenza-2025-07-21/index.html">Report Hub</a>
-        <a class="secondary" href="cosenza-2025-07-21/archetypes/index.html">Archetype Index</a>
+    <article class="card" style="--accent:#1D3448;--accent2:#BB3337;--ink:#7d9ec9;--rgb:29,52,72;--on-accent:#ffffff">
+      <div class="card-head">
+        <img class="crest" src="cosenza-2025-07-21/Cosenza_Calcio_crest.svg" alt="Cosenza Calcio crest" />
+        <div class="card-id">
+          <span class="eyebrow">FM26 · Squad Reports</span>
+          <h2>Cosenza Calcio</h2>
+        </div>
       </div>
-    </article>
-    <article class="card">
-      <div class="eyebrow">Snapshot</div>
-      <h2>Hodd 2026 04 - 20</h2>
-      <div class="actions">
-        <a href="hodd-2026-04-20/index.html">Report Hub</a>
-        <a class="secondary" href="hodd-2026-04-20/archetypes/index.html">Archetype Index</a>
+      <div class="latest">
+        <span class="latest-label">Latest snapshot</span>
+        <span class="latest-date">2025 Jul 21</span>
+      </div>
+      <div class="card-foot">
+        <div class="actions">
+          <a class="btn btn--solid" href="cosenza-2025-07-21/index.html">Report Hub</a>
+          <a class="btn btn--ghost" href="cosenza-2025-07-21/archetypes/index.html">Archetypes</a>
+        </div>
       </div>
     </article>
   </main>
+  <footer>
+    Generated from FM26 player exports · 4 snapshots across 3 saves
+  </footer>
 </body>
 </html>
