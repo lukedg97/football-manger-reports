@@ -9,76 +9,100 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:          #070707;
-      --panel:       #111111;
-      --panel-2:     #161616;
-      --panel-3:     #1c1c1c;
-      --text:        #f0ede0;
-      --muted:       #888070;
-      --muted-2:     #5a5650;
-      --accent:      #F6E216;
-      --accent-dim:  rgba(246,226,22,0.14);
-      --accent-glow: rgba(246,226,22,0.06);
-      --line:        rgba(246,226,22,0.10);
-      --line-hard:   rgba(246,226,22,0.22);
-      --red:         #f87171;
-      --green:       #4ade80;
-      --blue:        #60a5fa;
+      --bg:        #080807;
+      --panel:     #131210;
+      --panel-2:   #1a1814;
+      --text:      #f4f1e6;
+      --muted:     #9a9384;
+      --muted-2:   #5f5a50;
+      --accent:    #F6E216;
+      --accent-rgb:246,226,22;
+      --accent-dim:rgba(246,226,22,0.13);
+      --line:      rgba(246,226,22,0.10);
+      --line-hard: rgba(246,226,22,0.26);
+      --red:       #e0644a;
+      --green:     #7fd17a;
+      --blue:      #60a5fa;
+      --purple:    #c084fc;
+      --font-display:'Bebas Neue',sans-serif;
+      --font-body:   'DM Sans',sans-serif;
+      --font-mono:   'IBM Plex Mono',monospace;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scrollbar-color: var(--line-hard) transparent; }
 
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-body);
       font-size: 14px;
       line-height: 1.5;
       min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+      background:
+        radial-gradient(900px 480px at 78% -8%, rgba(246,226,22,0.09), transparent 60%),
+        radial-gradient(700px 500px at -5% 0%, rgba(246,226,22,0.045), transparent 55%);
+    }
+    body::after {
+      content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
     /* ── Header ── */
     .site-header {
       border-bottom: 1px solid var(--line-hard);
-      padding: 32px 40px 28px;
+      padding: clamp(20px, 3vh, 36px) clamp(20px, 3vw, 48px) clamp(18px, 2.5vh, 28px);
       max-width: 1200px;
       margin: 0 auto;
     }
-    .badge {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--accent);
-      letter-spacing: 0.08em;
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: clamp(9px, 1vw, 11px);
+      letter-spacing: .32em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: ''; width: 22px; height: 2px; background: var(--accent); display: inline-block;
     }
     .site-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(36px, 5vw, 56px);
-      letter-spacing: 0.04em;
-      line-height: 1;
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 60px);
+      letter-spacing: .01em;
+      line-height: .9;
       color: var(--text);
+      text-transform: uppercase;
     }
     .site-subtitle {
       margin-top: 8px;
       color: var(--muted);
-      font-size: 14px;
+      font-family: var(--font-mono);
+      font-size: clamp(10px, 1vw, 13px);
+      letter-spacing: .04em;
     }
+    .site-subtitle b { color: var(--text); font-weight: 600; }
 
     /* ── Main layout ── */
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 40px 40px 80px;
+      padding: clamp(24px, 4vh, 48px) clamp(20px, 3vw, 48px) 80px;
     }
 
     /* ── Section headers ── */
     .section-label {
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 0.12em;
+      letter-spacing: .14em;
       text-transform: uppercase;
       color: var(--muted-2);
       margin-bottom: 14px;
@@ -90,8 +114,8 @@
     .report-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px;
-      margin-bottom: 48px;
+      gap: 10px;
+      margin-bottom: 44px;
     }
 
     /* ── Report card ── */
@@ -99,74 +123,74 @@
       display: block;
       background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 6px;
-      padding: 20px 22px 18px;
+      border-radius: 8px;
+      padding: 18px 20px 16px;
       text-decoration: none;
       color: var(--text);
-      transition: border-color 0.15s, background 0.15s;
-      cursor: pointer;
+      transition: border-color .15s, background .15s, box-shadow .15s;
+      position: relative;
+      overflow: hidden;
     }
-    .report-card:hover {
-      border-color: var(--accent);
-      background: var(--panel-2);
+    .report-card::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background: radial-gradient(220px 160px at 100% 0%, rgba(246,226,22,0.07), transparent 70%);
+      opacity: 0; transition: opacity .2s;
     }
-    .report-card:hover .card-arrow {
-      opacity: 1;
-      transform: translateX(3px);
-    }
+    .report-card:hover { border-color: rgba(246,226,22,0.45); background: var(--panel-2); box-shadow: 0 4px 20px -8px rgba(0,0,0,.5); }
+    .report-card:hover::before { opacity: 1; }
+    .report-card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
+    .report-card > * { position: relative; z-index: 1; }
 
     .card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 10px;
+      margin-bottom: 9px;
     }
     .card-tag {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
+      font-family: var(--font-mono);
+      font-size: 9.5px;
       font-weight: 500;
-      letter-spacing: 0.08em;
+      letter-spacing: .1em;
       text-transform: uppercase;
       color: var(--muted-2);
     }
     .card-arrow {
       color: var(--accent);
-      font-size: 16px;
+      font-size: 15px;
       opacity: 0;
-      transition: opacity 0.15s, transform 0.15s;
+      transition: opacity .15s, transform .15s;
+      flex: none;
     }
 
     .card-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 0.05em;
-      line-height: 1.1;
+      font-family: var(--font-display);
+      font-size: 21px;
+      letter-spacing: .04em;
+      line-height: 1.05;
       color: var(--text);
       margin-bottom: 6px;
     }
     .card-desc {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--muted);
       line-height: 1.45;
     }
-
-    .card-accent { color: var(--accent); }
-    .card-blue   { color: var(--blue); }
-    .card-green  { color: var(--green); }
 
     /* tag colour variants */
     .tag-squad   { color: var(--accent); }
     .tag-league  { color: var(--blue); }
     .tag-compare { color: var(--green); }
-    .tag-player  { color: #c084fc; }
+    .tag-player  { color: var(--purple); }
 
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--line);
-      padding: 20px 40px;
+      padding: 18px clamp(20px, 3vw, 48px);
       max-width: 1200px;
       margin: 0 auto;
-      font-family: 'IBM Plex Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 11px;
       color: var(--muted-2);
     }
@@ -175,9 +199,9 @@
 <body>
 
   <header class="site-header">
-    <div class="badge">Squad Report &middot; FM26</div>
+    <div class="eyebrow">Squad Report &middot; FM26</div>
     <h1 class="site-title">ALEMANNIA AACHEN</h1>
-    <p class="site-subtitle">Data Science Reports &mdash; Season snapshot: 2027-01-02</p>
+    <p class="site-subtitle">Data Science Reports &mdash; Season snapshot: <b>2027-01-02</b></p>
   </header>
 
   <main>

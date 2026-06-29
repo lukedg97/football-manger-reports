@@ -10,44 +10,68 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg:#070707; --panel:#111111; --panel-2:#171717;
-      --line:#222; --text:#f0ede0; --muted:#888070; --muted-2:#5a5650;
+      --bg:#080807; --panel:#131210; --panel-2:#1a1814;
+      --line:rgba(255,255,255,0.07); --line-hard:rgba(255,255,255,0.13);
+      --text:#f4f1e6; --muted:#9a9384; --muted-2:#5f5a50;
+      --font-display:'Bebas Neue',sans-serif;
+      --font-body:'DM Sans',sans-serif;
+      --font-mono:'IBM Plex Mono',monospace;
     }
     * { box-sizing:border-box; margin:0; padding:0; }
+    html { scrollbar-color: var(--line-hard) transparent; }
     body {
       background:var(--bg); color:var(--text);
-      font-family:'DM Sans', ui-sans-serif, system-ui, sans-serif;
+      font-family:var(--font-body);
       font-size:14px; line-height:1.5; min-height:100vh;
+      -webkit-font-smoothing:antialiased;
     }
+    body::before {
+      content:''; position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(900px 500px at 80% -10%, rgba(255,255,255,0.03), transparent 60%),
+        radial-gradient(600px 400px at -5% 0%, rgba(255,255,255,0.02), transparent 55%);
+    }
+    body::after {
+      content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.03;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
     .site-header {
-      max-width:1100px; margin:0 auto; padding:48px 40px 32px;
-      border-bottom:1px solid var(--line);
+      max-width:1100px; margin:0 auto;
+      padding:clamp(28px,4vh,52px) clamp(20px,3vw,48px) clamp(22px,3vh,36px);
+      border-bottom:1px solid var(--line-hard);
     }
-    .site-header .kicker {
-      font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:500;
-      letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;
+    .site-eyebrow {
+      font-family:var(--font-mono); font-size:clamp(9px,1vw,11px); font-weight:500;
+      letter-spacing:.32em; text-transform:uppercase; color:var(--muted);
+      margin-bottom:10px; display:flex; align-items:center; gap:10px;
+    }
+    .site-eyebrow::before {
+      content:''; width:22px; height:2px; background:var(--muted-2); display:inline-block;
     }
     .site-header h1 {
-      font-family:'Bebas Neue', sans-serif; font-weight:400;
-      font-size:clamp(40px,6vw,64px); letter-spacing:.03em; line-height:1;
+      font-family:var(--font-display); font-weight:400;
+      font-size:clamp(40px,6vw,64px); letter-spacing:.02em; line-height:.9;
+      text-transform:uppercase;
     }
-    .site-header .sub { margin-top:10px; color:var(--muted); }
+    .site-header .sub { margin-top:9px; color:var(--muted); font-family:var(--font-mono); font-size:clamp(10px,1vw,12px); letter-spacing:.04em; }
 
     main {
-      max-width:1100px; margin:0 auto; padding:40px 40px 80px;
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:18px;
+      max-width:1100px; margin:0 auto;
+      padding:clamp(24px,4vh,48px) clamp(20px,3vw,48px) 80px;
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px;
     }
 
     .card {
       position:relative; background:var(--panel);
-      border:1px solid var(--line); border-radius:10px; padding:24px 24px 22px;
-      overflow:hidden; transition:border-color .15s, transform .15s;
+      border:1px solid rgba(var(--rgb),.18); border-radius:10px; padding:24px 24px 22px;
+      overflow:hidden; transition:border-color .15s, transform .15s, box-shadow .15s;
     }
     .card::before {
       content:""; position:absolute; inset:0 0 auto 0; height:3px;
       background:linear-gradient(90deg, var(--accent) 0%, var(--accent) 50%, var(--accent2) 50%, var(--accent2) 100%);
     }
-    .card:hover { border-color:rgba(var(--rgb),.55); transform:translateY(-2px); }
+    .card:hover { border-color:rgba(var(--rgb),.55); transform:translateY(-2px); box-shadow:0 6px 28px -10px rgba(0,0,0,.7); }
 
     .card-head { display:flex; align-items:center; gap:16px; margin-bottom:20px; }
     .crest {
@@ -59,21 +83,21 @@
       border:1px solid rgba(var(--rgb),.3);
     }
     .eyebrow {
-      display:block; font-family:'IBM Plex Mono', monospace; font-size:10px;
+      display:block; font-family:var(--font-mono); font-size:10px;
       font-weight:500; letter-spacing:.1em; text-transform:uppercase;
       color:var(--ink); margin-bottom:4px;
     }
     .card h2 {
-      font-family:'Bebas Neue', sans-serif; font-weight:400;
+      font-family:var(--font-display); font-weight:400;
       font-size:28px; letter-spacing:.03em; line-height:1;
     }
 
     .latest {
       display:flex; align-items:baseline; gap:10px; margin-bottom:18px;
-      padding-bottom:18px; border-bottom:1px solid var(--line);
+      padding-bottom:18px; border-bottom:1px solid rgba(var(--rgb),.15);
     }
     .latest-label {
-      font-family:'IBM Plex Mono', monospace; font-size:10px;
+      font-family:var(--font-mono); font-size:10px;
       letter-spacing:.1em; text-transform:uppercase; color:var(--muted-2);
     }
     .latest-date { font-size:15px; font-weight:600; color:var(--text); }
@@ -90,33 +114,27 @@
     .btn--ghost { background:transparent; color:var(--text); border:1px solid rgba(var(--rgb),.4); }
     .btn--ghost:hover { border-color:var(--ink); color:var(--ink); }
 
-    /* Understated but discoverable — a quiet text control pinned bottom-right. */
     .older {
       position:absolute; right:16px; bottom:14px;
       -webkit-appearance:none; appearance:none;
       background:transparent; border:0; box-shadow:none; outline:none;
-      color:var(--muted-2);
-      font-family:'IBM Plex Mono', monospace; font-size:11px; line-height:1;
-      letter-spacing:.06em; padding:4px 2px;
-      cursor:pointer; text-align:right;
+      color:var(--muted-2); font-family:var(--font-mono); font-size:11px; line-height:1;
+      letter-spacing:.06em; padding:4px 2px; cursor:pointer; text-align:right;
       transition:color .2s;
     }
     .older:hover, .older:focus { color:var(--text); }
-    .older option {
-      background:var(--panel-2); color:var(--text);
-      font-size:12px; letter-spacing:0;
-    }
+    .older option { background:var(--panel-2); color:var(--text); font-size:12px; letter-spacing:0; }
 
     footer {
-      max-width:1100px; margin:0 auto; padding:24px 40px 40px;
-      border-top:1px solid var(--line);
-      font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--muted-2);
+      max-width:1100px; margin:0 auto; padding:20px clamp(20px,3vw,48px) 40px;
+      border-top:1px solid var(--line-hard);
+      font-family:var(--font-mono); font-size:11px; color:var(--muted-2);
     }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="kicker">Football Manager · Data Science</div>
+    <div class="site-eyebrow">Football Manager · Data Science</div>
     <h1>Squad Reports</h1>
     <p class="sub">Static report snapshots, organized by save. The latest in-game date is shown for each club.</p>
   </header>
