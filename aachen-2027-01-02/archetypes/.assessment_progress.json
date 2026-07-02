@@ -1,0 +1,310 @@
+{
+  "updated": "2026-07-01T21:59:53",
+  "players": {
+    "Albin Baliqi": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:22:35"
+    },
+    "Ben Mertens": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:22:53"
+    },
+    "Benjamin Goller": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:23:08"
+    },
+    "Celil-Noah Kirli": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:23:25"
+    },
+    "Danilo Wiebe": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:23:42"
+    },
+    "Darnell Keumo": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:23:58"
+    },
+    "David Nieland": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:24:14"
+    },
+    "Devin Angleberger": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:24:30"
+    },
+    "Donovan Habbas": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:24:45"
+    },
+    "Elaijah Stalmans": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:25:01"
+    },
+    "Emre Türksever": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:25:20"
+    },
+    "Erik Herrmann": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:25:36"
+    },
+    "Florian Heister": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:25:53"
+    },
+    "George Didoss": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:26:09"
+    },
+    "Gianluca Gaudino": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:26:28"
+    },
+    "Haci Celik": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:26:44"
+    },
+    "Isaac Owusu": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:27:01"
+    },
+    "Jacob Danquah": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:27:16"
+    },
+    "Jaden Asamoah": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:27:34"
+    },
+    "Jarun Theißen": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:27:51"
+    },
+    "Joel da Silva Kiala": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:28:07"
+    },
+    "Johann Deumi Nappi": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:28:22"
+    },
+    "Jonas Schneider": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:28:41"
+    },
+    "Kjell Becher": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:28:56"
+    },
+    "Kokou Madjaye": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:29:13"
+    },
+    "Lars Bloch": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:29:27"
+    },
+    "Leon Pantic": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:29:44"
+    },
+    "Levyn Müller": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:30:00"
+    },
+    "Lucas Maciel": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:30:19"
+    },
+    "Luis Busch": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:30:34"
+    },
+    "Lukas Lämmel": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:30:51"
+    },
+    "Lukas Schellenberg": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:31:08"
+    },
+    "Marc Richter": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:31:23"
+    },
+    "Marius Wegmann": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:31:41"
+    },
+    "Mehdi Loune": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:31:57"
+    },
+    "Mika Hanraths": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:32:16"
+    },
+    "Mika Pobric": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:32:32"
+    },
+    "Mikail Cetin": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:32:47"
+    },
+    "Milivoj Duduković": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:33:03"
+    },
+    "Musa Tuncel": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:33:20"
+    },
+    "Neo Ruske": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T19:33:37"
+    },
+    "Nevio Kunz": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:54:46"
+    },
+    "Nikita Drube": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:55:01"
+    },
+    "Noah Valley": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:55:19"
+    },
+    "Philipp Scholz": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:55:34"
+    },
+    "Quentin Heitzer": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:55:51"
+    },
+    "Rene Kriwak": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:56:06"
+    },
+    "Roko Darojković": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:56:20"
+    },
+    "Salim Chekrouni": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:56:37"
+    },
+    "Sidar Topal": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:56:52"
+    },
+    "Sion Havertz": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:57:09"
+    },
+    "Tim Maciejewski": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:57:24"
+    },
+    "Tobias Just": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:57:40"
+    },
+    "Tobias Kogel": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:57:59"
+    },
+    "Tom Hendriks": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:58:15"
+    },
+    "Tom Wagener": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:58:31"
+    },
+    "Toralf Hense": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:58:46"
+    },
+    "Valmir Sulejmani": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:59:03"
+    },
+    "Yahia Selim": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:59:20"
+    },
+    "Yanis Chahid": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:59:39"
+    },
+    "Yannik Möker": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T21:59:53"
+    }
+  }
+}
