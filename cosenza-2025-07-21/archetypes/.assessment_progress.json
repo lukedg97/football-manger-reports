@@ -1,0 +1,240 @@
+{
+  "updated": "2026-07-02T07:57:02",
+  "players": {
+    "Adolfo Mazzulla": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:00:46"
+    },
+    "Aldo Florenzi": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:01:02"
+    },
+    "Alessandro Arioli": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:01:17"
+    },
+    "Alessandro Caporale": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:01:32"
+    },
+    "Alessandro Randazzo": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:01:47"
+    },
+    "Alessandro Valente": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:02:03"
+    },
+    "Alfredo Marini": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:02:18"
+    },
+    "Andrea Curatelo": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:02:35"
+    },
+    "Andrea Moretti": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:02:50"
+    },
+    "Antonio Cotroneo": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:03:09"
+    },
+    "Antonio Ferrara": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:03:25"
+    },
+    "Antonio Rocco": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:03:43"
+    },
+    "Baldovino Cimino": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:04:00"
+    },
+    "Carlo Fazio": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:04:17"
+    },
+    "Carmine Musacchio": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:04:31"
+    },
+    "Christian Langella": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:04:47"
+    },
+    "Christos Kourfalidis": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:05:04"
+    },
+    "Cristian Aragona": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:05:21"
+    },
+    "Diego Ragone": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:05:36"
+    },
+    "Edoardo Contiero": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:05:52"
+    },
+    "Francesco Innocentini": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:06:09"
+    },
+    "Gabriele Agrelli": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:06:29"
+    },
+    "Giacomo Beretta": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:06:45"
+    },
+    "Giovanni Le Rose": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:07:00"
+    },
+    "Giovanni Mollo": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:07:17"
+    },
+    "Giuliano Barbagallo": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:07:33"
+    },
+    "Jaime Báez": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:07:51"
+    },
+    "Kevin Cannavò": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-01T22:08:06"
+    },
+    "Luca Garritano": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:50:31"
+    },
+    "Mario Novello": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:52:11"
+    },
+    "Mario Perlingieri": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:52:28"
+    },
+    "Michele Emmausso": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:52:45"
+    },
+    "Nicola Pintus": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:53:01"
+    },
+    "Nicolò Contiliano": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:53:19"
+    },
+    "Paolo Dametto": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:53:36"
+    },
+    "Pierfrancesco Castagna": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:53:54"
+    },
+    "Pietro Ciotti": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:54:11"
+    },
+    "Racine Ba": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:54:29"
+    },
+    "Riccardo Palmieri": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:54:47"
+    },
+    "Simone Martino": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:55:01"
+    },
+    "Simone Mazzocchi": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:55:18"
+    },
+    "Sofiane Achour": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:55:34"
+    },
+    "Thomas Pompei": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:55:51"
+    },
+    "Thomas Vettorel": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:56:08"
+    },
+    "Tommaso D'Orazio": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:56:27"
+    },
+    "Tommaso Vannucchi": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:56:45"
+    },
+    "Vincenzo D'Elia": {
+      "status": "ok",
+      "error": "",
+      "ts": "2026-07-02T07:57:02"
+    }
+  }
+}
